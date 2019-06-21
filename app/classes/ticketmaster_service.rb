@@ -1,6 +1,3 @@
-
-
-
 require 'ticketmaster-sdk'
 TICKETMASTER_KEY = 'WYh6wyUhsALWBUVdSzGP9Z44bfT2YlDt'
 
@@ -17,3 +14,4 @@ class TicketMasterService
 end
 
 
+#events.map(&:name)
