@@ -1,0 +1,72 @@
+.Body {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  font-size: 160%;
+  font-family: 'Lobster Two', cursive;
+}
+
+.nav-item button {
+  border: 1px solid $primary-font-color;
+}
+
+.events-container {
+  overflow: auto;
+  height: -webkit-fill-available;
+}
+
+.playlist-container {
+  color: white;
+}
+
+.search-container {
+  width: 40vw;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  background-color: $secondary-font-color;
+
+  h3 {
+    margin: 20px;
+  }
+
+  h2 {
+    font-weight: bold;
+    color: $primary-background-color;
+  }
+
+  .form-inline input.form-control {
+    margin-left: 3vw;
+    width: 25vw;
+  }
+}
+
+section.card {
+  margin-bottom: 10px;
+}
+
+div.card-body {
+  height: fit-content;
+  background-color: $navbar-background-color;
+  color: $primary-font-color;
+}
+
+div.sidebar {
+  background-color: #1DB954;
+  color: $primary-font-color;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  h2, button {
+    margin: 20px;
+  }
+}
