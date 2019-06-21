@@ -20,8 +20,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-        city: '',
-        region: ''
+        display_city: '',
     }
   }
 
@@ -30,13 +29,21 @@ class App extends Component {
     // this.getEvent();
     this.getPlaylist();
   }
+handleChange = (event) => {
+this.setState({value: event.target.value});
+}
+
+onSubmit = (event) =>{
+event.preventDefault();
+this.setState({display_city: this.state.value});
+event.target.value = "";
+}
 
   getGeoInfo = () => {
     axios.get('https://ipapi.co/json/').then((response) => {
         let data = response.data;
         this.setState({
-            city: data.city,
-            region: data.region
+            display_city: data.city +", " + data.region
         });
     }).catch((error) => {
         console.log(error);
@@ -58,7 +65,7 @@ class App extends Component {
         <NavBar />
         <div className="Body">
           <EventBar />
-          <Search city={this.state.city} region={this.state.region}/>
+          <Search handleChange={this.handleChange} onSubmit={this.onSubmit} display_city={this.state.display_city}/>
           <SideBar />
         </div>
       </div>
