@@ -2,7 +2,7 @@ import React from 'react';
 
 function NavBar(props){
   return (
-    <nav className="navbar fixed-top navbar-dark bg-dark">
+    <nav className="navbar fixed-top">
       <a className="navbar-brand" href="/">Jetify</a>
       <ul className="nav justify-content-center">
         <li className="nav-item">

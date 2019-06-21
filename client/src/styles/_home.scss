@@ -3,14 +3,19 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-  margin-top: 20px;
+  margin-top: 50px;
   margin-bottom: 20px;
+  background-color: $second-background-color;
 }
 
+.navbar {
+  background-color: $navbar-background-color;
+}
 .navbar-brand {
   font-weight: bold;
-  font-size: 160%;
+  font-size: 400%;
   font-family: 'Lobster Two', cursive;
+  color:white;
 }
 
 .nav-item button {
@@ -31,7 +36,8 @@
   border-radius: 4px;
   display: flex;
   flex-direction: column;
-  background-color: $secondary-font-color;
+  background-color: $primary-background-color;
+
 
   h3 {
     margin: 20px;
@@ -39,7 +45,7 @@
 
   h2 {
     font-weight: bold;
-    color: $primary-background-color;
+    color: $secondary-font-color;
   }
 
   .form-inline input.form-control {
@@ -55,7 +61,7 @@ section.card {
 div.card-body {
   height: fit-content;
   background-color: $navbar-background-color;
-  color: $primary-font-color;
+  color: $secondary-font-color;
 }
 
 div.sidebar {
