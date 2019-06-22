@@ -1,1 +1,45 @@
 // cleaner to move each event into this componant
+import React, { Component } from 'react';
+import axios from 'axios';
+// has state - loading true or fault (starts true)
+// componant did mount will make a request to the controller api action - once got events have can control them.
+
+class Event extends Component {
+  render() {
+    const { event } = this.props;
+    // let url = '';
+    // if (event.data._embedded.sales.url === []) {
+    //   url =
+    //     'https://www.ticketmaster.com/?landing=c&c=SEM_TMBRAND_ggl_295481099_21183198059_ticketmaster&GCID=0&&gclid=Cj0KCQjwo7foBRD8ARIsAHTy2wmQR3K6RFM0qxj7j6jPqmd7SyYBoDJycACNl2yUKn3lBhX6hKjmRLoaAjpFEALw_wcB&gclsrc=aw.ds';
+    // } else {
+    //   url = event.data._embedded.sales.url;
+    // }
+    return (
+      <div className="events-container">
+        <section className="card" style={{ width: 18 + 'rem' }}>
+          <img
+            className="card-img-top"
+            src={`${event.data.images[0].url}`}
+            alt="Card cap"
+          />
+          <div className="card-body">
+            <h5 className="card-title">{`${event.data.name}`}</h5>
+            <p className="card-date">{`${event.data.dates.start.localDate}`}</p>
+            <p className="card-venue">
+              {`${event.data._embedded.venues[0].name}`}
+            </p>
+            <p className="card-link">url</p>
+            {/* if returns empty array return ticketmaster link */}
+            <a href="#" className="btn btn-primary">
+              Go somewhere
+            </a>
+          </div>
+        </section>
+      </div>
+    );
+  }
+}
+
+export default Event;
+
+// {`${event.data._embedded.sales.url}`}

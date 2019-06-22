@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Event from './Event.js';
 // has state - loading true or fault (starts true)
 // componant did mount will make a request to the controller api action - once got events have can control them.
 
@@ -35,7 +36,6 @@ class EventBar extends Component {
 
   render() {
     const { loading, events } = this.state;
-    let test;
     if (loading) {
       return (
         <div className="events-container">
@@ -43,30 +43,7 @@ class EventBar extends Component {
         </div>
       );
     } else {
-      return events.map(event => (
-        <div className="events-container">
-          <section className="card" style={{ width: 18 + 'rem' }}>
-            <img
-              className="card-img-top"
-              src={`${event.data.images[0].url}`}
-              alt="Card cap"
-            />
-            <div className="card-body">
-              <h5 className="card-title">{`${event.data.name}`}</h5>
-              <p className="card-date">
-                {`${event.data.dates.start.localDate}`}
-              </p>
-              <p className="card-venue">
-                {`${event.data._embedded.venues[0].name}`}
-              </p>
-              <p className="card-link">{`${event.data._embedded.sales.url}`}</p>
-              <a href="#" className="btn btn-primary">
-                Go somewhere
-              </a>
-            </div>
-          </section>
-        </div>
-      ));
+      return events.map(event => <Event event={event} />);
     }
   }
 }
