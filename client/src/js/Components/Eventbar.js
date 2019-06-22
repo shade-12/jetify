@@ -11,7 +11,7 @@ class EventBar extends Component {
       loading: true,
       events: []
     };
-  }
+  } //constructor ends here.
 
   getEventInfo = () => {
     axios
@@ -27,20 +27,23 @@ class EventBar extends Component {
       .catch(error => {
         console.log(error);
       });
-  };
+  }; //get info ends here
 
   componentDidMount() {
-    // use axios to call events controller
     this.getEventInfo();
   }
 
   render() {
     const { loading, events } = this.state;
-
+    let test;
     if (loading) {
-      return <p>loading!</p>;
-    } else {
       return (
+        <div className="events-container">
+          <p>loading!</p>
+        </div>
+      );
+    } else {
+      return events.map(event => (
         <div className="events-container">
           <section className="card" style={{ width: 18 + 'rem' }}>
             <img
@@ -49,58 +52,7 @@ class EventBar extends Component {
               alt="Card cap"
             />
             <div className="card-body">
-              <h5 className="card-title">Event 1</h5>
-              <p className="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </p>
-              <a href="#" className="btn btn-primary">
-                Go somewhere
-              </a>
-            </div>
-          </section>
-          <section className="card" style={{ width: 18 + 'rem' }}>
-            <img
-              className="card-img-top"
-              src="https://www.billboard.com/files/media/nyc-skyline-billboard-1548.jpg"
-              alt="Card image cap"
-            />
-            <div className="card-body">
-              <h5 className="card-title">Event 2</h5>
-              <p className="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </p>
-              <a href="#" className="btn btn-primary">
-                Go somewhere
-              </a>
-            </div>
-          </section>
-          <section className="card" style={{ width: 18 + 'rem' }}>
-            <img
-              className="card-img-top"
-              src="https://victoryroadvgc.com/wp-content/uploads/2019/05/img_lugar_108_1522053167_kualalumpur.jpg"
-              alt="Card image cap"
-            />
-            <div className="card-body">
-              <h5 className="card-title">Event 3</h5>
-              <p className="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </p>
-              <a href="#" className="btn btn-primary">
-                Go somewhere
-              </a>
-            </div>
-          </section>
-          <section className="card" style={{ width: 18 + 'rem' }}>
-            <img
-              className="card-img-top"
-              src="https://uploads.disquscdn.com/images/ad1339ef2da88b7701e51026ca5563a684daf85aeff0173d0d2f451853a76f9c.jpg"
-              alt="Card image cap"
-            />
-            <div className="card-body">
-              <h5 className="card-title">Event 4</h5>
+              <h5 className="card-title">{`${event.data.name}`}</h5>
               <p className="card-text">
                 Some quick example text to build on the card title and make up
                 the bulk of the card's content.
@@ -111,7 +63,7 @@ class EventBar extends Component {
             </div>
           </section>
         </div>
-      );
+      ));
     }
   }
 }
