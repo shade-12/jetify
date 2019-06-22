@@ -48,15 +48,20 @@ class EventBar extends Component {
           <section className="card" style={{ width: 18 + 'rem' }}>
             <img
               className="card-img-top"
-              src="https://hecktictravels.com/wp-content/uploads/2012/02/NYC-Nightlife-THUMBNAIL.jpg"
+              src={`${event.data.images[0].url}`}
               alt="Card cap"
             />
             <div className="card-body">
               <h5 className="card-title">{`${event.data.name}`}</h5>
-              <p className="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
+              <p className="card-date">
+                {`${event.data.dates.start.localDate}`}
               </p>
+              <p className="card-venue">
+                {/* {`${event.data._embedded.venues.first[name]}`} */}
+              </p>
+              <p className="card-link">{`${
+                event.data._embedded.attractions.first.url
+              }`}</p>
               <a href="#" className="btn btn-primary">
                 Go somewhere
               </a>
