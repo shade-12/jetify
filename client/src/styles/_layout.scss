@@ -1,16 +1,13 @@
 body {
-  margin: 0;
-  padding: 0;
-  padding-top: 70px;
   background-color: $primary-background-color;
   font-family: 'Rokkitt', serif !important;
   -webkit-font-smoothing: antialiased;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
+// code {
+//   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+//     monospace;
+// }
 
 // Bootstrap adjustments
 form.button_to {
