@@ -11,7 +11,8 @@
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
     "react-scripts": "2.1.8",
-    "spotify-web-api-node": "^4.0.0"
+    "spotify-web-api-node": "^4.0.0",
+    "google-maps-react": "^2.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

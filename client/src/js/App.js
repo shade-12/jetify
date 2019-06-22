@@ -5,9 +5,10 @@ import axios from 'axios';
 import NavBar from './Components/Navbar.js';
 import EventBar from './Components/Eventbar.js';
 import Search from './Components/Search.js';
-import Playlist from './Components/Playlist.js';
+// import Playlist from './Components/Playlist.js';
 import SideBar from './Components/Sidebar.js'
 import SpotifyWebApi from 'spotify-web-api-node';
+import MapContainer from './Components/Map.js';
 
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
@@ -68,6 +69,7 @@ event.target.value = "";
           <Search handleChange={this.handleChange} onSubmit={this.onSubmit} display_city={this.state.display_city}/>
           <SideBar />
         </div>
+        <div className="Map"><MapContainer display_city={this.state.display_city} /></div>
       </div>
     );
   }
