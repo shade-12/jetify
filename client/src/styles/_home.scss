@@ -3,8 +3,8 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-  margin-top: 50px;
-  margin-bottom: 20px;
+  padding-top: 7%;
+  padding-bottom: 1%;
   background-color: $second-background-color;
 }
 
@@ -13,7 +13,7 @@
 }
 .navbar-brand {
   font-weight: bold;
-  font-size: 400%;
+  font-size: 200%;
   font-family: 'Lobster Two', cursive;
   color:white;
 }
