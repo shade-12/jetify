@@ -57,11 +57,9 @@ class EventBar extends Component {
                 {`${event.data.dates.start.localDate}`}
               </p>
               <p className="card-venue">
-                {/* {`${event.data._embedded.venues.first[name]}`} */}
+                {`${event.data._embedded.venues[0].name}`}
               </p>
-              <p className="card-link">{`${
-                event.data._embedded.attractions.first.url
-              }`}</p>
+              <p className="card-link">{`${event.data._embedded.sales.url}`}</p>
               <a href="#" className="btn btn-primary">
                 Go somewhere
               </a>
