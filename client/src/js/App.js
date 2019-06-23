@@ -7,15 +7,15 @@ import EventBar from './Components/Eventbar.js';
 import Search from './Components/Search.js';
 // import Playlist from './Components/Playlist.js';
 import SideBar from './Components/Sidebar.js'
-import SpotifyWebApi from 'spotify-web-api-node';
-import MapContainer from './Components/Map.js';
-
-const spotifyApi = new SpotifyWebApi({
-  clientId: process.env.SPOTIFY_CLIENT_ID,
-  clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-  redirectUri: 'http://localhost:3000/',
-  setAccessToken: process.env.SPOTIFY_ACCESS_TOKEN
-});
+// import SpotifyWebApi from 'spotify-web-api-node';
+// import MapContainer from './Components/Map.js';
+// import Map from './Components/Map.js'
+// const spotifyApi = new SpotifyWebApi({
+//   clientId: process.env.SPOTIFY_CLIENT_ID,
+//   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+//   redirectUri: 'http://localhost:3000/',
+//   setAccessToken: process.env.SPOTIFY_ACCESS_TOKEN
+// });
 
 class App extends Component {
   constructor(props) {
@@ -28,7 +28,7 @@ class App extends Component {
   componentDidMount() {
     this.getGeoInfo();
     // this.getEvent();
-    this.getPlaylist();
+    // this.getPlaylist();
   }
 handleChange = (event) => {
 this.setState({value: event.target.value});
@@ -44,21 +44,23 @@ event.target.value = "";
     axios.get('https://ipapi.co/json/').then((response) => {
         let data = response.data;
         this.setState({
-            display_city: data.city +", " + data.region
+            display_city: data.city +", " + data.region,
+            display_lat: data.latitude,
+            display_long: data.longitude
         });
     }).catch((error) => {
         console.log(error);
     });
   };
 
-  getPlaylist = () => {
-    spotifyApi.searchTracks('artist:Love')
-      .then(function(data) {
-        console.log('Search tracks by "Love" in the artist name', data.body);
-      }, function(err) {
-        console.log('Something went wrong!', err);
-      });
-  };
+  // getPlaylist = () => {
+  //   spotifyApi.searchTracks('artist:Love')
+  //     .then(function(data) {
+  //       console.log('Search tracks by "Love" in the artist name', data.body);
+  //     }, function(err) {
+  //       console.log('Something went wrong!', err);
+  //     });
+  // };
 
   render() {
     return (
@@ -66,10 +68,11 @@ event.target.value = "";
         <NavBar />
         <div className="Body">
           <EventBar />
-          <Search handleChange={this.handleChange} onSubmit={this.onSubmit} display_city={this.state.display_city}/>
+          <Search handleChange={this.handleChange} onSubmit={this.onSubmit} display_city={this.state.display_city} display_lat={this.state.display_lat} display_long={this.state.display_long}/>
           <SideBar />
         </div>
-        <div className="Map"><MapContainer display_city={this.state.display_city} /></div>
+        {/* <Map /> */}
+        {/* <div className="Map"><MapContainer display_city={this.state.display_city} /></div> */}
       </div>
     );
   }

@@ -35,20 +35,35 @@
   display: flex;
   flex-direction: column;
 }
-.search-container {
-  z-index: 100;
+.center-column {
+  position: relative;
+  z-index: 0;
   width: 40vw;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
-  background-color: $primary-background-color;
+  // background-color: $primary-background-color;
 
+// .search-container{
+//   position: relative;
+//   z-index: 100;
+// }
+  .map-container {
+    position: absolute;
+    z-index: 0;
+    display: flex;
+    flex-direction: column;
+  }
 
   h3 {
+    position: relative;
+  z-index: 100;
     margin: 20px;
   }
 
   h2 {
+    position: relative;
+  z-index: 100;
     font-weight: bold;
     color: $secondary-font-color;
   }
