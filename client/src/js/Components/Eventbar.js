@@ -43,7 +43,13 @@ class EventBar extends Component {
         </div>
       );
     } else {
-      return events.map(event => <Event event={event} />);
+      return (
+        <div className="events-container">
+          {events.map(event => (
+            <Event event={event} />
+          ))}
+        </div>
+      );
     }
   }
 }
