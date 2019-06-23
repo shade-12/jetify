@@ -9,8 +9,8 @@ class TicketmasterService
     def call
       params = { size: 10,  keyword: 'vancouver',
         classificationId:'KZFzniwnSyZfZ7v7nJ', 
-        startDateTime: DateTime.rfc3339('2019-06-20T15:14:00Z'), 
-        endDateTime: DateTime.rfc3339('2019-06-27T15:15:00Z')
+        startDateTime: DateTime.rfc3339('2019-06-28T17:51:00Z'), 
+        endDateTime: DateTime.rfc3339('2019-07-05T17:52:00Z')
       }
       client = Ticketmaster.client(apikey: TICKETMASTER_KEY)
       response = client.search_events(params: params)
