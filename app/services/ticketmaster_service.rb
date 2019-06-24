@@ -5,11 +5,11 @@ class TicketmasterService
   #this where to make request to ticket master API using the ticket-master-sdk wrppaer
   
   class << self
-    def call
-      params = { size: 10,  keyword: 'vancouver',
+    def call(latlong, startDate, endDate)
+      params = { size: 10,  latlong: latlong,
         classificationId:'KZFzniwnSyZfZ7v7nJ', 
-        startDateTime: DateTime.rfc3339('2019-06-28T17:51:00Z'), 
-        endDateTime: DateTime.rfc3339('2019-07-05T17:52:00Z')
+        startDateTime: startDate, 
+        endDateTime: endDate
       }
       client = Ticketmaster.client(apikey: TICKETMASTER_KEY)
       response = client.search_events(params: params)
@@ -34,10 +34,5 @@ class TicketmasterService
 end
 
 
-#events.map(&:name)
 
-# events.map { |event| event.name } #artist name/event name
-# events = TicketmasterService.call
-# e = events.first 
-# e.attractions.first.url #e.attractions.first.name to check it's the correct artist and not just featured. Get the first one and this should be right 
-# e.venues.first.name
+# TicketmasterService.call('54.9713082,-2.7246093', DateTime.rfc3339('2019-07-05T17:52:00Z'), DateTime.rfc3339('2019-07-20T17:52:00Z'))

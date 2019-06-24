@@ -16,7 +16,7 @@ class EventBar extends Component {
 
   getEventInfo = () => {
     axios
-      .get('/api/events')
+      .get('/api/events') // (axios passing in params - url? how to grab from result of map api object)
       .then(response => {
         let data = response.data;
         console.log(data);
