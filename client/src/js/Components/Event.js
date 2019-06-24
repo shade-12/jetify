@@ -18,19 +18,20 @@ class Event extends Component {
       <section className="card" style={{ width: 18 + 'rem' }}>
         <img
           className="card-img-top"
-          src={`${event.data.images[0].url}`}
+          src={event.data.images[0].url}
           alt="Card cap"
         />
         <div className="card-body">
-          <h5 className="card-title">{`${event.data.name}`}</h5>
-          <p className="card-date">{`${event.data.dates.start.localDate}`}</p>
-          <p className="card-venue">
-            {`${event.data._embedded.venues[0].name}`}
-          </p>
-          <p className="card-link">url</p>
-          {/* if returns empty array return ticketmaster link */}
-          <a href="#" className="btn btn-primary">
-            Go somewhere
+          <h5 className="card-title">{event.data.name}</h5>
+          <p className="card-date">{event.data.dates.start.localDate}</p>
+          <p className="card-venue">{event.data._embedded.venues[0].name}</p>
+          <a
+            href={event.data.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary"
+          >
+            Buy tickets
           </a>
         </div>
       </section>
