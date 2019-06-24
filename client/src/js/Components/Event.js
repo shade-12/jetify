@@ -16,17 +16,13 @@ class Event extends Component {
     // }
     return (
       <section className="card" style={{ width: 18 + 'rem' }}>
-        <img
-          className="card-img-top"
-          src={event.data.images[0].url}
-          alt="Card cap"
-        />
+        <img className="card-img-top" src={event.image} alt="Card cap" />
         <div className="card-body">
-          <h5 className="card-title">{event.data.name}</h5>
-          <p className="card-date">{event.data.dates.start.localDate}</p>
-          <p className="card-venue">{event.data._embedded.venues[0].name}</p>
+          <h5 className="card-title">{event.name}</h5>
+          <p className="card-date">{event.date}</p>
+          <p className="card-venue">{event.venue}</p>
           <a
-            href={event.data.url}
+            href={event.url}
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-primary"

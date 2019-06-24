@@ -5,7 +5,6 @@ class TicketmasterService
   #this where to make request to ticket master API using the ticket-master-sdk wrppaer
   
   class << self
-
     def call
       params = { size: 10,  keyword: 'vancouver',
         classificationId:'KZFzniwnSyZfZ7v7nJ', 
@@ -14,10 +13,24 @@ class TicketmasterService
       }
       client = Ticketmaster.client(apikey: TICKETMASTER_KEY)
       response = client.search_events(params: params)
-      events = response.results
+      response.results.map{|result| event_hash(result)}
+    end
+
+    private
+    def event_hash(result)
+      date = result.dates['start']
+      venue = result.venues.first
+      image = result.images.first
+      {
+        id: result.id,
+        image: image ? image.url : '',
+        name: result.name, 
+        date: date ? date['localDate'] : '',
+        venue: venue ? venue.name : '',
+        url: result.data['url'] 
+      }
     end
   end
-  
 end
 
 
