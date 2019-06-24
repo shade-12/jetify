@@ -1,11 +1,14 @@
-# require 'ticketmaster-sdk'
-TICKETMASTER_KEY = 'WYh6wyUhsALWBUVdSzGP9Z44bfT2YlDt'
+
+TICKETMASTER_KEY=ENV['TICKETMASTER_KEY']
+
 
 class TicketmasterService
-  #this where to make request to ticket master API using the ticket-master-sdk wrppaer
+  #this method makes a request to ticket master API using the ticketmaster-sdk wrapper
   
   class << self
     def call(latlong, startDate, endDate)
+      puts "test"
+      puts ENV['TICKETMASTER_KEY']
       params = { size: 10,  latlong: latlong,
         classificationId:'KZFzniwnSyZfZ7v7nJ', 
         startDateTime: startDate, 
@@ -35,4 +38,7 @@ end
 
 
 
-# TicketmasterService.call('54.9713082,-2.7246093', DateTime.rfc3339('2019-07-05T17:52:00Z'), DateTime.rfc3339('2019-07-20T17:52:00Z'))
+# events = TicketmasterService.call('54.9713082,-2.7246093',
+#  DateTime.rfc3339('2019-07-05T17:52:00Z'), 
+#  DateTime.rfc3339('2019-07-20T17:52:00Z'))
+

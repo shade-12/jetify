@@ -39,7 +39,7 @@ class EventBar extends Component {
     if (loading) {
       return (
         <div className="events-container">
-          <p>loading!</p>
+          <p className="loading">loading!</p>
         </div>
       );
     } else {
