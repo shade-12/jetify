@@ -5,16 +5,16 @@ import axios from 'axios';
 import NavBar from './Components/Navbar.js';
 import EventBar from './Components/Eventbar.js';
 import Search from './Components/Search.js';
-import Playlist from './Components/Playlist.js';
+// import Playlist from './Components/Playlist.js';
 import SideBar from './Components/Sidebar.js';
-import SpotifyWebApi from 'spotify-web-api-node';
+// import SpotifyWebApi from 'spotify-web-api-node';
 
-const spotifyApi = new SpotifyWebApi({
-  clientId: process.env.SPOTIFY_CLIENT_ID,
-  clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-  redirectUri: 'http://localhost:3000/',
-  setAccessToken: process.env.SPOTIFY_ACCESS_TOKEN
-});
+// const spotifyApi = new SpotifyWebApi({
+//   clientId: process.env.SPOTIFY_CLIENT_ID,
+//   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+//   redirectUri: 'http://localhost:3000/',
+//   setAccessToken: process.env.SPOTIFY_ACCESS_TOKEN
+// });
 
 class App extends Component {
   constructor(props) {
