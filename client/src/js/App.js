@@ -20,7 +20,10 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      display_city: ''
+      display_city: '',
+      latlong: '54.9713082,-2.7246093',
+      startDate: '2019-07-20T11:52:00Z',
+      endDate: '2019-07-20T17:52:00Z'
     };
   }
 
@@ -68,9 +71,9 @@ class App extends Component {
         <NavBar />
         <div className="Body">
           <EventBar
-            latlong={'54.9713082,-2.7246093'}
-            startDate={'2019-07-20T11:52:00Z'}
-            endDate={'2019-07-20T17:52:00Z'}
+            latlong={this.state.latlong}
+            startDate={this.state.startDate}
+            endDate={this.state.endDate}
           />
           <Search
             handleChange={this.handleChange}
