@@ -1,10 +1,11 @@
 /* eslint-disable no-restricted-globals */
 import React, {Component} from 'react';
-import { withGoogleMap, GoogleMap, withScriptjs, Marker} from "react-google-maps";
+import { withGoogleMap, GoogleMap, withScriptjs, Marker, InfoWindow} from "react-google-maps";
 import Autocomplete from 'react-google-autocomplete';
 import Geocode from 'react-geocode';
 Geocode.setApiKey( "AIzaSyCeKeu1dIRjpqhCLhM5Xuo3-_rbfmL2MwU" );
 Geocode.enableDebug();
+const styles = require('./map.json')
 
 
 class Map extends Component{
@@ -13,8 +14,8 @@ class Map extends Component{
 		super( props );
 		this.state = {
 			address: '',
-			city: this.props.display_city,
-			area: this.props.display_city,
+			city: '',
+			area: '',
 			mapPosition: {
 				lat: this.props.center.lat,
 				lng: this.props.center.lng
@@ -35,7 +36,6 @@ class Map extends Component{
 					addressArray =  response.results[0].address_components,
 					city = this.getCity( addressArray ),
 					area = this.getArea( addressArray );
-
 				console.log( 'city', city, area);
 				console.log(this.state.city)
 				this.setState( {
@@ -43,9 +43,11 @@ class Map extends Component{
 					area: ( area ) ? area : '',
 					city: ( city ) ? city : '',
 				} )
+				this.props.setLocation(this.state) 
 			},
+			
 			error => {
-				console.error( error );
+				console.error('Geocode Error', error );
 			}
 		);
 	};
@@ -59,15 +61,18 @@ class Map extends Component{
 	shouldComponentUpdate( nextProps, nextState ){
 		console.log(nextProps)
 		console.log(nextState)
+		// this.props.setLocation(nextState);
 		if (this.state.markerPosition.lat !== this.props.center.lat ||
 			this.state.address !== nextState.address ||
 			this.state.city !== nextState.city ||
 			this.state.area !== nextState.area 
+			
 		) {
 			return true
 		} else if ( this.props.center.lat === nextProps.center.lat ){
 			return false
 		}
+		this.props.setLocation(nextState);
 	}
 	/**
 	 * Get the city and set the city input value to the one selected
@@ -188,24 +193,32 @@ class Map extends Component{
 			withGoogleMap(
 				props => (
 					<div className="map-container">
-					<div className="autocomplete">
-					<Autocomplete
+					<Autocomplete 
+					// onSubmit={this.props.setLocation}
 						onPlaceSelected={ this.onPlaceSelected }
 						types={['(regions)']}
-					/></div>
+						style={{width: '100%',
+						height: '100%',
+						paddingleft: '16px',
+						marginTop: '2px',
+						marginBottom: '500px'}}
+					/>
 					<GoogleMap google={ this.props.google }
 					           defaultZoom={ this.props.zoom }
-					           defaultCenter={{ lat: this.state.mapPosition.lat, lng: this.state.mapPosition.lng }}
+										 defaultCenter={{ lat: this.state.mapPosition.lat, lng: this.state.mapPosition.lng }}
+										//  mapTypeId="satellite"
+										defaultOptions={{styles : styles}}
+										
 					>
 						{/* InfoWindow on top of marker */}
-						{/* <InfoWindow
+						<InfoWindow
 							onClose={this.onInfoWindowClose}
 							position={{ lat: ( this.state.markerPosition.lat + 0.0018 ), lng: this.state.markerPosition.lng }}
-						> */}
-							{/* <div>
+						> 
+						 <div>
 								<span style={{ padding: 0, margin: 0 }}>{ this.state.address }</span>
 							</div>
-						</InfoWindow> */}
+						</InfoWindow>
 						{/*Marker*/}
 						<Marker google={this.props.google}
 						        name={'Dolores park'}
@@ -224,10 +237,11 @@ class Map extends Component{
 			map = <div>
 				<div>
 				</div>
-				<div className="map-display">
-						<h3>Listen to what</h3>
-        <h2 className="city-name"> {this.state.area}</h2>
-        <h3>sounds like this week !</h3> 
+				 <div className="map-display">
+					{/*	<h3>Listen to what</h3>
+        <h2 className="city-name"> {this.state.address}</h2>
+        <h3>sounds like this week !</h3>  */}
+				
 				<AsyncMap
       googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeKeu1dIRjpqhCLhM5Xuo3-_rbfmL2MwU&libraries=places"
       loadingElement={

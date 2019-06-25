@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 // import { BrowserRouter, Route, Link } from "react-router-dom";
-import axios from 'axios';
+// import axios from 'axios';
 
 import NavBar from './Components/Navbar.js';
 import EventBar from './Components/Eventbar.js';
-// import Search from './Components/Search.js';
+import Search from './Components/Search.js';
 // import Playlist from './Components/Playlist.js';
 import SideBar from './Components/Sidebar.js';
 // import SpotifyWebApi from 'spotify-web-api-node';
@@ -28,45 +28,16 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.getGeoInfo();
-    // this.getEvent();
-    // this.getPlaylist();
   }
-  // handleChange = event => {
-  //   this.setState({ value: event.target.value });
-  // };
 
-  // onSubmit = event => {
-  //   event.preventDefault();
-  //   this.setState({ display_city: this.state.value });
-  //   event.target.value = '';
-  // };
 
-  getGeoInfo = () => {
-    axios
-      .get('https://ipapi.co/json/')
-      .then(response => {
-        let data = response.data;
-        this.setState({
-            display_city: data.city +", " + data.region,
-            display_lat: data.latitude,
-            display_long: data.longitude
-        });
-        console.log(this.state.display_lat)
-    }).catch((error) => {
-        console.log(error);
-      });
+  setLocation = (locationObj) => {
+    const lat = locationObj.mapPosition.lat;
+    const lng = locationObj.mapPosition.lng;
+    this.setState({display_lat:lat, display_long:lng});
+    console.log("position set", this.state.display_lat)
   };
 
-  // getPlaylist = () => {
-  //   spotifyApi.searchTracks('artist:Love')
-  //     .then(function(data) {
-  //       console.log('Search tracks by "Love" in the artist name', data.body);
-  //     }, function(err) {
-  //       console.log('Something went wrong!', err);
-  //     });
-  // };
-  
 
   render() {
     return (
@@ -74,6 +45,7 @@ class App extends Component {
         <NavBar />
         <div className="Body">
           <EventBar />
+          <Search />
           <div className="map-container">
             <Map google={this.props.google}
         center={{lat: this.state.display_lat, 
@@ -81,10 +53,9 @@ class App extends Component {
           display_city={this.state.display_city}
         height='400px'
         zoom={2}
+        setLocation={this.setLocation}
     />
          </div>
-      {/* <MapContainer/> */}
-          {/* <Search handleChange={this.handleChange} onSubmit={this.onSubmit} display_city={this.state.display_city} display_lat={this.state.display_lat} display_long={this.state.display_long}/> */}
           <SideBar />
         </div>
          </div>
