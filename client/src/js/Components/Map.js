@@ -201,7 +201,7 @@ class Map extends Component{
 						height: '100%',
 						paddingleft: '16px',
 						marginTop: '2px',
-						marginBottom: '500px'}}
+						}}
 					/>
 					<GoogleMap google={ this.props.google }
 					           defaultZoom={ this.props.zoom }
@@ -237,10 +237,10 @@ class Map extends Component{
 			map = <div>
 				<div>
 				</div>
-				 <div className="map-display">
-					{/*	<h3>Listen to what</h3>
-        <h2 className="city-name"> {this.state.address}</h2>
-        <h3>sounds like this week !</h3>  */}
+				 {/* <div className="map-display"> */}
+						{/* <h3>Listen to what
+        <h2 className="city-name"> {this.state.city}</h2>
+        sounds like this week !</h3>  */}
 				
 				<AsyncMap
       googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeKeu1dIRjpqhCLhM5Xuo3-_rbfmL2MwU&libraries=places"
@@ -255,7 +255,7 @@ class Map extends Component{
       }
      />
      </div> 
-    </div>
+    // </div>
 } else {
    map = <div style={{height: this.props.height}} />
   }
