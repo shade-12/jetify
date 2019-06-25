@@ -29,9 +29,10 @@ class App extends Component {
 
   componentDidMount() {
   }
+
   makePositionString = () => {
-    const position = this.state.display_lat.toString() +","+ this.state.display_long.toString();
-    return position
+    const position = this.state.display_lat.toString() + "," + this.state.display_long.toString();
+    return position;
   };
 
   setLocation = (locationObj) => {
@@ -39,7 +40,6 @@ class App extends Component {
     const lng = locationObj.mapPosition.lng;
     this.setState({display_lat:lat, display_long:lng});
     this.setState({position:this.makePositionString()})
-
 
     console.log("position set", this.state.display_lat)
   };
@@ -50,24 +50,24 @@ class App extends Component {
       <div className="App">
         <NavBar />
         <div className="Body">
-        <EventBar
+          <EventBar
             latlong={this.makePositionString()}
             startDate={'2019-07-20T11:52:00Z'}
             endDate={'2019-07-20T17:52:00Z'}
           />
           <div className="map-container">
-            <Map google={this.props.google}
-        center={{lat: this.state.display_lat,
-          lng: this.state.display_long}}
-          display_city={this.state.display_city}
-        height='400px'
-        zoom={2}
-        setLocation={this.setLocation}
-    />
+            <Map
+              google={this.props.google}
+              center={{lat: this.state.display_lat, lng: this.state.display_long}}
+              display_city={this.state.display_city}
+              height='400px'
+              zoom={2}
+              setLocation={this.setLocation}
+            />
          </div>
-          <SideBar />
+         <SideBar />
         </div>
-         </div>
+      </div>
     );
   }
 }
