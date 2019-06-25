@@ -23,6 +23,7 @@
 }
 
 .events-container {
+  
   overflow: auto;
   height: -webkit-fill-available;
 
@@ -36,28 +37,34 @@
   color: white;
 }
 
-.search-container {
-  width: 40vw;
-  border-radius: 4px;
-  display: flex;
+.map-display {
+  // width: 200%;
+  justify-content: center;
   flex-direction: column;
-  background-color: $primary-background-color;
-
+  
+  
 
   h3 {
+    position: relative;
+  z-index: 100;
     margin: 20px;
   }
 
   h2 {
+    position: relative;
+  z-index: 100;
     font-weight: bold;
     color: $secondary-font-color;
   }
+
+  
 
   .form-inline input.form-control {
     margin-left: 3vw;
     width: 25vw;
   }
 }
+
 
 section.card {
   margin-bottom: 10px;
@@ -82,3 +89,5 @@ div.sidebar {
     margin: 20px;
   }
 }
+
+
