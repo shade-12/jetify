@@ -39,8 +39,8 @@ class App extends Component {
     const lng = locationObj.mapPosition.lng;
     this.setState({display_lat:lat, display_long:lng});
     this.setState({position:this.makePositionString()})
-    
-    
+
+
     console.log("position set", this.state.display_lat)
   };
 
@@ -57,7 +57,7 @@ class App extends Component {
           />
           <div className="map-container">
             <Map google={this.props.google}
-        center={{lat: this.state.display_lat, 
+        center={{lat: this.state.display_lat,
           lng: this.state.display_long}}
           display_city={this.state.display_city}
         height='400px'

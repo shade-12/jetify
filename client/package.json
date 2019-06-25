@@ -16,6 +16,7 @@
     "react-places-autocomplete": "^7.2.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "2.1.8",
+    "react-spotify-login": "^0.9.1",
     "spotify-web-api-node": "^4.0.0"
   },
   "scripts": {
