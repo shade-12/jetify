@@ -9,7 +9,7 @@ class TicketmasterService
     def call(latlong, startDate, endDate)
       puts "test"
       puts ENV['TICKETMASTER_KEY']
-      params = { size: 10,  latlong: latlong,
+      params = { size: 15,  latlong: latlong,
         classificationId:'KZFzniwnSyZfZ7v7nJ', 
         startDateTime: startDate, 
         endDateTime: endDate

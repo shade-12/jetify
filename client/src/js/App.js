@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 
 import NavBar from './Components/Navbar.js';
 import EventBar from './Components/Eventbar.js';
-import Search from './Components/Search.js';
 // import Playlist from './Components/Playlist.js';
 import SideBar from './Components/Sidebar.js';
 // import SpotifyWebApi from 'spotify-web-api-node';
@@ -23,18 +22,25 @@ class App extends Component {
     this.state = {
         display_city: 'Vancouver',
         display_lat: 49.2,
-        display_long: -123.1
+        display_long: -123.1,
+        position: '49.2,-123.1',
     }
   }
 
   componentDidMount() {
   }
-
+  makePositionString = () => {
+    const position = this.state.display_lat.toString() +","+ this.state.display_long.toString();
+    return position
+  };
 
   setLocation = (locationObj) => {
     const lat = locationObj.mapPosition.lat;
     const lng = locationObj.mapPosition.lng;
     this.setState({display_lat:lat, display_long:lng});
+    this.setState({position:this.makePositionString()})
+    
+    
     console.log("position set", this.state.display_lat)
   };
 
@@ -44,8 +50,11 @@ class App extends Component {
       <div className="App">
         <NavBar />
         <div className="Body">
-          <EventBar />
-          <Search />
+        <EventBar
+            latlong={this.makePositionString()}
+            startDate={'2019-07-20T11:52:00Z'}
+            endDate={'2019-07-20T17:52:00Z'}
+          />
           <div className="map-container">
             <Map google={this.props.google}
         center={{lat: this.state.display_lat, 
