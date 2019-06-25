@@ -67,7 +67,11 @@ class App extends Component {
       <div className="App">
         <NavBar />
         <div className="Body">
-          <EventBar />
+          <EventBar
+            latlong={'54.9713082,-2.7246093'}
+            startDate={'2019-07-20T11:52:00Z'}
+            endDate={'2019-07-20T17:52:00Z'}
+          />
           <Search
             handleChange={this.handleChange}
             onSubmit={this.onSubmit}
