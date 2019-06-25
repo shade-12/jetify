@@ -1,0 +1,21 @@
+.login-page {
+  display:flex;
+  flex-direction: column;
+  align-item: center;
+}
+
+.login-page-background {
+  background: #162a3b url('https://www.24i.com/wp-content/uploads/2017/06/IBC-Party-pic-bw.png') no-repeat 50% 50%;
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
+  background-size: 100% 100%;
+}
+
+section.login-form {
+  background: rgba(0, 159, 255, 0.6);
+  background: linear-gradient(
+    135deg,
+    rgba(236, 47, 75, 0.6),
+    rgba(0, 159, 255, 0.6)
+  );
+}

@@ -6,7 +6,7 @@ import NavBar from './Components/Navbar.js';
 import EventBar from './Components/Eventbar.js';
 import Search from './Components/Search.js';
 import Playlist from './Components/Playlist.js';
-import SideBar from './Components/Sidebar.js';
+import Login from './Components/Login.js';
 import SpotifyWebApi from 'spotify-web-api-node';
 
 const spotifyApi = new SpotifyWebApi({
@@ -62,19 +62,21 @@ class App extends Component {
   //     });
   // };
 
+  // <NavBar />
+        // <div className="Body">
+        //   <EventBar />
+        //   <Search
+        //     handleChange={this.handleChange}
+        //     onSubmit={this.onSubmit}
+        //     display_city={this.state.display_city}
+        //   />
+        //   <Playlist />
+        // </div>
+
   render() {
     return (
       <div className="App">
-        <NavBar />
-        <div className="Body">
-          <EventBar />
-          <Search
-            handleChange={this.handleChange}
-            onSubmit={this.onSubmit}
-            display_city={this.state.display_city}
-          />
-          <SideBar />
-        </div>
+        <Login />
       </div>
     );
   }
