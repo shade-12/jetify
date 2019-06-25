@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import Map from './Map.js';
+// import Map from './Map.js';  
 
 class Search extends Component {
- 
-  render(){
+  render() {
     return (
       <div className ="center-column">
       <div className="search-container"> 
@@ -16,12 +15,12 @@ class Search extends Component {
         </form> */}
        </div>
       <div className="map-container">
-        <Map
+        {/* <Map
         google={this.props.google}
         center={{lat: 49.2827, lng: -123.1207}}
         height='400px'
         zoom={15}
-         />
+        /> */}
         </div>
   </div>
       );

@@ -4,12 +4,12 @@ import axios from 'axios';
 
 import NavBar from './Components/Navbar.js';
 import EventBar from './Components/Eventbar.js';
-import Search from './Components/Search.js';
+// import Search from './Components/Search.js';
 // import Playlist from './Components/Playlist.js';
-import SideBar from './Components/Sidebar.js'
+import SideBar from './Components/Sidebar.js';
 // import SpotifyWebApi from 'spotify-web-api-node';
-// import MapContainer from './Components/Map.js';
-// import Map from './Components/Map.js'
+import Map from './Components/Map.js'
+
 // const spotifyApi = new SpotifyWebApi({
 //   clientId: process.env.SPOTIFY_CLIENT_ID,
 //   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
@@ -19,10 +19,10 @@ import SideBar from './Components/Sidebar.js'
 
 class App extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-        display_city: '',
-    }
+      display_city: ''
+    };
   }
 
   componentDidMount() {
@@ -30,27 +30,30 @@ class App extends Component {
     // this.getEvent();
     // this.getPlaylist();
   }
-handleChange = (event) => {
-this.setState({value: event.target.value});
-}
+  // handleChange = event => {
+  //   this.setState({ value: event.target.value });
+  // };
 
-onSubmit = (event) =>{
-event.preventDefault();
-this.setState({display_city: this.state.value});
-event.target.value = "";
-}
+  // onSubmit = event => {
+  //   event.preventDefault();
+  //   this.setState({ display_city: this.state.value });
+  //   event.target.value = '';
+  // };
 
   getGeoInfo = () => {
-    axios.get('https://ipapi.co/json/').then((response) => {
+    axios
+      .get('https://ipapi.co/json/')
+      .then(response => {
         let data = response.data;
         this.setState({
             display_city: data.city +", " + data.region,
             display_lat: data.latitude,
             display_long: data.longitude
         });
-    }).catch((error) => {
+      })
+      .catch(error => {
         console.log(error);
-    });
+      });
   };
 
   // getPlaylist = () => {
@@ -68,15 +71,17 @@ event.target.value = "";
         <NavBar />
         <div className="Body">
           <EventBar />
-          <Search handleChange={this.handleChange} onSubmit={this.onSubmit} display_city={this.state.display_city} display_lat={this.state.display_lat} display_long={this.state.display_long}/>
+          {/* <Search handleChange={this.handleChange} onSubmit={this.onSubmit} display_city={this.state.display_city} display_lat={this.state.display_lat} display_long={this.state.display_long}/> */}
           <SideBar />
         </div>
-        {/* <Map /> */}
+        <Map google={this.props.google}
+        center={{lat: 49.2827, lng: -123.1207}}
+        height='400px'
+        zoom={2} />
         {/* <div className="Map"><MapContainer display_city={this.state.display_city} /></div> */}
       </div>
     );
   }
-
 }
 
 export default App;

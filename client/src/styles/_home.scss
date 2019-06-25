@@ -25,6 +25,11 @@
 .events-container {
   overflow: auto;
   height: -webkit-fill-available;
+
+  .loading {
+    color: white;
+    font-size: 300%;
+  }
 }
 
 .playlist-container {
@@ -85,14 +90,15 @@ div.card-body {
 }
 
 div.sidebar {
-  background-color: #1DB954;
+  background-color: #1db954;
   color: $primary-font-color;
   border-radius: 4px;
   display: flex;
   justify-content: center;
   flex-direction: column;
 
-  h2, button {
+  h2,
+  button {
     margin: 20px;
   }
 }
