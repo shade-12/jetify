@@ -1,0 +1,39 @@
+.login-page {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.login-page-background {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 1;
+
+  display: block;
+  background-image: url('https://www.muralswallpaper.com/app/uploads/classic-world-map-maps-plain.jpg');
+  width: 100vw;
+  height: 100vh;
+
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+}
+
+.login-form {
+  z-index: 9999;
+  padding: 2em;
+  margin-bottom: 1em;
+  max-width: 460px;
+  background: rgba(0, 159, 255, 0.6);
+  background: linear-gradient(
+    135deg,
+    rgba(236, 47, 75, 0.6),
+    rgba(0, 159, 255, 0.6)
+  );
+}
