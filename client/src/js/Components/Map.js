@@ -1,8 +1,9 @@
+/* eslint-disable no-restricted-globals */
 import React, {Component} from 'react';
-import { withGoogleMap, GoogleMap, withScriptjs, Marker, InfoWindow} from "react-google-maps";
+import { withGoogleMap, GoogleMap, withScriptjs, Marker} from "react-google-maps";
 import Autocomplete from 'react-google-autocomplete';
 import Geocode from 'react-geocode';
-Geocode.setApiKey( "AIzaSyCeKeu1dIRjpqhCLhM5Xuo3-_rbfmL2MwU " );
+Geocode.setApiKey( "AIzaSyCeKeu1dIRjpqhCLhM5Xuo3-_rbfmL2MwU" );
 Geocode.enableDebug();
 
 
@@ -12,9 +13,8 @@ class Map extends Component{
 		super( props );
 		this.state = {
 			address: '',
-			city: '',
-			area: '',
-			state: '',
+			city: this.props.display_city,
+			area: this.props.display_city,
 			mapPosition: {
 				lat: this.props.center.lat,
 				lng: this.props.center.lng
@@ -34,16 +34,14 @@ class Map extends Component{
 				const address = response.results[0].formatted_address,
 					addressArray =  response.results[0].address_components,
 					city = this.getCity( addressArray ),
-					area = this.getArea( addressArray ),
-					state = this.getState( addressArray );
+					area = this.getArea( addressArray );
 
-				console.log( 'city', city, area, state );
-
+				console.log( 'city', city, area);
+				console.log(this.state.city)
 				this.setState( {
 					address: ( address ) ? address : '',
 					area: ( area ) ? area : '',
 					city: ( city ) ? city : '',
-					state: ( state ) ? state : '',
 				} )
 			},
 			error => {
@@ -59,12 +57,12 @@ class Map extends Component{
 	 * @return {boolean}
 	 */
 	shouldComponentUpdate( nextProps, nextState ){
-		if (
-			this.state.markerPosition.lat !== this.props.center.lat ||
+		console.log(nextProps)
+		console.log(nextState)
+		if (this.state.markerPosition.lat !== this.props.center.lat ||
 			this.state.address !== nextState.address ||
 			this.state.city !== nextState.city ||
-			this.state.area !== nextState.area ||
-			this.state.state !== nextState.state
+			this.state.area !== nextState.area 
 		) {
 			return true
 		} else if ( this.props.center.lat === nextProps.center.lat ){
@@ -111,19 +109,8 @@ class Map extends Component{
 	 * @param addressArray
 	 * @return {string}
 	 */
-	getState = ( addressArray ) => {
-		let state = '';
-		for( let i = 0; i < addressArray.length; i++ ) {
-			for( let i = 0; i < addressArray.length; i++ ) {
-				if ( addressArray[ i ].types[0] && 'administrative_area_level_1' === addressArray[ i ].types[0] ) {
-					state = addressArray[ i ].long_name;
-					return state;
-				}
-			}
-		}
-	};
 	/**
-	 * And function for city,state and address input
+	 * And function for city and address input
 	 * @param event
 	 */
 	onChange = ( event ) => {
@@ -140,7 +127,7 @@ class Map extends Component{
 
 	/**
 	 * When the marker is dragged you get the lat and long using the functions available from event object.
-	 * Use geocode to get the address, city, area and state from the lat and lng positions.
+	 * Use geocode to get the address, city, area from the lat and lng positions.
 	 * And then set those values in the state.
 	 *
 	 * @param event
@@ -154,13 +141,11 @@ class Map extends Component{
 				const address = response.results[0].formatted_address,
 					addressArray =  response.results[0].address_components,
 					city = this.getCity( addressArray ),
-					area = this.getArea( addressArray ),
-					state = this.getState( addressArray );
+					area = this.getArea( addressArray );
 				this.setState( {
 					address: ( address ) ? address : '',
 					area: ( area ) ? area : '',
 					city: ( city ) ? city : '',
-					state: ( state ) ? state : ''
 				} )
 			},
 			error => {
@@ -179,7 +164,6 @@ class Map extends Component{
 			addressArray =  place.address_components,
 			city = this.getCity( addressArray ),
 			area = this.getArea( addressArray ),
-			state = this.getState( addressArray ),
 			latValue = place.geometry.location.lat(),
 			lngValue = place.geometry.location.lng();
 		// Set these values in the state.
@@ -187,7 +171,6 @@ class Map extends Component{
 			address: ( address ) ? address : '',
 			area: ( area ) ? area : '',
 			city: ( city ) ? city : '',
-			state: ( state ) ? state : '',
 			markerPosition: {
 				lat: latValue,
 				lng: lngValue
@@ -204,19 +187,25 @@ class Map extends Component{
 		const AsyncMap = withScriptjs(
 			withGoogleMap(
 				props => (
+					<div className="map-container">
+					<div className="autocomplete">
+					<Autocomplete
+						onPlaceSelected={ this.onPlaceSelected }
+						types={['(regions)']}
+					/></div>
 					<GoogleMap google={ this.props.google }
 					           defaultZoom={ this.props.zoom }
 					           defaultCenter={{ lat: this.state.mapPosition.lat, lng: this.state.mapPosition.lng }}
 					>
 						{/* InfoWindow on top of marker */}
-						<InfoWindow
+						{/* <InfoWindow
 							onClose={this.onInfoWindowClose}
 							position={{ lat: ( this.state.markerPosition.lat + 0.0018 ), lng: this.state.markerPosition.lng }}
-						>
-							<div>
+						> */}
+							{/* <div>
 								<span style={{ padding: 0, margin: 0 }}>{ this.state.address }</span>
 							</div>
-						</InfoWindow>
+						</InfoWindow> */}
 						{/*Marker*/}
 						<Marker google={this.props.google}
 						        name={'Dolores park'}
@@ -225,19 +214,8 @@ class Map extends Component{
 						        position={{ lat: this.state.markerPosition.lat, lng: this.state.markerPosition.lng }}
 						/>
 						<Marker />
-						{/* For Auto complete Search Box */}
-						<Autocomplete
-							style={{
-								width: '100%',
-								height: '40px',
-								paddingLeft: '16px',
-								marginTop: '2px',
-								marginBottom: '500px'
-							}}
-							onPlaceSelected={ this.onPlaceSelected }
-							types={['(regions)']}
-						/>
 					</GoogleMap>
+					</div>
 				)
 			)
 		);
@@ -246,8 +224,9 @@ class Map extends Component{
 			map = <div>
 				<div>
 				</div>
-				<h3>Listen to what</h3>
-        <h2 className="city-name">{this.state.area}</h2>
+				<div className="map-display">
+						<h3>Listen to what</h3>
+        <h2 className="city-name"> {this.state.area}</h2>
         <h3>sounds like this week !</h3> 
 				<AsyncMap
       googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeKeu1dIRjpqhCLhM5Xuo3-_rbfmL2MwU&libraries=places"
@@ -261,6 +240,7 @@ class Map extends Component{
        <div style={{ height: `100%` }} />
       }
      />
+     </div> 
     </div>
 } else {
    map = <div style={{height: this.props.height}} />
@@ -268,33 +248,5 @@ class Map extends Component{
   return( map )
  }
 }
+
 export default Map
-
-
-// export class MapContainer extends Component {
-//   render() {
-//     console.log(this.props.google)
-//     console.log(this.props.display_lat)
-//     return (
-//       <Map className="Map"
-//         google={this.props.google}
-//         zoom={20}
-//         initialCenter={{
-//          lat: 49.2827,
-//          lng: -123.1207
-//         }}
-//         center={{
-//           lat: this.props.display_lat,
-//          lng: this.props.display_long
-//         }}
-        
-//       />
-      
-//     );
-//   }
-// }
-
-
-//   export default GoogleApiWrapper({
-//     apiKey: 'AIzaSyBmV2d1UF5pCRkcGjW68hCKYmIXjktEX7w'
-//   })(MapContainer);

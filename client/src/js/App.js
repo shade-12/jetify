@@ -21,8 +21,10 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      display_city: ''
-    };
+        display_city: 'Vancouver',
+        display_lat: 49.2,
+        display_long: -123.1
+    }
   }
 
   componentDidMount() {
@@ -50,8 +52,8 @@ class App extends Component {
             display_lat: data.latitude,
             display_long: data.longitude
         });
-      })
-      .catch(error => {
+        console.log(this.state.display_lat)
+    }).catch((error) => {
         console.log(error);
       });
   };
@@ -64,6 +66,7 @@ class App extends Component {
   //       console.log('Something went wrong!', err);
   //     });
   // };
+  
 
   render() {
     return (
@@ -71,15 +74,20 @@ class App extends Component {
         <NavBar />
         <div className="Body">
           <EventBar />
+          <div className="map-container">
+            <Map google={this.props.google}
+        center={{lat: this.state.display_lat, 
+          lng: this.state.display_long}}
+          display_city={this.state.display_city}
+        height='400px'
+        zoom={2}
+    />
+         </div>
+      {/* <MapContainer/> */}
           {/* <Search handleChange={this.handleChange} onSubmit={this.onSubmit} display_city={this.state.display_city} display_lat={this.state.display_lat} display_long={this.state.display_long}/> */}
           <SideBar />
         </div>
-        <Map google={this.props.google}
-        center={{lat: 49.2827, lng: -123.1207}}
-        height='400px'
-        zoom={2} />
-        {/* <div className="Map"><MapContainer display_city={this.state.display_city} /></div> */}
-      </div>
+         </div>
     );
   }
 }
