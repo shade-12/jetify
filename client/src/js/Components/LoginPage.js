@@ -29,7 +29,7 @@ class LoginPage extends Component {
             type="button"
             className="btn btn-dark"
             buttonText={buttonText}
-            clientId={"7a7698ee205a4b01ac2a987c6054da8b"}
+            clientId={process.env.REACT_APP_SPOTIFY_CLIENT_ID}
             redirectUri={"http://localhost:3000/api/logging-in"}
             scope={"user-read-private user-read-currently-playing user-library-modify playlist-modify-public playlist-read-collaborative playlist-read-private playlist-modify-private"}
             onSuccess={onSuccess}
