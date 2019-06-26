@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 // import { BrowserRouter, Route, Link } from "react-router-dom";
 // import axios from 'axios';
 
-import NavBar from './Navbar.js';
-import EventBar from './Eventbar.js';
-import Playlist from './Playlist.js';
-import Map from './Map.js'
+import NavBar from './_Navbar.js';
+import EventBar from './_Eventbar.js';
+import Playlist from './_Playlist.js';
+import Map from './_Map.js'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
