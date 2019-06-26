@@ -1,11 +1,10 @@
-/* eslint-disable no-restricted-globals */
 import React, {Component} from 'react';
 import { withGoogleMap, GoogleMap, withScriptjs, Marker, InfoWindow} from "react-google-maps";
 import Autocomplete from 'react-google-autocomplete';
 import Geocode from 'react-geocode';
-Geocode.setApiKey( "AIzaSyCeKeu1dIRjpqhCLhM5Xuo3-_rbfmL2MwU" );
+Geocode.setApiKey( process.env.REACT_APP_GOOGLE_API_KEY );
 Geocode.enableDebug();
-const styles = require('./map.json')
+const styles = require('./_map.json')
 
 
 class Map extends Component{
@@ -43,9 +42,9 @@ class Map extends Component{
 					area: ( area ) ? area : '',
 					city: ( city ) ? city : '',
 				} )
-				this.props.setLocation(this.state) 
+				this.props.setLocation(this.state)
 			},
-			
+
 			error => {
 				console.error('Geocode Error', error );
 			}
@@ -63,16 +62,16 @@ class Map extends Component{
 		if (this.state.markerPosition.lat !== this.props.center.lat ||
 			this.state.address !== nextState.address ||
 			this.state.city !== nextState.city ||
-			this.state.area !== nextState.area 
-			
+			this.state.area !== nextState.area
+
 		) {
 			this.props.setLocation(nextState);
 			return true
-			
+
 		} else if ( this.props.center.lat === nextProps.center.lat ){
 			return false
 		}
-		
+
 	}
 	/**
 	 * Get the city and set the city input value to the one selected
@@ -207,13 +206,13 @@ class Map extends Component{
 					           defaultZoom={ this.props.zoom }
 										 defaultCenter={{ lat: this.state.mapPosition.lat, lng: this.state.mapPosition.lng }}
 										defaultOptions={{styles : styles}}
-										
+
 					>
 						{/* InfoWindow on top of marker */}
 						<InfoWindow
 							onClose={this.onInfoWindowClose}
 							position={{ lat: ( this.state.markerPosition.lat + 0.0018 ), lng: this.state.markerPosition.lng }}
-						> 
+						>
 						 <div>
 								<span style={{ padding: 0, margin: 0 }}>{ this.state.address }</span>
 							</div>
@@ -240,9 +239,9 @@ class Map extends Component{
 						{/* <h3>Listen to what
         <h2 className="city-name"> {this.state.city}</h2>
         sounds like this week !</h3>  */}
-				
+
 				<AsyncMap
-      googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeKeu1dIRjpqhCLhM5Xuo3-_rbfmL2MwU&libraries=places"
+      googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`}
       loadingElement={
        <div style={{ height: `100%` }} />
       }
@@ -253,7 +252,7 @@ class Map extends Component{
        <div style={{ height: `100%` }} />
       }
      />
-     </div> 
+     </div>
     // </div>
 } else {
    map = <div style={{height: this.props.height}} />

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Event from './Event.js';
+import Event from './_Event.js';
 // has state - loading true or fault (starts true)
 // componant did mount will make a request to the controller api action - once got events have can control them.
 
