@@ -67,36 +67,37 @@ class App extends Component {
           />
           <div className="map-container">
             <Map google={this.props.google}
-        center={{lat: this.state.display_lat,
-          lng: this.state.display_long}}
-          display_city={this.state.display_city}
-        height='80vh'
-        zoom={2}
-        setLocation={this.setLocation}
-    />
-         <div className="date-form">
-           <h2>Select your dates:</h2>
-           <DatePicker
-    selected={this.state.startDate}
-    selectsStart
-    startDate={this.state.startDate}
-    endDate={this.state.endDate}
-    onChange={this.handleChangeStart}
-/>
-
-<DatePicker
-    selected={this.state.endDate}
-    selectsEnd
-    startDate={this.state.startDate}
-    endDate={this.state.endDate}
-    onChange={this.handleChangeEnd}
-    minDate={this.state.startDate}
-/>
-      </div>
-      </div>
+              center={{
+                lat: this.state.display_lat,
+                lng: this.state.display_long
+              }}
+              display_city={this.state.display_city}
+              height='80vh'
+              zoom={2}
+              setLocation={this.setLocation}
+            />
+            <div className="date-form">
+              <h2>Select your dates:</h2>
+              <DatePicker
+                selected={this.state.startDate}
+                selectsStart
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                onChange={this.handleChangeStart}
+              />
+              <DatePicker
+                selected={this.state.endDate}
+                selectsEnd
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                onChange={this.handleChangeEnd}
+                minDate={this.state.startDate}
+              />
+            </div>
+          </div>
           <SideBar />
         </div>
-       </div>
+      </div>
     );
   }
 }
