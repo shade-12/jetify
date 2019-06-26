@@ -31,7 +31,7 @@ class TicketmasterService
         date: date ? date['localDate'] : '',
         venue: venue ? venue.name : '',
         url: result.data['url'], 
-        artist: result.attractions
+        # artist: result.attractions[0]:name.presence
       }
     end
   end
