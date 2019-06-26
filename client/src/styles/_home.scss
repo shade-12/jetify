@@ -39,7 +39,7 @@
 
 .map-container {
   position: relative;
-  z-index: 100;
+  z-index: 80;
   width: 40vw;
   display: flex;
 flex-direction: column;
@@ -47,7 +47,8 @@ flex-direction: column;
   
   
 .date-form{
-  // position: absolute;
+  position: relative;
+  z-index: 100;
   // display:flex;
   margin-top: 5%;
   

@@ -18,7 +18,10 @@ class User extends Component {
       display_long: -123.1207,
       position: '49.2827,-123.1207',
       startDate: new Date(),
-      endDate: new Date()
+      endDate: new Date(),
+      eventBarPosition: '49.2,-123.1',
+      eventStartDate: new Date().toISOString(),
+      eventEndDate: new Date().toISOString()
     };
   }
 
@@ -40,14 +43,24 @@ class User extends Component {
     this.setState({
       position: this.makePositionString()
     });
-
-    console.log('position set', this.state.display_lat);
   };
 
-  handleChange = date => {
+  handleChangeStart = date => {
     this.setState({
-      startDate: date,
+      startDate: date
+    });
+  };
+  handleChangeEnd = date => {
+    this.setState({
       endDate: date
+    });
+  };
+  onSubmit = () => {
+    console.log(this.state.startDate.toISOString());
+    this.setState({
+      eventBarPosition: this.state.position,
+      eventStartDate: this.state.startDate.toISOString(),
+      eventEndDate: this.state.endDate.toISOString()
     });
   };
 
@@ -57,9 +70,9 @@ class User extends Component {
         <NavBar handleLogout={this.props.handleLogout}/>
         <div className="Body">
           <EventBar
-            latlong={this.makePositionString()}
-            startDate={'2019-07-20T11:52:00Z'}
-            endDate={'2019-07-20T17:52:00Z'}
+            latlong={this.state.eventBarPosition}
+            startDate={this.state.eventStartDate}
+            endDate={this.state.eventEndDate}
           />
           <div className="map-container">
             <Map
@@ -91,6 +104,9 @@ class User extends Component {
                 minDate={this.state.startDate}
               />
             </div>
+            <button type="onSubmit" onClick={this.onSubmit}>
+              Submit
+            </button>
           </div>
           <Playlist />
         </div>
