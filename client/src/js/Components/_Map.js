@@ -1,9 +1,8 @@
-/* eslint-disable no-restricted-globals */
 import React, {Component} from 'react';
 import { withGoogleMap, GoogleMap, withScriptjs, Marker, InfoWindow} from "react-google-maps";
 import Autocomplete from 'react-google-autocomplete';
 import Geocode from 'react-geocode';
-Geocode.setApiKey( "AIzaSyCeKeu1dIRjpqhCLhM5Xuo3-_rbfmL2MwU" );
+Geocode.setApiKey( process.env.REACT_APP_GOOGLE_API_KEY );
 Geocode.enableDebug();
 const styles = require('./_map.json')
 
@@ -246,7 +245,7 @@ class Map extends Component{
         sounds like this week !</h3>  */}
 
 				<AsyncMap
-      googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeKeu1dIRjpqhCLhM5Xuo3-_rbfmL2MwU&libraries=places"
+      googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`}
       loadingElement={
        <div style={{ height: `100%` }} />
       }
