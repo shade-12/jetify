@@ -11,7 +11,7 @@ class TicketmasterService
         classificationId:'KZFzniwnSyZfZ7v7nJ', 
         startDateTime: startDate, 
         endDateTime: endDate,
-        radius: 50,
+        radius: 10,
         unit: 'miles'
       }
       client = Ticketmaster.client(apikey: TICKETMASTER_KEY)
