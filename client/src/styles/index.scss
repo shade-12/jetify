@@ -4,14 +4,12 @@ $navbar-background-color: #121C52;
 $primary-font-color: #FFFF;
 $secondary-font-color: #FFA987;
 
- 
-
-
 // Vendor
 @import url("https://fonts.googleapis.com/css?family=Lobster+Two:400,700,700i|Rokkitt:500&display=swap");
 @import '~bootstrap/scss/bootstrap.scss';
 
 // App
 @import "layout";
+@import "login";
 @import "app";
 @import "home";
