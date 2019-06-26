@@ -26,11 +26,6 @@ class User extends Component {
       eventEndDate: end.toISOString()
     };
   };
-  
-// setDate = () => {
-//   const newDate = Moment();
-  // const nextDate = newDate.Moment(add={ days: 1, hours: 12});
-// }
 
   makePositionString = () => {
     const position =
@@ -76,7 +71,7 @@ class User extends Component {
     console.log(date);
     return (
       <div className="App">
-        <NavBar />
+        <NavBar handleLogout={this.props.handleLogout}/>
         <div className="Body">
           <EventBar
             latlong={this.state.eventBarPosition}

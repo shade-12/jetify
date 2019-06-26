@@ -6,7 +6,7 @@ function NavBar(props){
       <a className="navbar-brand" href="/">Jetify</a>
       <ul className="nav justify-content-center">
         <li className="nav-item">
-          <button type="button" className="btn btn-dark">Login</button>
+          <button type="button" className="btn btn-dark" onClick={props.handleLogout}>Logout</button>
         </li>
       </ul>
     </nav>

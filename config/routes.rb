@@ -3,7 +3,8 @@ Rails.application.routes.draw do
 
   namespace :api do # /api/data
     get '/data', to: 'tests#index'
-    get '/events', to: 'events#index' 
+    get '/events', to: 'events#index'
+    resources :users, only: [:create, :show]
   end
 
   get '*path', to: "static_pages#fallback_index_html", constraints: ->(request) do
