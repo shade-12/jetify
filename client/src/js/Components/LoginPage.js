@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from "react-router-dom";
 import SpotifyLogin from 'react-spotify-login';
+import axios from 'axios';
 
 class LoginPage extends Component {
   constructor(props) {
@@ -11,6 +12,22 @@ class LoginPage extends Component {
   render() {
     const onSuccess = response => {
       console.log(response);
+      axios({
+        method: 'get',
+        url: 'https://api.spotify.com/v1/me',
+        headers: { 'Authorization': `Bearer ${response.access_token}` }
+      }).then( response => {
+        let data = response.data;
+        let user = {
+          name:  data.display_name,
+          email: data.email
+        };
+        axios.post('/api/users', user).then(response => {
+          console.log(response);
+        }).catch(error => {
+          console.log(error);
+        });
+      });
       this.setState({ redirectToUserPage: true });
     };
     const onFailure = response => console.error(response);
@@ -31,7 +48,7 @@ class LoginPage extends Component {
             buttonText={buttonText}
             clientId={process.env.REACT_APP_SPOTIFY_CLIENT_ID}
             redirectUri={"http://localhost:3000/api/logging-in"}
-            scope={"user-read-private user-read-currently-playing user-library-modify playlist-modify-public playlist-read-collaborative playlist-read-private playlist-modify-private"}
+            scope={"user-read-email user-read-private user-read-currently-playing user-library-modify playlist-modify-public playlist-read-collaborative playlist-read-private playlist-modify-private"}
             onSuccess={onSuccess}
             onFailure={onFailure}
           />

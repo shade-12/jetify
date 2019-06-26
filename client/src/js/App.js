@@ -4,12 +4,6 @@ import LoginPage from './Components/LoginPage.js';
 import UserPage from './Components/UserPage.js';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      login: false
-    };
-  }
 
   render() {
     return (
