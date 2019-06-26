@@ -24,6 +24,7 @@ class User extends Component {
       eventEndDate: (new Date()).toISOString(),
     };
   }
+  
 
   makePositionString = () => {
     const position =

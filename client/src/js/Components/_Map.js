@@ -36,13 +36,12 @@ class Map extends Component{
 					city = this.getCity( addressArray ),
 					area = this.getArea( addressArray );
 				console.log( 'city', city, area);
-				console.log(this.state.city)
 				this.setState( {
 					address: ( address ) ? address : '',
 					area: ( area ) ? area : '',
 					city: ( city ) ? city : '',
-				} )
-				this.props.setLocation(this.state)
+				} );
+				this.props.setLocation(this.state);
 			},
 
 			error => {

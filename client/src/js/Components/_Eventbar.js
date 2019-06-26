@@ -36,25 +36,28 @@ class EventBar extends Component {
   componentDidMount() {
     this.getEventInfo();
   }
-  shouldComponentUpdate( nextProps, nextState ){
-    if(nextProps.endDate !== this.props.endDate ||
-    nextProps.startDate !== this.props.startDate ||
-    nextProps.latlong !== this.props.latlong){
-          this.getEventInfo();
-      return true
-    }else if(nextState.events !== this.state.events){
-      return true
-    }
-    else{
-      return false 
-    }
+  // shouldComponentUpdate( nextProps, nextState ){
+  //   if(nextProps.endDate !== this.props.endDate ||
+  //   nextProps.startDate !== this.props.startDate ||
+  //   nextProps.latlong !== this.props.latlong){
+  //         this.getEventInfo();
+  //     return true
+  //   }else if(nextState.events !== this.state.events){
+  //     return true
+  //   }
+  //   else{
+  //     return false 
+  //   }
+  // }
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.endDate !== this.props.endDate ||
+        prevProps.startDate !== this.props.startDate ||
+        prevProps.latlong !== this.props.latlong){
+              this.getEventInfo();
+        }
   }
 
-
-  // componentDidUpdate(prevprops){
-  //   this.getEventInfo();
-
-  // }
 
   render() {
     const { loading, events } = this.state;
