@@ -75,7 +75,7 @@ class User extends Component {
   render() {
     return (
       <div className="App">
-        <NavBar user={this.state.current_user}/>
+        <NavBar user={this.state.current_user} handleLogout={this.props.handleLogout}/>
         <div className="Body">
           <EventBar
             latlong={this.state.eventBarPosition}
