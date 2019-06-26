@@ -19,7 +19,9 @@ class User extends Component {
       position: '49.2827,-123.1207',
       startDate: new Date(),
       endDate: new Date(),
-      Artists: []
+      eventBarPosition: '49.2,-123.1',
+      eventStartDate: new Date().toISOString(),
+      eventEndDate: new Date().toISOString()
     };
   }
 
@@ -41,14 +43,24 @@ class User extends Component {
     this.setState({
       position: this.makePositionString()
     });
-
-    console.log('position set', this.state.display_lat);
   };
 
-  handleChange = date => {
+  handleChangeStart = date => {
     this.setState({
-      startDate: date,
+      startDate: date
+    });
+  };
+  handleChangeEnd = date => {
+    this.setState({
       endDate: date
+    });
+  };
+  onSubmit = () => {
+    console.log(this.state.startDate.toISOString());
+    this.setState({
+      eventBarPosition: this.state.position,
+      eventStartDate: this.state.startDate.toISOString(),
+      eventEndDate: this.state.endDate.toISOString()
     });
   };
 
@@ -58,9 +70,9 @@ class User extends Component {
         <NavBar />
         <div className="Body">
           <EventBar
-            latlong={this.state.position}
-            startDate={'2019-07-20'}
-            endDate={'2019-07-28'}
+            latlong={this.state.eventBarPosition}
+            startDate={this.state.eventStartDate}
+            endDate={this.state.eventEndDate}
           />
           <div className="map-container">
             <Map
@@ -92,6 +104,9 @@ class User extends Component {
                 minDate={this.state.startDate}
               />
             </div>
+            <button type="onSubmit" onClick={this.onSubmit}>
+              Submit
+            </button>
           </div>
           <Playlist />
         </div>

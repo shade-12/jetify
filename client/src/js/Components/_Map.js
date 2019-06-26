@@ -65,9 +65,6 @@ class Map extends Component {
    * @return {boolean}
    */
   shouldComponentUpdate(nextProps, nextState) {
-    console.log(nextProps);
-    console.log(nextState);
-    // this.props.setLocation(nextState);
     if (
       this.state.markerPosition.lat !== this.props.center.lat ||
       this.state.address !== nextState.address ||
@@ -175,7 +172,7 @@ class Map extends Component {
    * @param place
    */
   onPlaceSelected = place => {
-    console.log('plc', place);
+    // console.log( 'plc', place );
     const address = place.formatted_address,
       addressArray = place.address_components,
       city = this.getCity(addressArray),
