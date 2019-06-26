@@ -19,9 +19,9 @@ class User extends Component {
       position: '49.2827,-123.1207',
       startDate: new Date(),
       endDate: new Date(),
-      eventBarPosition:'49.2,-123.1',
-      eventStartDate: (new Date()).toISOString(),
-      eventEndDate: (new Date()).toISOString(),
+      eventBarPosition: '49.2,-123.1',
+      eventStartDate: new Date().toISOString(),
+      eventEndDate: new Date().toISOString()
     };
   }
   
@@ -34,7 +34,7 @@ class User extends Component {
     return position;
   };
 
-  setLocation = (locationObj) => {
+  setLocation = locationObj => {
     const lat = locationObj.mapPosition.lat;
     const lng = locationObj.mapPosition.lng;
     this.setState({
@@ -42,28 +42,28 @@ class User extends Component {
       display_long: lng
     });
     this.setState({
-      position:this.makePositionString()
+      position: this.makePositionString()
     });
   };
 
-  handleChangeStart = (date) => {
+  handleChangeStart = date => {
     this.setState({
       startDate: date
     });
-  }
-  handleChangeEnd = (date) => {
+  };
+  handleChangeEnd = date => {
     this.setState({
       endDate: date
     });
-  }
+  };
   onSubmit = () => {
-    console.log(this.state.startDate.toISOString())
+    console.log(this.state.startDate.toISOString());
     this.setState({
       eventBarPosition: this.state.position,
       eventStartDate: this.state.startDate.toISOString(),
-      eventEndDate: this.state.endDate.toISOString(),
-    }); 
-}
+      eventEndDate: this.state.endDate.toISOString()
+    });
+  };
 
   render() {
     return (
@@ -105,7 +105,9 @@ class User extends Component {
                 minDate={this.state.startDate}
               />
             </div>
-            <button type="onSubmit" onClick={this.onSubmit}>Submit</button>
+            <button type="onSubmit" onClick={this.onSubmit}>
+              Submit
+            </button>
           </div>
           <Playlist />
         </div>
