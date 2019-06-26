@@ -57,9 +57,9 @@ class User extends Component {
         <NavBar />
         <div className="Body">
           <EventBar
-            latlong={this.makePositionString()}
-            startDate={'2019-07-20T11:52:00Z'}
-            endDate={'2019-07-20T17:52:00Z'}
+            latlong={this.state.position}
+            startDate={'2019-07-20'}
+            endDate={'2019-07-28'}
           />
           <div className="map-container">
             <Map

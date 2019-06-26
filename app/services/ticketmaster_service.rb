@@ -7,12 +7,12 @@ class TicketmasterService
   
   class << self
     def call(latlong, startDate, endDate)
-      puts "test"
-      puts ENV['TICKETMASTER_KEY']
       params = { size: 15,  latlong: latlong,
         classificationId:'KZFzniwnSyZfZ7v7nJ', 
         startDateTime: startDate, 
-        endDateTime: endDate
+        endDateTime: endDate,
+        radius: 50,
+        unit: 'miles'
       }
       client = Ticketmaster.client(apikey: TICKETMASTER_KEY)
       response = client.search_events(params: params)
