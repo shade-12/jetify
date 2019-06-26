@@ -68,11 +68,13 @@ class Map extends Component{
 			this.state.area !== nextState.area 
 			
 		) {
+			this.props.setLocation(nextState);
 			return true
+			
 		} else if ( this.props.center.lat === nextProps.center.lat ){
 			return false
 		}
-		this.props.setLocation(nextState);
+		
 	}
 	/**
 	 * Get the city and set the city input value to the one selected
@@ -119,6 +121,7 @@ class Map extends Component{
 	 * @param event
 	 */
 	onChange = ( event ) => {
+		event.preventDefault();
 		this.setState({ [event.target.name]: event.target.value });
 	};
 	/**

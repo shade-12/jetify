@@ -62,8 +62,8 @@ class App extends Component {
         <div className="Body">
           <EventBar
             latlong={this.makePositionString()}
-            startDate={'2019-07-20T11:52:00Z'}
-            endDate={'2019-07-20T17:52:00Z'}
+            startDate={'2019-06-25T11:52:00Z'}
+            endDate={'2019-06-28T17:52:00Z'}
           />
           <div className="map-container">
             <Map google={this.props.google}
