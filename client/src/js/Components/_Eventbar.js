@@ -15,10 +15,12 @@ class EventBar extends Component {
   } //constructor ends here.
 
   getEventInfo = () => {
+    const { latlong, startDate, endDate } = this.props;
+
     axios
       .get(
-        `http://localhost:3000/api/events?latlong=${this.props.latlong}&startDate=${this.props.startDate}&endDate=${this.props.endDate}&radius=100&unit=miles`
-        )
+        `http://localhost:3000/api/events?latlong=${latlong}&startDate=${startDate}&endDate=${endDate}`
+      )
       .then(response => {
         let data = response.data;
         console.log(data);
@@ -33,7 +35,18 @@ class EventBar extends Component {
   }; //get info ends here
 
   componentDidMount() {
+    console.log('hi');
     this.getEventInfo();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.latlong !== prevProps.latlong ||
+      this.props.startDate !== prevProps.startDate ||
+      this.props.endDate !== prevProps.endDate
+    ) {
+      this.getEventInfo();
+    }
   }
 
   render() {
