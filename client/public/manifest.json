@@ -1,6 +1,14 @@
 {
   "short_name": "React App",
   "name": "Create React App Sample",
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "permissions": [
+    "cookies",
+    "tabs",
+    "*://*.google.ro/*"
+  ],
   "icons": [
     {
       "src": "favicon.ico",

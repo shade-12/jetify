@@ -22,8 +22,13 @@
   border: 1px solid $primary-font-color;
 }
 
+span.username {
+  color: $primary-font-color;
+  size: 200%;
+}
+
 .events-container {
-  
+
   overflow: auto;
   height: -webkit-fill-available;
 
@@ -44,14 +49,14 @@
   display: flex;
 flex-direction: column;
   // justify-content: center;
-  
-  
+
+
 .date-form{
   position: relative;
   z-index: 100;
   // display:flex;
   margin-top: 5%;
-  
+
 }
 
   h3 {
@@ -67,7 +72,7 @@ flex-direction: column;
     color: $secondary-font-color;
   }
 
-  
+
 
   .form-inline input.form-control {
     margin-left: 3vw;

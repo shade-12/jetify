@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import { Redirect } from "react-router-dom";
-// import axios from 'axios';
+import axios from 'axios';
 
 import NavBar from './_Navbar.js';
 import EventBar from './_Eventbar.js';
@@ -13,6 +13,7 @@ class User extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      current_user: '',
       display_city: 'Vancouver',
       display_lat: 49.2827,
       display_long: -123.1207,
@@ -23,6 +24,13 @@ class User extends Component {
       eventStartDate: new Date().toISOString(),
       eventEndDate: new Date().toISOString()
     };
+  }
+
+  componentDidMount() {
+    axios.get('/api/users/1').then((response) => {
+      let user = response.data.user;
+      this.setState({current_user: user.name});
+    });
   }
 
   makePositionString = () => {
@@ -67,7 +75,7 @@ class User extends Component {
   render() {
     return (
       <div className="App">
-        <NavBar />
+        <NavBar user={this.state.current_user}/>
         <div className="Body">
           <EventBar
             latlong={this.state.eventBarPosition}
