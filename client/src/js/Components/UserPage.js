@@ -18,7 +18,8 @@ class User extends Component {
       display_long: -123.1207,
       position: '49.2827,-123.1207',
       startDate: new Date(),
-      endDate: new Date()
+      endDate: new Date(),
+      Artists: []
     };
   }
 

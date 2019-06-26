@@ -30,7 +30,8 @@ class TicketmasterService
         name: result.name, 
         date: date ? date['localDate'] : '',
         venue: venue ? venue.name : '',
-        url: result.data['url'] 
+        url: result.data['url'], 
+        artist: result.attractions
       }
     end
   end
@@ -39,6 +40,6 @@ end
 
 
 # events = TicketmasterService.call('54.9713082,-2.7246093',
-#  DateTime.rfc3339('2019-07-05T17:52:00Z'), 
-#  DateTime.rfc3339('2019-07-20T17:52:00Z'))
+#  DateTime.parse('2019-07-05'), 
+#  DateTime.parse('2019-07-20'))
 
