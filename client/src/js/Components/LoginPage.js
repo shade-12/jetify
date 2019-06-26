@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link, Redirect, withRouter} from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import SpotifyLogin from 'react-spotify-login';
 
 class LoginPage extends Component {
