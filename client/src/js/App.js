@@ -27,7 +27,10 @@ class App extends Component {
         display_long: -123.1207,
         position: '49.2,-123.1',
         startDate: new Date(),
-        endDate: new Date()
+        endDate: new Date(),
+        eventBarPosition:'49.2,-123.1',
+        eventStartDate: (new Date()).toISOString(),
+        eventEndDate: (new Date()).toISOString(),
     }
   }
 
@@ -44,16 +47,28 @@ class App extends Component {
     const lng = locationObj.mapPosition.lng;
     this.setState({display_lat:lat, display_long:lng});
     this.setState({position:this.makePositionString()})
-
-    console.log("position set", this.state.display_lat)
   };
 
-  handleChange = (date) => {
+  handleChangeStart = (date) => {
     this.setState({
-      startDate: date,
+      startDate: date
+    });
+  }
+  handleChangeEnd = (date) => {
+    this.setState({
       endDate: date
     });
   }
+
+  onSubmit = () => {
+    console.log(this.state.startDate.toISOString())
+    this.setState({
+      eventBarPosition: this.state.position,
+      eventStartDate: this.state.startDate.toISOString(),
+        eventEndDate: this.state.endDate.toISOString(),
+    });
+    
+}
 
   render() {
     return (
@@ -61,9 +76,10 @@ class App extends Component {
         <NavBar />
         <div className="Body">
           <EventBar
-            latlong={this.makePositionString()}
-            startDate={'2019-06-25T11:52:00Z'}
-            endDate={'2019-06-28T17:52:00Z'}
+            latlong={this.state.eventBarPosition}
+            startDate={this.state.eventStartDate}
+            endDate={this.state.eventEndDate}
+            
           />
           <div className="map-container">
             <Map google={this.props.google}
@@ -94,6 +110,7 @@ class App extends Component {
                 minDate={this.state.startDate}
               />
             </div>
+            <button type="onSubmit" onClick={this.onSubmit}>Submit</button>
           </div>
           <SideBar />
         </div>

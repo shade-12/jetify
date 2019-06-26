@@ -59,9 +59,7 @@ class Map extends Component{
 	 * @return {boolean}
 	 */
 	shouldComponentUpdate( nextProps, nextState ){
-		console.log(nextProps)
-		console.log(nextState)
-		// this.props.setLocation(nextState);
+
 		if (this.state.markerPosition.lat !== this.props.center.lat ||
 			this.state.address !== nextState.address ||
 			this.state.city !== nextState.city ||
@@ -167,7 +165,7 @@ class Map extends Component{
 	 * @param place
 	 */
 	onPlaceSelected = ( place ) => {
-		console.log( 'plc', place );
+		// console.log( 'plc', place );
 		const address = place.formatted_address,
 			addressArray =  place.address_components,
 			city = this.getCity( addressArray ),
@@ -197,7 +195,6 @@ class Map extends Component{
 				props => (
 					<div className="map-container">
 					<Autocomplete 
-					// onSubmit={this.props.setLocation}
 						onPlaceSelected={ this.onPlaceSelected }
 						types={['(regions)']}
 						style={{width: '100%',
@@ -209,7 +206,6 @@ class Map extends Component{
 					<GoogleMap google={ this.props.google }
 					           defaultZoom={ this.props.zoom }
 										 defaultCenter={{ lat: this.state.mapPosition.lat, lng: this.state.mapPosition.lng }}
-										//  mapTypeId="satellite"
 										defaultOptions={{styles : styles}}
 										
 					>
