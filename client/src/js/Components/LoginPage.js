@@ -6,7 +6,7 @@ const onSuccess = response => console.log(response);
 const onFailure = response => console.error(response);
 const buttonText = <div><img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="login-logo"/>&nbsp;&nbsp;<span>Login with Spotify</span></div>;
 
-function Login(props) {
+function LoginPage() {
   return (
     <div className="login-page">
       <div className="login-page-background"></div>
@@ -27,4 +27,4 @@ function Login(props) {
   );
 }
 
-export default Login;
+export default LoginPage;
