@@ -54,7 +54,7 @@ class User extends Component {
   render() {
     return (
       <div className="App">
-        <NavBar />
+        <NavBar handleLogout={this.props.handleLogout}/>
         <div className="Body">
           <EventBar
             latlong={this.makePositionString()}

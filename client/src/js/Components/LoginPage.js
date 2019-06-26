@@ -12,10 +12,11 @@ class LoginPage extends Component {
   render() {
     const onSuccess = response => {
       console.log(response);
+      let token = response.access_token;
       axios({
         method: 'get',
         url: 'https://api.spotify.com/v1/me',
-        headers: { 'Authorization': `Bearer ${response.access_token}` }
+        headers: { 'Authorization': `Bearer ${token}` }
       }).then( response => {
         let data = response.data;
         let user = {
@@ -29,6 +30,7 @@ class LoginPage extends Component {
         });
       });
       this.setState({ redirectToUserPage: true });
+      this.props.handleLogin(token);
     };
     const onFailure = response => console.error(response);
     const buttonText = <div><img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="login-logo"/>&nbsp;&nbsp;<span>Login with Spotify</span></div>;
