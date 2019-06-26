@@ -4,9 +4,7 @@ class Api::UsersController < ApplicationController
       name: params[:name],
       email: params[:email]
     )
-    if @user.save
-      redirect_to user_path(@user)
-    end
+    @user.save
   end
 
   def show

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import { BrowserRouter, Route, Link } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
 // import axios from 'axios';
 
 import NavBar from './_Navbar.js';
@@ -67,7 +67,7 @@ class User extends Component {
   render() {
     return (
       <div className="App">
-        <NavBar handleLogout={this.props.handleLogout}/>
+        <NavBar />
         <div className="Body">
           <EventBar
             latlong={this.state.eventBarPosition}

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import LoginPage from './Components/LoginPage.js';
 import UserPage from './Components/UserPage.js';
-import Spotify from 'spotify-web-api-js';
-import uniq from 'lodash.uniq';
-import flatten from 'lodash.flatten';
-import chunk from 'lodash.chunk';
+// import Spotify from 'spotify-web-api-js';
+// import uniq from 'lodash.uniq';
+// import flatten from 'lodash.flatten';
+// import chunk from 'lodash.chunk';
 
 class App extends Component {
   constructor(props) {
