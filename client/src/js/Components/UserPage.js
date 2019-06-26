@@ -5,48 +5,51 @@ import React, { Component } from 'react';
 import NavBar from './_Navbar.js';
 import EventBar from './_Eventbar.js';
 import Playlist from './_Playlist.js';
-import Map from './_Map.js'
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import Map from './_Map.js';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 class User extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        display_city: 'Vancouver',
-        display_lat: 49.2827,
-        display_long: -123.1207,
-        position: '49.2827,-123.1207',
-        startDate: new Date(),
-        endDate: new Date()
-    }
+      display_city: 'Vancouver',
+      display_lat: 49.2827,
+      display_long: -123.1207,
+      position: '49.2827,-123.1207',
+      startDate: new Date(),
+      endDate: new Date()
+    };
   }
 
   makePositionString = () => {
-    const position = this.state.display_lat.toString() + ',' + this.state.display_long.toString();
+    const position =
+      this.state.display_lat.toString() +
+      ',' +
+      this.state.display_long.toString();
     return position;
   };
 
-  setLocation = (locationObj) => {
+  setLocation = locationObj => {
     const lat = locationObj.mapPosition.lat;
     const lng = locationObj.mapPosition.lng;
     this.setState({
       display_lat: lat,
-      display_long:lng
+      display_long: lng
     });
     this.setState({
       position: this.makePositionString()
     });
 
-    console.log("position set", this.state.display_lat);
+    console.log('position set', this.state.display_lat);
   };
 
-  handleChange = (date) => {
+  handleChange = date => {
     this.setState({
       startDate: date,
       endDate: date
     });
-  }
+  };
 
   render() {
     return (
@@ -59,13 +62,14 @@ class User extends Component {
             endDate={'2019-07-20T17:52:00Z'}
           />
           <div className="map-container">
-            <Map google={this.props.google}
+            <Map
+              google={this.props.google}
               center={{
                 lat: this.state.display_lat,
                 lng: this.state.display_long
               }}
               display_city={this.state.display_city}
-              height='80vh'
+              height="80vh"
               zoom={2}
               setLocation={this.setLocation}
             />

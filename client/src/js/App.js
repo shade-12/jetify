@@ -8,16 +8,16 @@ class App extends Component {
     super(props);
     this.state = {
       login: false
-    }
+    };
   }
 
   render() {
     return (
       <Router>
-      <div className="App">
-        <Route path='/' exact component={LoginPage} />
-        <Route path='/users' component={UserPage} />
-      </div>
+        <div className="App">
+          <Route path="/" exact component={LoginPage} />
+          <Route path="/users" component={UserPage} />
+        </div>
       </Router>
     );
   }
