@@ -2,7 +2,8 @@ class Api::UsersController < ApplicationController
   def create
     @user = User.find_or_create_by(
       name: params[:name],
-      email: params[:email]
+      email: params[:email],
+      spotify_id: params[:spotify_id]
     )
     @user.save
   end

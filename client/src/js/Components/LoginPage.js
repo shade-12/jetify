@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Redirect } from "react-router-dom";
 import SpotifyLogin from 'react-spotify-login';
 import axios from 'axios';
-import SpotifyWebApi from 'spotify-web-api-js';
-const spotifyApi = new SpotifyWebApi();
 
 const buttonText = <div><img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="login-logo"/>&nbsp;&nbsp;<span>Login with Spotify</span></div>;
 
@@ -17,18 +15,18 @@ class LoginPage extends Component {
   }
 
   onSuccess = response => {
-    console.log(response);
     let token = response.access_token;
-    spotifyApi.setAccessToken(token);
     axios({
       method: 'get',
       url: 'https://api.spotify.com/v1/me',
       headers: { 'Authorization': `Bearer ${token}` }
     }).then( response => {
       let data = response.data;
+      console.log("spotify data", data.id);
       let user = {
         name:  data.display_name,
-        email: data.email
+        email: data.email,
+        spotify_id: data.id
       };
       axios.post('/api/users', user).then(response => {
         console.log(response);
