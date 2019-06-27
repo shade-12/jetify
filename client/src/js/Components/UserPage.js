@@ -39,7 +39,8 @@ class User extends Component {
       this.setState({current_user: user});
 
       //connect to spotify web API
-      spotifyApi.setAccessToken(this.props.accessToken); })
+      const {cookies} = this.props;
+      spotifyApi.setAccessToken(cookies.get('jetify_token')); })
                 .then(() =>
                   //fetch top tracks of local artists
                   spotifyApi.getArtistTopTracks('43ZHCT0cAZBISjO8DG9PnE', 'SE', {limit: 10})
