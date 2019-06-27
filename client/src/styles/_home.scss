@@ -90,4 +90,15 @@ div.card-body {
   color: $secondary-font-color;
 }
 
+div.playlist-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: -webkit-fill-available;
+
+  button {
+    background-color: #1ED761;
+    margin-top: 10px;
+  }
+}
 
