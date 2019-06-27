@@ -30,7 +30,10 @@ class User extends Component {
       eventStartDate: start.toISOString(),
       eventEndDate: end.toISOString()
     };
+    console.log(this.state.display_lat)
   }
+
+    
 
   componentDidMount() {
     //fetch user data from backend
