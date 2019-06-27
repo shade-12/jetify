@@ -18,11 +18,11 @@ class App extends Component {
         <div className="App">
           <Route
             path="/" exact
-            render={() => <LoginPage cookies={this.props.cookies}/>}
+            render={() => <LoginPage cookies={this.props.cookies} />}
           />
           <Route
             path="/users"
-            render={() => <UserPage cookies={this.props.cookies}/>}
+            render={() => <UserPage cookies={this.props.cookies} />}
           />
           <Route
             path="/history"

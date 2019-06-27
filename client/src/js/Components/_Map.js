@@ -10,7 +10,7 @@ const styles = require('./_map.json')
 class Map extends Component{
 
 	constructor( props ){
-		
+
 		super( props );
 		this.state = {
 			address: '',
@@ -36,7 +36,6 @@ class Map extends Component{
 					addressArray =  response.results[0].address_components,
 					city = this.getCity( addressArray ),
 					area = this.getArea( addressArray );
-				console.log( 'city', city, area);
 				this.setState( {
 					address: ( address ) ? address : '',
 					area: ( area ) ? area : '',
@@ -192,7 +191,7 @@ class Map extends Component{
 			withGoogleMap(
 				props => (
 					<div className="map-container">
-					<Autocomplete 
+					<Autocomplete
 						onPlaceSelected={ this.onPlaceSelected }
 						types={['(regions)']}
 						style={{width: '100%',
@@ -234,7 +233,7 @@ class Map extends Component{
 			map = <div>
 				<div>
 				</div>
-				  <div className="map-display"> 
+				  <div className="map-display">
 				<AsyncMap
       googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`}
       loadingElement={

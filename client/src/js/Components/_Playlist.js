@@ -13,7 +13,10 @@ class Playlist extends Component {
           allow='encrypted-media'
           title='playlist-widget'
         />
-        <button type="button" className="btn">Generate new playlist</button>
+        <section>
+          <button type="button" className="btn generate-button">Generate</button>&nbsp;&nbsp;
+          <button type="button" className="btn btn-primary" onClick={this.props.savePlaylist}>Save</button>
+        </section>
       </div>
     );
   }

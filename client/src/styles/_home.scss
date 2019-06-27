@@ -96,9 +96,19 @@ div.playlist-container {
   justify-content: center;
   height: -webkit-fill-available;
 
-  button {
-    background-color: #1ED761;
+  section {
+    display: flex;
+    flex-direction: row;
     margin-top: 20px;
+    justify-content: center;
+  }
+
+  button {
+    flex-grow: 1;
+  }
+
+  button.btn.generate-button {
+    background-color: #1db954;
   }
 }
 
