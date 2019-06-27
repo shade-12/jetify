@@ -19,7 +19,7 @@ class User extends Component {
     var end = moment().add(2, "days");
     this.state = {
       current_user: '',
-      current_playlist: [],
+      current_playlist_id: '',
       display_city: 'Vancouver',
       display_lat: 49.2827,
       display_long: -123.1207,
@@ -48,7 +48,8 @@ class User extends Component {
                               let tracks = [];
                               data.tracks.forEach( track => tracks.push(track.uri) );
                               spotifyApi.createPlaylist(this.state.current_user.spotify_id, { name: 'Jetify' }).then((response) => {
-                                console.log("Playlist created");
+                                console.log("Playlist created", response);
+                                this.setState({ current_playlist_id: response.id });
                                 spotifyApi.addTracksToPlaylist(response.id, tracks);
                               });
                             }, (err) => {
@@ -142,7 +143,7 @@ class User extends Component {
               Submit
             </button>
           </div>
-          <Playlist playlist={this.state.current_playlist}/>
+          <Playlist playlistID={this.state.current_playlist_id}/>
         </div>
       </div>
     );
