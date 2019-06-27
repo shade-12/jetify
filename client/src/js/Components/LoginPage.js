@@ -1,21 +1,31 @@
 import React, { Component } from 'react';
-import { Redirect } from "react-router-dom";
+import { Redirect } from 'react-router-dom';
 import SpotifyLogin from 'react-spotify-login';
+import { instanceOf } from 'prop-types';
+import { withCookies, Cookies } from 'react-cookie';
 import axios from 'axios';
 
 const buttonText = <div><img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="login-logo"/>&nbsp;&nbsp;<span>Login with Spotify</span></div>;
 
 class LoginPage extends Component {
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+  };
+
   constructor(props) {
     super(props);
+    const { cookies } = props;
     this.state = {
       redirectToUserPage: false,
-      accessToken: null
+      accessToken: cookies.get('jetify_token') || null
     };
   }
 
   onSuccess = response => {
     let token = response.access_token;
+    const { cookies } = this.props;
+    cookies.set('jetify_token', token, { path: '/' });
+    this.setState({ accessToken: cookies.get('jetify_token') });
     axios({
       method: 'get',
       url: 'https://api.spotify.com/v1/me',
@@ -34,10 +44,7 @@ class LoginPage extends Component {
         console.log(error);
       });
     });
-    this.setState({
-      redirectToUserPage: true,
-      accessToken: token
-    });
+    this.setState({ redirectToUserPage: true });
   };
 
   onFailure = response => console.error(response);
@@ -69,4 +76,4 @@ class LoginPage extends Component {
   }
 }
 
-export default LoginPage;
+export default withCookies(LoginPage);
