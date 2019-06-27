@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import { Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import axios from 'axios';
 import moment from "moment";
 
@@ -59,6 +59,13 @@ class User extends Component {
                 );
   }
 
+  handleLogout = () => {
+    const {cookies} = this.props;
+    cookies.remove('jetify_token', { path: '/' });
+    this.setState({ current_user: null });
+    console.log("Remove cookie");
+  }
+
   makePositionString = () => {
     const position =
       this.state.display_lat.toString() +
@@ -109,9 +116,13 @@ class User extends Component {
   render() {
     const date = new Date();
     console.log(date);
+    if(this.state.current_user === null) {
+      return <Redirect to="/" />
+    }
+
     return (
       <div className="App">
-        <NavBar user={this.state.current_user} handleLogout={this.props.handleLogout} city={this.state.display_city}/>
+        <NavBar user={this.state.current_user} handleLogout={this.handleLogout} city={this.state.display_city}/>
         <div className="Body">
           <EventBar
             latlong={this.state.eventBarPosition}
