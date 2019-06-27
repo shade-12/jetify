@@ -1,7 +1,6 @@
 import React from 'react';
 
 function NavBar(props){
-  console.log(props);
   return (
     <nav className="navbar fixed-top">
       <a className="navbar-brand" href="/">Jetify</a>

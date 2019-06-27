@@ -37,15 +37,15 @@ class App extends Component {
         <div className="App">
           <Route
             path="/" exact
-            render={() => <LoginPage {...this.state} handleLogin={this.handleLogin} />}
+            component={() => <LoginPage {...this.state} handleLogin={this.handleLogin} />}
           />
           <Route
             path="/users"
-            render={() => <UserPage {...this.state} handleLogout={this.handleLogout}/>}
+            component={() => <UserPage {...this.state} handleLogout={this.handleLogout}/>}
           />
           <Route
             path="/history"
-            render={() => <HistoryPage />}
+            component={() => <HistoryPage />}
           />
         </div>
       </Router>
