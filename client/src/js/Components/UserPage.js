@@ -18,7 +18,7 @@ class User extends Component {
     var start = moment();
     var end = moment().add(2, 'days');
     this.state = {
-      current_user: '',
+      current_user: {},
       current_playlist_id: '',
       display_city: 'Vancouver',
       display_lat: 49.2827,
@@ -45,11 +45,9 @@ class User extends Component {
                   //fetch top tracks of local artists
                   spotifyApi.getArtistTopTracks('43ZHCT0cAZBISjO8DG9PnE', 'SE', {limit: 10})
                             .then( (data) => {
-                              console.log('Artist tracks', data.tracks[0]);
                               let tracks = [];
                               data.tracks.forEach( track => tracks.push(track.uri) );
                               spotifyApi.createPlaylist(this.state.current_user.spotify_id, { name: 'Jetify' }).then((response) => {
-                                console.log("Playlist created", response);
                                 this.setState({ current_playlist_id: response.id });
                                 spotifyApi.addTracksToPlaylist(response.id, tracks);
                               });
@@ -63,7 +61,25 @@ class User extends Component {
     const {cookies} = this.props;
     cookies.remove('jetify_token', { path: '/' });
     this.setState({ current_user: null });
-    console.log("Remove cookie");
+  }
+
+  savePlaylist = () => {
+    let location = {
+      name: this.state.display_city,
+      latitude: this.state.display_lat,
+      longitude: this.state.display_long
+    };
+    // let playlist = {
+    //   user: this.state.current_user,
+    //   location: location,
+    //   name: 'Jetify',
+    //   spotify_id: this.state.current_playlist_id
+    // }
+    //save location to db first, then playlist
+    axios.post('/api/locations', location).then(response => {
+      console.log("------------------Saved location", response);
+    })
+    // axios.post('/api/playlists', playlist)
   }
 
   makePositionString = () => {
@@ -75,7 +91,6 @@ class User extends Component {
   };
 
   setLocation = locationObj => {
-    console.log(locationObj)
     const lat = locationObj.mapPosition.lat;
     const lng = locationObj.mapPosition.lng;
     this.setState({
@@ -122,7 +137,11 @@ class User extends Component {
 
     return (
       <div className="App">
-        <NavBar user={this.state.current_user} handleLogout={this.handleLogout} city={this.state.display_city}/>
+        <NavBar
+          user={this.state.current_user}
+          handleLogout={this.handleLogout}
+          city={this.state.display_city}
+        />
         <div className="Body">
           <EventBar
             latlong={this.state.eventBarPosition}
@@ -164,7 +183,10 @@ class User extends Component {
               Submit
             </button>
           </div>
-          <Playlist playlistID={this.state.current_playlist_id}/>
+          <Playlist
+            playlistID={this.state.current_playlist_id}
+            savePlaylist={this.savePlaylist}
+          />
         </div>
       </div>
     );

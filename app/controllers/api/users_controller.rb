@@ -1,4 +1,5 @@
 class Api::UsersController < ApplicationController
+
   def create
     @user = User.find_or_create_by(
       name: params[:name],
@@ -14,4 +15,5 @@ class Api::UsersController < ApplicationController
       user: @user
     }
   end
+
 end
