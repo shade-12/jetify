@@ -3,39 +3,48 @@ import { Redirect } from "react-router-dom";
 import SpotifyLogin from 'react-spotify-login';
 import axios from 'axios';
 
+const buttonText = <div><img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="login-logo"/>&nbsp;&nbsp;<span>Login with Spotify</span></div>;
+
 class LoginPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { redirectToUserPage: false };
+    this.state = {
+      redirectToUserPage: false,
+      accessToken: null
+    };
   }
 
-  render() {
-    const onSuccess = response => {
-      console.log(response);
-      let token = response.access_token;
-      axios({
-        method: 'get',
-        url: 'https://api.spotify.com/v1/me',
-        headers: { 'Authorization': `Bearer ${token}` }
-      }).then( response => {
-        let data = response.data;
-        let user = {
-          name:  data.display_name,
-          email: data.email
-        };
-        axios.post('/api/users', user).then(response => {
-          console.log(response);
-        }).catch(error => {
-          console.log(error);
-        });
+  onSuccess = response => {
+    let token = response.access_token;
+    axios({
+      method: 'get',
+      url: 'https://api.spotify.com/v1/me',
+      headers: { 'Authorization': `Bearer ${token}` }
+    }).then( response => {
+      let data = response.data;
+      console.log("spotify data", data.id);
+      let user = {
+        name:  data.display_name,
+        email: data.email,
+        spotify_id: data.id
+      };
+      axios.post('/api/users', user).then(response => {
+        console.log(response);
+      }).catch(error => {
+        console.log(error);
       });
-      this.setState({ redirectToUserPage: true });
-      this.props.handleLogin(token);
-    };
-    const onFailure = response => console.error(response);
-    const buttonText = <div><img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="login-logo"/>&nbsp;&nbsp;<span>Login with Spotify</span></div>;
+    });
+    this.setState({
+      redirectToUserPage: true,
+      accessToken: token
+    });
+  };
 
+  onFailure = response => console.error(response);
+
+  render() {
     if(this.state.redirectToUserPage === true) {
+      this.props.handleLogin(this.state.accessToken);
       return <Redirect to="/users" />
     }
 
@@ -51,8 +60,8 @@ class LoginPage extends Component {
             clientId={process.env.REACT_APP_SPOTIFY_CLIENT_ID}
             redirectUri={"http://localhost:3000/api/logging-in"}
             scope={"user-read-email user-read-private user-read-currently-playing user-library-modify playlist-modify-public playlist-read-collaborative playlist-read-private playlist-modify-private"}
-            onSuccess={onSuccess}
-            onFailure={onFailure}
+            onSuccess={this.onSuccess}
+            onFailure={this.onFailure}
           />
         </section>
       </div>

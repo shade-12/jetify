@@ -10,7 +10,8 @@ class EventBar extends Component {
 
     this.state = {
       loading: true,
-      events: []
+      events: [],
+      artists: []
     };
   } //constructor ends here.
 
@@ -20,15 +21,18 @@ class EventBar extends Component {
     console.log(this.props);
     axios
       .get(
-        `http://localhost:3000/api/events?latlong=${this.props.latlong}&startDate=${this.props.startDate}&endDate=${this.props.endDate}`
+        `http://localhost:3000/api/events?latlong=${
+          this.props.latlong
+        }&startDate=${this.props.startDate}&endDate=${this.props.endDate}`
       )
       .then(response => {
         let data = response.data;
-        console.log(data);
         this.setState({
           loading: false,
-          events: data
+          events: data,
+          artists: data.filter(e => e.artist).map(e => e.artist)
         });
+        this.props.setArtists(this.state.artists);
       })
       .catch(error => {
         console.log(error);
@@ -36,7 +40,6 @@ class EventBar extends Component {
   }; //get info ends here
 
   componentDidMount() {
-    console.log('hi');
     this.getEventInfo();
   }
 

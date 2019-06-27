@@ -1,21 +1,26 @@
 import React, { Component } from 'react';
-// import { BrowserRouter, Route, Link } from "react-router-dom";
-// import axios from 'axios';
+// import { Redirect } from "react-router-dom";
+import axios from 'axios';
 import moment from "moment";
+
 import NavBar from './_Navbar.js';
 import EventBar from './_Eventbar.js';
 import Playlist from './_Playlist.js';
 import Map from './_Map.js';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import SpotifyWebApi from 'spotify-web-api-js';
+const spotifyApi = new SpotifyWebApi();
 
 class User extends Component {
   constructor(props) {
     super(props);
     var start = moment();
-    var end = moment().add(2, "days");
+    var end = moment().add(2, 'days');
     this.state = {
-      display_city: 'Vancouver, BC',
+      current_user: '',
+      current_playlist_id: '',
+      display_city: 'Vancouver',
       display_lat: 49.2827,
       display_long: -123.1207,
       position: '49.2827,-123.1207',
@@ -25,7 +30,33 @@ class User extends Component {
       eventStartDate: start.toISOString(),
       eventEndDate: end.toISOString()
     };
-  };
+  }
+
+  componentDidMount() {
+    //fetch user data from backend
+    axios.get('/api/users/1').then((response) => {
+      let user = response.data.user;
+      this.setState({current_user: user});
+
+      //connect to spotify web API
+      spotifyApi.setAccessToken(this.props.accessToken); })
+                .then(() =>
+                  //fetch top tracks of local artists
+                  spotifyApi.getArtistTopTracks('43ZHCT0cAZBISjO8DG9PnE', 'SE', {limit: 10})
+                            .then( (data) => {
+                              console.log('Artist tracks', data.tracks[0]);
+                              let tracks = [];
+                              data.tracks.forEach( track => tracks.push(track.uri) );
+                              spotifyApi.createPlaylist(this.state.current_user.spotify_id, { name: 'Jetify' }).then((response) => {
+                                console.log("Playlist created", response);
+                                this.setState({ current_playlist_id: response.id });
+                                spotifyApi.addTracksToPlaylist(response.id, tracks);
+                              });
+                            }, (err) => {
+                              console.error(err);
+                            })
+                );
+  }
 
   makePositionString = () => {
     const position =
@@ -45,6 +76,13 @@ class User extends Component {
     this.setState({
       position: this.makePositionString()
     });
+  };
+
+  setArtists = artistObj => {
+    this.setState({
+      artists: [...new Set(artistObj)]
+    });
+    console.log('post artists state', this.state.artists);
   };
 
   handleChangeStart = date => {
@@ -71,12 +109,13 @@ class User extends Component {
     console.log(date);
     return (
       <div className="App">
-        <NavBar handleLogout={this.props.handleLogout} city={this.state.display_city}/>
+        <NavBar user={this.state.current_user} handleLogout={this.props.handleLogout} city={this.state.display_city}/>
         <div className="Body">
           <EventBar
             latlong={this.state.eventBarPosition}
             startDate={this.state.eventStartDate}
             endDate={this.state.eventEndDate}
+            setArtists={this.setArtists}
           />
           <div className="map-container">
             <Map
@@ -112,7 +151,7 @@ class User extends Component {
               Submit
             </button>
           </div>
-          <Playlist />
+          <Playlist playlistID={this.state.current_playlist_id}/>
         </div>
       </div>
     );

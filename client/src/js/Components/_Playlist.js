@@ -1,81 +1,18 @@
 import React, { Component } from 'react';
 
 class Playlist extends Component {
+
   render() {
     return (
-      <div className="playlist-container">
-        <h1>Playlist</h1>
-        <ul className="list-group">
-          <a
-            href="#"
-            className="list-group-item list-group-item-action list-group-item-dark"
-          >
-            A simple dark list group item
-          </a>
-          <a
-            href="#"
-            className="list-group-item list-group-item-action list-group-item-dark"
-          >
-            A simple dark list group item
-          </a>
-          <a
-            href="#"
-            className="list-group-item list-group-item-action list-group-item-dark"
-          >
-            A simple dark list group item
-          </a>
-          <a
-            href="#"
-            className="list-group-item list-group-item-action list-group-item-dark"
-          >
-            A simple dark list group item
-          </a>
-          <a
-            href="#"
-            className="list-group-item list-group-item-action list-group-item-dark"
-          >
-            A simple dark list group item
-          </a>
-          <a
-            href="#"
-            className="list-group-item list-group-item-action list-group-item-dark"
-          >
-            A simple dark list group item
-          </a>
-          <a
-            href="#"
-            className="list-group-item list-group-item-action list-group-item-dark"
-          >
-            A simple dark list group item
-          </a>
-          <a
-            href="#"
-            className="list-group-item list-group-item-action list-group-item-dark"
-          >
-            A simple dark list group item
-          </a>
-          <a
-            href="#"
-            className="list-group-item list-group-item-action list-group-item-dark"
-          >
-            A simple dark list group item
-          </a>
-          <a
-            href="#"
-            className="list-group-item list-group-item-action list-group-item-dark"
-          >
-            A simple dark list group item
-          </a>
-          <a
-            href="#"
-            className="list-group-item list-group-item-action list-group-item-dark"
-          >
-            A simple dark list group item
-          </a>
-        </ul>
-      </div>
+      <iframe
+        src={'https://open.spotify.com/embed/user/spotify/playlist/' + this.props.playlistID}
+        frameBorder='0'
+        allowtransparency='true'
+        allow='encrypted-media'
+        title='playlist-widget'
+      />
     );
   }
 }
-
 export default Playlist;
+
