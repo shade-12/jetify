@@ -6,7 +6,12 @@ class Api::UsersController < ApplicationController
       email: params[:email],
       spotify_id: params[:spotify_id]
     )
-    @user.save
+
+    if @user.save
+      render :json => {
+        user: @user
+      }
+    end
   end
 
   def show

@@ -8,10 +8,9 @@ const buttonText = <div><img src="https://upload.wikimedia.org/wikipedia/commons
 class LoginPage extends Component {
   constructor(props) {
     super(props);
-    const {cookies} = this.props;
     this.state = {
       redirectToUserPage: false,
-      accessToken: cookies.get('jetify_token') || null
+      currentUser: {}
     };
   }
 
@@ -19,7 +18,6 @@ class LoginPage extends Component {
     let token = response.access_token;
     const {cookies} = this.props;
     cookies.set('jetify_token', token, { path: '/', expires: 0 });
-    this.setState({ accessToken: cookies.get('jetify_token') });
     axios({
       method: 'get',
       url: 'https://api.spotify.com/v1/me',
@@ -33,19 +31,22 @@ class LoginPage extends Component {
         spotify_id: data.id
       };
       axios.post('/api/users', user).then(response => {
-        console.log(response);
+        var user = response.data.user;
+        this.setState({
+          currentUser: user,
+          redirectToUserPage: true
+        });
       }).catch(error => {
         console.log(error);
       });
     });
-    this.setState({ redirectToUserPage: true });
   };
 
   onFailure = response => console.error(response);
 
   render() {
     if(this.state.redirectToUserPage === true) {
-      return <Redirect to="/users" />
+      return <Redirect to={`/users/${this.state.currentUser.id}`} />
     }
 
     return (

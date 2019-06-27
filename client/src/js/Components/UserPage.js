@@ -83,7 +83,7 @@ class User extends Component {
            .then(response => {
               console.log("------------------Saved playlist", response);
             });
-    })
+    });
   }
 
   makePositionString = () => {
