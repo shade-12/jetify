@@ -3,7 +3,6 @@ import { Map, GoogleApiWrapper } from 'google-maps-react';
 // import { BrowserRouter, Route, Link } from "react-router-dom";
 // import axios from 'axios';
 import NavBar from './_Navbar.js';
-// import Map from './_Map.js';
 const styles = require('./_map.json')
 
 
