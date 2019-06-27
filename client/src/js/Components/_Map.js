@@ -10,6 +10,7 @@ const styles = require('./_map.json')
 class Map extends Component{
 
 	constructor( props ){
+		
 		super( props );
 		this.state = {
 			address: '',
@@ -163,7 +164,6 @@ class Map extends Component{
 	 * @param place
 	 */
 	onPlaceSelected = ( place ) => {
-		// console.log( 'plc', place );
 		const address = place.formatted_address,
 			addressArray =  place.address_components,
 			city = this.getCity( addressArray ),
@@ -234,11 +234,7 @@ class Map extends Component{
 			map = <div>
 				<div>
 				</div>
-				 {/* <div className="map-display"> */}
-						{/* <h3>Listen to what
-        <h2 className="city-name"> {this.state.city}</h2>
-        sounds like this week !</h3>  */}
-
+				  <div className="map-display"> 
 				<AsyncMap
       googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`}
       loadingElement={
@@ -252,7 +248,7 @@ class Map extends Component{
       }
      />
      </div>
-    // </div>
+     </div>
 } else {
    map = <div style={{height: this.props.height}} />
   }

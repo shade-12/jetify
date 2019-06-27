@@ -21,6 +21,10 @@
 .nav-item button {
   border: 1px solid $primary-font-color;
 }
+.local {
+  color:$secondary-font-color;
+  display: flex;
+}
 
 span.username {
   color: $primary-font-color;

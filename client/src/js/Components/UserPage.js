@@ -26,10 +26,9 @@ class User extends Component {
       position: '49.2827,-123.1207',
       startDate: start.toDate(),
       endDate: end.toDate(),
-      eventBarPosition: '49.2,-123.1',
-      eventStartDate: new Date().toISOString(),
-      eventEndDate: new Date().toISOString(),
-      artists: []
+      eventBarPosition: '49.2827,-123.1207',
+      eventStartDate: start.toISOString(),
+      eventEndDate: end.toISOString()
     };
   }
 
@@ -68,11 +67,12 @@ class User extends Component {
   };
 
   setLocation = locationObj => {
+    console.log(locationObj)
     const lat = locationObj.mapPosition.lat;
     const lng = locationObj.mapPosition.lng;
     this.setState({
       display_lat: lat,
-      display_long: lng
+      display_long: lng,
     });
     this.setState({
       position: this.makePositionString()
@@ -110,7 +110,7 @@ class User extends Component {
     console.log(date);
     return (
       <div className="App">
-        <NavBar user={this.state.current_user} handleLogout={this.props.handleLogout}/>
+        <NavBar user={this.state.current_user} handleLogout={this.props.handleLogout} city={this.state.display_city}/>
         <div className="Body">
           <EventBar
             latlong={this.state.eventBarPosition}

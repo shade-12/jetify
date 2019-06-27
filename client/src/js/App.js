@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import LoginPage from './Components/LoginPage.js';
 import UserPage from './Components/UserPage.js';
+import HistoryPage from './Components/HistoryPage';
+// import Spotify from 'spotify-web-api-js';
 // import uniq from 'lodash.uniq';
 // import flatten from 'lodash.flatten';
 // import chunk from 'lodash.chunk';
@@ -40,6 +42,10 @@ class App extends Component {
           <Route
             path="/users"
             component={() => <UserPage {...this.state} handleLogout={this.handleLogout}/>}
+          />
+          <Route
+            path="/history"
+            component={() => <HistoryPage />}
           />
         </div>
       </Router>

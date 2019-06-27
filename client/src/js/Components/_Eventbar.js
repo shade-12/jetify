@@ -17,8 +17,6 @@ class EventBar extends Component {
 
   getEventInfo = () => {
     // const { latlong, startDate, endDate } = this.props;
-
-    console.log(this.props);
     axios
       .get(
         `http://localhost:3000/api/events?latlong=${
@@ -58,6 +56,7 @@ class EventBar extends Component {
     if (loading) {
       return (
         <div className="events-container">
+          <h1>Events</h1>
           <p className="loading">loading!</p>
         </div>
       );
