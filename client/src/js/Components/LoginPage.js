@@ -18,7 +18,7 @@ class LoginPage extends Component {
   onSuccess = response => {
     let token = response.access_token;
     const {cookies} = this.props;
-    cookies.set('jetify_token', token, { path: '/' });
+    cookies.set('jetify_token', token, { path: '/', expires: 0 });
     this.setState({ accessToken: cookies.get('jetify_token') });
     axios({
       method: 'get',
