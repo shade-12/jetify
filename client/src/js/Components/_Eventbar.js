@@ -10,7 +10,8 @@ class EventBar extends Component {
 
     this.state = {
       loading: true,
-      events: []
+      events: [],
+      artists: []
     };
   } //constructor ends here.
 
@@ -26,11 +27,13 @@ class EventBar extends Component {
       )
       .then(response => {
         let data = response.data;
-        console.log(data);
+        console.log('DATA', data);
         this.setState({
           loading: false,
-          events: data
+          events: data,
+          artists: data.filter(e => e.artist).map(e => e.artist)
         });
+        this.props.setArtists(this.state.artists);
       })
       .catch(error => {
         console.log(error);
@@ -38,24 +41,8 @@ class EventBar extends Component {
   }; //get info ends here
 
   componentDidMount() {
-    console.log('hi');
     this.getEventInfo();
   }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if (
-  //     nextProps.endDate !== this.props.endDate ||
-  //     nextProps.startDate !== this.props.startDate ||
-  //     nextProps.latlong !== this.props.latlong
-  //   ) {
-  //     this.getEventInfo();
-  //     return true;
-  //   } else if (nextState.events !== this.state.events) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
 
   componentDidUpdate(prevProps) {
     if (

@@ -21,7 +21,8 @@ class User extends Component {
       endDate: new Date(),
       eventBarPosition: '49.2,-123.1',
       eventStartDate: new Date().toISOString(),
-      eventEndDate: new Date().toISOString()
+      eventEndDate: new Date().toISOString(),
+      artists: []
     };
   }
 
@@ -43,6 +44,15 @@ class User extends Component {
     this.setState({
       position: this.makePositionString()
     });
+  };
+
+  setArtists = artistObj => {
+    console.log('artistobj', artistObj);
+    console.log('pre artists state', this.state.artists);
+    this.setState({
+      artists: artistObj
+    });
+    console.log('post artists state', this.state.artists);
   };
 
   handleChangeStart = date => {
@@ -73,6 +83,7 @@ class User extends Component {
             latlong={this.state.eventBarPosition}
             startDate={this.state.eventStartDate}
             endDate={this.state.eventEndDate}
+            setArtists={this.setArtists}
           />
           <div className="map-container">
             <Map
