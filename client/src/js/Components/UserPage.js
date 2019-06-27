@@ -50,7 +50,7 @@ class User extends Component {
     console.log('artistobj', artistObj);
     console.log('pre artists state', this.state.artists);
     this.setState({
-      artists: artistObj
+      artists: [...new Set(artistObj)]
     });
     console.log('post artists state', this.state.artists);
   };
