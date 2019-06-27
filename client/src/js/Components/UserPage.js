@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // import { Redirect } from "react-router-dom";
 import axios from 'axios';
+import moment from "moment";
 
 import NavBar from './_Navbar.js';
 import EventBar from './_Eventbar.js';
@@ -14,6 +15,8 @@ const spotifyApi = new SpotifyWebApi();
 class User extends Component {
   constructor(props) {
     super(props);
+    var start = moment();
+    var end = moment().add(2, "days");
     this.state = {
       current_user: '',
       current_playlist: [],
@@ -21,13 +24,13 @@ class User extends Component {
       display_lat: 49.2827,
       display_long: -123.1207,
       position: '49.2827,-123.1207',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: start.toDate(),
+      endDate: end.toDate(),
       eventBarPosition: '49.2,-123.1',
-      eventStartDate: new Date().toISOString(),
-      eventEndDate: new Date().toISOString()
+      eventStartDate: start.toISOString(),
+      eventEndDate: end.toISOString()
     };
-  }
+  };
 
   componentDidMount() {
     //fetch user data from backend
@@ -94,6 +97,8 @@ class User extends Component {
   };
 
   render() {
+    const date = new Date();
+    console.log(date);
     return (
       <div className="App">
         <NavBar user={this.state.current_user} handleLogout={this.props.handleLogout}/>

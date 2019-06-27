@@ -57,18 +57,15 @@ span.username {
 
   h3 {
     position: relative;
-    z-index: 100;
+    z-index: 80;
     margin: 20px;
   }
 
   h2 {
     position: relative;
-    z-index: 100;
     font-weight: bold;
     color: $secondary-font-color;
   }
-
-
 
   .form-inline input.form-control {
     margin-left: 3vw;
