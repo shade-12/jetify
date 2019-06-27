@@ -49,8 +49,6 @@ class User extends Component {
   };
 
   setArtists = artistObj => {
-    console.log('artistobj', artistObj);
-    console.log('pre artists state', this.state.artists);
     this.setState({
       artists: [...new Set(artistObj)]
     });
