@@ -69,17 +69,21 @@ class User extends Component {
       latitude: this.state.display_lat,
       longitude: this.state.display_long
     };
-    // let playlist = {
-    //   user: this.state.current_user,
-    //   location: location,
-    //   name: 'Jetify',
-    //   spotify_id: this.state.current_playlist_id
-    // }
+
     //save location to db first, then playlist
     axios.post('/api/locations', location).then(response => {
-      console.log("------------------Saved location", response);
+      let locationID = response.data.location.id
+      let playlist = {
+        user_id: this.state.current_user.id,
+        location_id: locationID,
+        name: 'Jetify',
+        spotify_id: this.state.current_playlist_id
+      }
+      axios.post(`/api/locations/${locationID}/playlists`, playlist)
+           .then(response => {
+              console.log("------------------Saved playlist", response);
+            });
     })
-    // axios.post('/api/playlists', playlist)
   }
 
   makePositionString = () => {

@@ -2,8 +2,8 @@ class Api::PlaylistsController < ApplicationController
 
   def create
     @playlist = Playlist.find_or_create_by(
-      user: params[:user],
-      location: params[:location],
+      user_id: params[:user_id],
+      location_id: params[:location_id],
       name: params[:name],
       spotify_id: params[:spotify_id]
     )
@@ -13,7 +13,7 @@ class Api::PlaylistsController < ApplicationController
   def show
     @playlist = Playlist.find params[:id]
     render :json => {
-      user: @playlist
+      playlist: @playlist
     }
   end
 

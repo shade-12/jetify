@@ -6,13 +6,17 @@ class Api::LocationsController < ApplicationController
       latitude: params[:latitude],
       longitude: params[:longitude]
     )
-    @location.save
+    if @location.save
+      render :json => {
+        location: @location
+      }
+    end
   end
 
   def show
-    @location = Location.find params[:id]
+    @location = Location.find params[:name]
     render :json => {
-      user: @location
+      location: @location
     }
   end
 
