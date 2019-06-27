@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import { BrowserRouter, Route, Link } from "react-router-dom";
 // import axios from 'axios';
-
+import moment from 'moment';
 import NavBar from './_Navbar.js';
 import EventBar from './_Eventbar.js';
 import Playlist from './_Playlist.js';
@@ -12,13 +12,15 @@ import 'react-datepicker/dist/react-datepicker.css';
 class User extends Component {
   constructor(props) {
     super(props);
+    var start = moment();
+    var end = moment().add(2, 'days');
     this.state = {
       display_city: 'Vancouver',
       display_lat: 49.2827,
       display_long: -123.1207,
       position: '49.2827,-123.1207',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: start.toDate(),
+      endDate: end.toDate(),
       eventBarPosition: '49.2,-123.1',
       eventStartDate: new Date().toISOString(),
       eventEndDate: new Date().toISOString(),
@@ -75,9 +77,11 @@ class User extends Component {
   };
 
   render() {
+    const date = new Date();
+    console.log(date);
     return (
       <div className="App">
-        <NavBar />
+        <NavBar handleLogout={this.props.handleLogout} />
         <div className="Body">
           <EventBar
             latlong={this.state.eventBarPosition}

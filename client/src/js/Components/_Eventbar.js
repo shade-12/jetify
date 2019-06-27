@@ -21,9 +21,7 @@ class EventBar extends Component {
     console.log(this.props);
     axios
       .get(
-        `http://localhost:3000/api/events?latlong=${
-          this.props.latlong
-        }&startDate=${this.props.startDate}&endDate=${this.props.endDate}`
+        `http://localhost:3000/api/events?latlong=${this.props.latlong}&startDate=${this.props.startDate}&endDate=${this.props.endDate}`
       )
       .then(response => {
         let data = response.data;
