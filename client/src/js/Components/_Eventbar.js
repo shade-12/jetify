@@ -63,7 +63,6 @@ class EventBar extends Component {
     } else {
       return (
         <div className="events-container">
-          <h1>Events</h1>
           {events.map(event => (
             <Event event={event} key={event.id} />
           ))}

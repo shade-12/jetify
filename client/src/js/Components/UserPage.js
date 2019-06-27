@@ -67,6 +67,7 @@ class User extends Component {
   };
 
   setLocation = locationObj => {
+    console.log(locationObj)
     const lat = locationObj.mapPosition.lat;
     const lng = locationObj.mapPosition.lng;
     this.setState({
