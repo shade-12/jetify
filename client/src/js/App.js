@@ -45,7 +45,7 @@ class App extends Component {
           />
           <Route
             path="/history"
-            component={() => <HistoryPage />}
+            component={() => <HistoryPage {...this.state}/>}
           />
         </div>
       </Router>
