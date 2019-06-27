@@ -16,7 +16,7 @@ class TicketmasterService
       }
       client = Ticketmaster.client(apikey: TICKETMASTER_KEY)
       response = client.search_events(params: params)
-      response.results.map{|result| event_hash(result)}
+      response.results.map{|result| event_hash(result).compact}
     end
 
     private
@@ -24,6 +24,7 @@ class TicketmasterService
       date = result.dates['start']
       venue = result.venues.first
       image = result.images.first
+      artist = result.attractions.first
       {
         id: result.id,
         image: image ? image.url : '',
@@ -31,12 +32,13 @@ class TicketmasterService
         date: date ? date['localDate'] : '',
         venue: venue ? venue.name : '',
         url: result.data['url'], 
-        artist: result.attractions
+        artist: artist ? artist.name : nil
       }
     end
   end
 end
 
+# call compact on array - if there is a nil/empty then it strips this out. 
 
 
 # events = TicketmasterService.call('54.9713082,-2.7246093',

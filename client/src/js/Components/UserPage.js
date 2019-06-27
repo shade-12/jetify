@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
+<<<<<<< HEAD
 // import { Redirect } from "react-router-dom";
 import axios from 'axios';
 import moment from "moment";
 
+=======
+// import { BrowserRouter, Route, Link } from "react-router-dom";
+// import axios from 'axios';
+import moment from 'moment';
+>>>>>>> master
 import NavBar from './_Navbar.js';
 import EventBar from './_Eventbar.js';
 import Playlist from './_Playlist.js';
@@ -16,7 +22,7 @@ class User extends Component {
   constructor(props) {
     super(props);
     var start = moment();
-    var end = moment().add(2, "days");
+    var end = moment().add(2, 'days');
     this.state = {
       current_user: '',
       current_playlist_id: '',
@@ -27,10 +33,11 @@ class User extends Component {
       startDate: start.toDate(),
       endDate: end.toDate(),
       eventBarPosition: '49.2,-123.1',
-      eventStartDate: start.toISOString(),
-      eventEndDate: end.toISOString()
+      eventStartDate: new Date().toISOString(),
+      eventEndDate: new Date().toISOString(),
+      artists: []
     };
-  };
+  }
 
   componentDidMount() {
     //fetch user data from backend
@@ -78,6 +85,13 @@ class User extends Component {
     });
   };
 
+  setArtists = artistObj => {
+    this.setState({
+      artists: [...new Set(artistObj)]
+    });
+    console.log('post artists state', this.state.artists);
+  };
+
   handleChangeStart = date => {
     this.setState({
       startDate: date
@@ -108,6 +122,7 @@ class User extends Component {
             latlong={this.state.eventBarPosition}
             startDate={this.state.eventStartDate}
             endDate={this.state.eventEndDate}
+            setArtists={this.setArtists}
           />
           <div className="map-container">
             <Map
