@@ -4,13 +4,20 @@ class Playlist extends Component {
 
   render() {
     return (
-      <iframe
-        src={'https://open.spotify.com/embed/user/spotify/playlist/' + this.props.playlistID}
-        frameBorder='0'
-        allowtransparency='true'
-        allow='encrypted-media'
-        title='playlist-widget'
-      />
+      <div className="playlist-container">
+        <iframe
+          src={'https://open.spotify.com/embed/user/spotify/playlist/' + this.props.playlistID}
+          frameBorder='0'
+          height="800px"
+          allowtransparency='true'
+          allow='encrypted-media'
+          title='playlist-widget'
+        />
+        <section>
+          <button type="button" className="btn generate-button">Generate</button>&nbsp;&nbsp;
+          <button type="button" className="btn btn-primary" onClick={this.props.savePlaylist}>Save</button>
+        </section>
+      </div>
     );
   }
 }

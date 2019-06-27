@@ -1,11 +1,17 @@
 class Api::UsersController < ApplicationController
+
   def create
     @user = User.find_or_create_by(
       name: params[:name],
       email: params[:email],
       spotify_id: params[:spotify_id]
     )
-    @user.save
+
+    if @user.save
+      render :json => {
+        user: @user
+      }
+    end
   end
 
   def show
@@ -14,4 +20,5 @@ class Api::UsersController < ApplicationController
       user: @user
     }
   end
+
 end

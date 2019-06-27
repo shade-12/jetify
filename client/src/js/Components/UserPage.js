@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import { Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import axios from 'axios';
 import moment from "moment";
 import NavBar from './_Navbar.js';
@@ -17,7 +17,7 @@ class User extends Component {
     var start = moment();
     var end = moment().add(2, 'days');
     this.state = {
-      current_user: '',
+      current_user: {},
       current_playlist_id: '',
       display_city: 'Vancouver',
       display_lat: 49.2827,
@@ -38,16 +38,15 @@ class User extends Component {
       this.setState({current_user: user});
 
       //connect to spotify web API
-      spotifyApi.setAccessToken(this.props.accessToken); })
+      const {cookies} = this.props;
+      spotifyApi.setAccessToken(cookies.get('jetify_token')); })
                 .then(() =>
                   //fetch top tracks of local artists
                   spotifyApi.getArtistTopTracks('43ZHCT0cAZBISjO8DG9PnE', 'SE', {limit: 10})
                             .then( (data) => {
-                              console.log('Artist tracks', data.tracks[0]);
                               let tracks = [];
                               data.tracks.forEach( track => tracks.push(track.uri) );
                               spotifyApi.createPlaylist(this.state.current_user.spotify_id, { name: 'Jetify' }).then((response) => {
-                                console.log("Playlist created", response);
                                 this.setState({ current_playlist_id: response.id });
                                 spotifyApi.addTracksToPlaylist(response.id, tracks);
                               });
@@ -55,6 +54,35 @@ class User extends Component {
                               console.error(err);
                             })
                 );
+  }
+
+  handleLogout = () => {
+    const {cookies} = this.props;
+    cookies.remove('jetify_token', { path: '/' });
+    this.setState({ current_user: null });
+  }
+
+  savePlaylist = () => {
+    let location = {
+      name: this.state.display_city,
+      latitude: this.state.display_lat,
+      longitude: this.state.display_long
+    };
+
+    //save location to db first, then playlist
+    axios.post('/api/locations', location).then(response => {
+      let locationID = response.data.location.id
+      let playlist = {
+        user_id: this.state.current_user.id,
+        location_id: locationID,
+        name: 'Jetify',
+        spotify_id: this.state.current_playlist_id
+      }
+      axios.post(`/api/locations/${locationID}/playlists`, playlist)
+           .then(response => {
+              console.log("------------------Saved playlist", response);
+            });
+    });
   }
 
   makePositionString = () => {
@@ -66,7 +94,6 @@ class User extends Component {
   };
 
   setLocation = locationObj => {
-    console.log(locationObj)
     const lat = locationObj.mapPosition.lat;
     const lng = locationObj.mapPosition.lng;
     this.setState({
@@ -107,9 +134,17 @@ class User extends Component {
   render() {
     const date = new Date();
     console.log(date);
+    if(this.state.current_user === null) {
+      return <Redirect to="/" />
+    }
+
     return (
       <div className="App">
-        <NavBar user={this.state.current_user} handleLogout={this.props.handleLogout} city={this.state.display_city}/>
+        <NavBar
+          user={this.state.current_user}
+          handleLogout={this.handleLogout}
+          city={this.state.display_city}
+        />
         <div className="Body">
           <EventBar
             latlong={this.state.eventBarPosition}
@@ -151,7 +186,10 @@ class User extends Component {
               Submit
             </button>
           </div>
-          <Playlist playlistID={this.state.current_playlist_id}/>
+          <Playlist
+            playlistID={this.state.current_playlist_id}
+            savePlaylist={this.savePlaylist}
+          />
         </div>
       </div>
     );

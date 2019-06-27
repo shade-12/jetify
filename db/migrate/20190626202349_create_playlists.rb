@@ -4,6 +4,7 @@ class CreatePlaylists < ActiveRecord::Migration[5.2]
       t.references :user, index: true, foreign_key: true
       t.references :location, index: true, foreign_key: true
       t.string :name
+      t.string :spotify_id
       t.timestamps
     end
   end

@@ -1,35 +1,16 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { instanceOf } from 'prop-types';
+import { withCookies, Cookies } from 'react-cookie';
 import LoginPage from './Components/LoginPage.js';
 import UserPage from './Components/UserPage.js';
 import HistoryPage from './Components/HistoryPage';
-// import Spotify from 'spotify-web-api-js';
-// import uniq from 'lodash.uniq';
-// import flatten from 'lodash.flatten';
-// import chunk from 'lodash.chunk';
+
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loggedInToSpotify: false,
-      accessToken: null
-    }
-  }
-
-  handleLogin = (token) => {
-    this.setState({
-      loggedInToSpotify: true,
-      accessToken: token
-    });
-  }
-
-  handleLogout = () => {
-    this.setState({
-      loggedInToSpotify: false,
-      accessToken: null
-    });
-  }
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+  };
 
   render() {
     return (
@@ -37,11 +18,11 @@ class App extends Component {
         <div className="App">
           <Route
             path="/" exact
-            component={() => <LoginPage {...this.state} handleLogin={this.handleLogin} />}
+            render={() => <LoginPage cookies={this.props.cookies} />}
           />
           <Route
             path="/users"
-            component={() => <UserPage {...this.state} handleLogout={this.handleLogout}/>}
+            render={() => <UserPage cookies={this.props.cookies} />}
           />
           <Route
             path="/history"
@@ -53,4 +34,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withCookies(App);

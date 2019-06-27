@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from "react-router-dom";
+import { Redirect } from 'react-router-dom';
 import SpotifyLogin from 'react-spotify-login';
 import axios from 'axios';
 
@@ -10,12 +10,14 @@ class LoginPage extends Component {
     super(props);
     this.state = {
       redirectToUserPage: false,
-      accessToken: null
+      currentUser: {}
     };
   }
 
   onSuccess = response => {
     let token = response.access_token;
+    const {cookies} = this.props;
+    cookies.set('jetify_token', token, { path: '/', expires: 0 });
     axios({
       method: 'get',
       url: 'https://api.spotify.com/v1/me',
@@ -29,14 +31,14 @@ class LoginPage extends Component {
         spotify_id: data.id
       };
       axios.post('/api/users', user).then(response => {
-        console.log(response);
+        var user = response.data.user;
+        this.setState({
+          currentUser: user,
+          redirectToUserPage: true
+        });
       }).catch(error => {
         console.log(error);
       });
-    });
-    this.setState({
-      redirectToUserPage: true,
-      accessToken: token
     });
   };
 
@@ -44,8 +46,7 @@ class LoginPage extends Component {
 
   render() {
     if(this.state.redirectToUserPage === true) {
-      this.props.handleLogin(this.state.accessToken);
-      return <Redirect to="/users" />
+      return <Redirect to={`/users/${this.state.currentUser.id}`} />
     }
 
     return (

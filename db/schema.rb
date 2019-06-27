@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2019_06_26_202349) do
     t.bigint "user_id"
     t.bigint "location_id"
     t.string "name"
+    t.string "spotify_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_playlists_on_location_id"

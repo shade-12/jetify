@@ -71,6 +71,8 @@ span.username {
     color: $secondary-font-color;
   }
 
+
+
   .form-inline input.form-control {
     margin-left: 3vw;
     width: 25vw;
@@ -88,4 +90,25 @@ div.card-body {
   color: $secondary-font-color;
 }
 
+div.playlist-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: -webkit-fill-available;
+
+  section {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    justify-content: center;
+  }
+
+  button {
+    flex-grow: 1;
+  }
+
+  button.btn.generate-button {
+    background-color: #1db954;
+  }
+}
 
