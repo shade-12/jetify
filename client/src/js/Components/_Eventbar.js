@@ -55,12 +55,14 @@ class EventBar extends Component {
     if (loading) {
       return (
         <div className="events-container">
+          <h1>Events</h1>
           <p className="loading">loading!</p>
         </div>
       );
     } else {
       return (
         <div className="events-container">
+          <h1>Events</h1>
           {events.map(event => (
             <Event event={event} key={event.id} />
           ))}
