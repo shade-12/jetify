@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
-<<<<<<< HEAD
 // import { Redirect } from "react-router-dom";
 import axios from 'axios';
 import moment from "moment";
 
-=======
-// import { BrowserRouter, Route, Link } from "react-router-dom";
-// import axios from 'axios';
-import moment from 'moment';
->>>>>>> master
 import NavBar from './_Navbar.js';
 import EventBar from './_Eventbar.js';
 import Playlist from './_Playlist.js';
