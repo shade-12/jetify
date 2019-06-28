@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Map, GoogleApiWrapper, Marker, } from 'google-maps-react';
+import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 import NavBar from './_Navbar.js';
 // import MapMarker from './_MapMarker.js'
 import PlaylistWindow from './_PlaylistWindow.js'

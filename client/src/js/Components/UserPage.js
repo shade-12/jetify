@@ -20,6 +20,7 @@ class User extends Component {
       current_user: {},
       current_playlist_id: '',
       display_city: '',
+      map_city: '',
       display_lat: 49.2827,
       display_long: -123.1207,
       position: '49.2827,-123.1207',
@@ -71,7 +72,7 @@ class User extends Component {
 
   savePlaylist = () => {
     let location = {
-      name: this.state.display_city,
+      name: this.state.map_city,
       latitude: this.state.display_lat,
       longitude: this.state.display_long
     };
@@ -101,11 +102,14 @@ class User extends Component {
   };
 
   setLocation = locationObj => {
+    console.log(locationObj)
     const lat = locationObj.mapPosition.lat;
     const lng = locationObj.mapPosition.lng;
+    const area = locationObj.area 
     this.setState({
       display_lat: lat,
       display_long: lng,
+      map_city: area,
     });
     this.setState({
       position: this.makePositionString()
