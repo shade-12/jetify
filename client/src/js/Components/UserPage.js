@@ -27,7 +27,8 @@ class User extends Component {
       endDate: end.toDate(),
       eventBarPosition: '49.2827,-123.1207',
       eventStartDate: start.toISOString(),
-      eventEndDate: end.toISOString()
+      eventEndDate: end.toISOString(),
+      redirectToHistory: false,
     };
   }
 
@@ -64,6 +65,7 @@ class User extends Component {
   }
 
   goToHistory = () => {
+    this.setState({redirectToHistory: true});
     
   }
 
@@ -139,6 +141,9 @@ class User extends Component {
   render() {
     if(this.state.current_user === null) {
       return <Redirect to="/" />
+    }
+    if(this.state.redirectToHistory === true){
+      return <Redirect to="/history" />
     }
 
     return (
