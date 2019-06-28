@@ -54,7 +54,7 @@ class User extends Component {
     let artistIds = [];
     let tracks = [];
     axios
-      .get('/api/users/1')
+      .get('/api/users/2')
       .then(response => {
         let user = response.data.user;
         this.setState({ current_user: user });
@@ -86,7 +86,7 @@ class User extends Component {
         console.log('artistsids: ', artistIds);
         {
           const promises2 = artistIds.map(id =>
-            spotifyApi.getArtistTopTracks(id, 'GB', { max: 3 }).then(
+            spotifyApi.getArtistTopTracks(id, 'GB', { limit: 3 }).then(
               response => {
                 if (response.tracks[0]) {
                   response.tracks.forEach(track => tracks.push(track.uri));
@@ -116,7 +116,6 @@ class User extends Component {
                   tracksInPlaylist: false
                 });
               } else {
-                console.log('in the if');
                 spotifyApi.addTracksToPlaylist(response.id, tracks);
               }
             },
