@@ -127,6 +127,85 @@ class User extends Component {
       });
   };
 
+  renderRandomPlaylist = () => {
+    const { cookies } = this.props;
+    let artistIds = [];
+    let tracks = [];
+    this.setState({
+      tracksInPlaylist: true
+    });
+    axios
+      .get(`/api/users/${cookies.get('jetify_user')}`)
+      .then(response => {
+        let user = response.data.user;
+        this.setState({ current_user: user });
+
+        //connect to spotify web API
+        const { cookies } = this.props;
+        spotifyApi.setAccessToken(cookies.get('jetify_token'));
+      })
+      .then(() =>
+        //fetch artistID for all artists in this.state.artist
+        {
+          const promises = this.state.artists.map(artist =>
+            spotifyApi.searchArtists(artist, 'artist').then(
+              response => {
+                if (response.artists.items.length) {
+                  artistIds.push(response.artists.items[0].id);
+                }
+              },
+              err => {
+                console.error(err);
+              }
+            )
+          );
+          return Promise.all(promises);
+        }
+      )
+      .then(() => {
+        //fetch top songs for each artist in this.state.artists
+        console.log('artistsids: ', artistIds);
+        {
+          const promises2 = artistIds.map(id =>
+            spotifyApi.getArtistTopTracks(id, 'GB', { limit: 3 }).then(
+              response => {
+                for (let i = 3; i <= 5; i++) {
+                  tracks.push(response.tracks[i].uri);
+                }
+              },
+              err => {
+                console.error(err);
+              }
+            )
+          );
+          return Promise.all(promises2);
+        }
+      })
+      .then(() => {
+        //create playlist called 'Jetify' with artists top songs as tracks
+        spotifyApi
+          .createPlaylist(this.state.current_user.spotify_id, {
+            name: 'Jetify'
+          })
+          .then(
+            response => {
+              this.setState({ current_playlist_id: response.id });
+              console.log('length tracks', tracks.length);
+              if (!tracks.length) {
+                this.setState({
+                  tracksInPlaylist: false
+                });
+              } else {
+                spotifyApi.addTracksToPlaylist(response.id, tracks);
+              }
+            },
+            err => {
+              console.error(err);
+            }
+          );
+      });
+  };
+
   handleLogout = () => {
     const { cookies } = this.props;
     cookies.remove('jetify_token', { path: '/' });
@@ -271,6 +350,7 @@ class User extends Component {
             </button>
           </div>
           <Playlist
+            renderRandomPlaylist={this.renderRandomPlaylist}
             tracksInPlaylist={this.state.tracksInPlaylist}
             playlistID={this.state.current_playlist_id}
             savePlaylist={this.savePlaylist}

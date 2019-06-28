@@ -17,7 +17,11 @@ class Playlist extends Component {
             title="playlist-widget"
           />
           <section>
-            <button type="button" className="btn generate-button">
+            <button
+              type="button"
+              className="btn generate-button"
+              onClick={this.props.renderRandomPlaylist}
+            >
               Generate
             </button>
             &nbsp;&nbsp;
