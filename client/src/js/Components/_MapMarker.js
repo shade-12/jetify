@@ -7,11 +7,10 @@ export default class MapMarker extends React.Component {
   render(){
     console.log("I am props: ", this.props.latitude);
     return(
-        {/*<Marker
-          lat= {this.props.latitude}
-          lng={this.props.longitude}
-          icon={headphone}*/}
-        // />
+        <Marker
+          position={{lat: this.props.latitude, lng: this.props.longitude}}
+          options={{icon:headphone}}
+        />
 
     );
   }
