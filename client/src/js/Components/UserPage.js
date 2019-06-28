@@ -86,7 +86,6 @@ class User extends Component {
           const promises2 = artistIds.map(id =>
             spotifyApi.getArtistTopTracks(id, 'GB', { limit: 3 }).then(
               response => {
-                console.log('RESPONSE', response.tracks[0]);
                 for (let i = 0; i <= 2; i++) {
                   tracks.push(response.tracks[i].uri);
                 }
@@ -101,14 +100,12 @@ class User extends Component {
       })
       .then(() => {
         //create playlist called 'Jetify' with artists top songs as tracks
-        console.log('tracks', tracks);
         spotifyApi
           .createPlaylist(this.state.current_user.spotify_id, {
             name: 'Jetify'
           })
           .then(
             response => {
-              console.log('Playlist created', response);
               this.setState({ current_playlist_id: response.id });
               console.log('length tracks', tracks.length);
               if (!tracks.length) {
