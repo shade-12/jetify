@@ -3,11 +3,12 @@ import React from 'react';
 function NavBar(props){
   return (
     <nav className="navbar fixed-top">
-      <a className="navbar-brand" href="/">Jetify</a>
-      <p className="local">Your current location is set to: {props.city}</p>
+      <h4 className="navbar-brand" ><img src="https://img.icons8.com/nolan/96/000000/headphones.png" alt="navbar-logo"/>&nbsp;Jetify &nbsp;&nbsp;<span className="username">{props.user.name}</span></h4>
+      <h4 className="local"><img src="https://img.icons8.com/nolan/64/000000/marker.png" alt="marker-logo"/>&nbsp;{props.city}</h4>
       <ul className="nav justify-content-center">
         <li className="nav-item">
-          <span className="username">{props.user.name}</span>&nbsp;&nbsp;
+          <button type="button" className="btn btn-dark">My Plans</button>&nbsp;&nbsp;
+          <button type="button" className="btn btn-dark">My Playlists</button>&nbsp;&nbsp;
           <button type="button" className="btn btn-dark" onClick={props.handleLogout}>Logout</button>
         </li>
       </ul>
