@@ -34,8 +34,11 @@ class User extends Component {
   }
 
   componentDidMount() {
-    //fetch user data from backend
+    //fetch user data from backends
     let tracks = [];
+    let artistIds = [];
+    this.setArtists();
+
     axios
       .get('/api/users/1')
       .then(response => {
@@ -47,28 +50,63 @@ class User extends Component {
         spotifyApi.setAccessToken(cookies.get('jetify_token'));
       })
       .then(() =>
-        //fetch top tracks of local artists
+        //fetch artistID for all artist in this.state.artist
+        {
+          const promises = this.state.artists.map(artist =>
+            spotifyApi.searchArtists(artist, 'artist').then(
+              response => {
+                console.log('response', response);
+                if (response.artists.items.items[0].id) {
+                  console.log(
+                    'artist id response',
+                    response.artists.items[0].id
+                  );
+                  artistIds.push(response.artists.items[0].id);
+                }
+              },
+              err => {
+                console.error(err);
+              }
+            )
+          );
+          return Promise.all(promises);
+        }
+      )
+      .then(() => {
+        //fetch top songs for each artist in this.state.artists
+        console.log('artistsids: ', artistIds);
+        {
+          const promises2 = artistIds.map(id =>
+            spotifyApi.getArtistTopTracks(id, 'GB', { max: 3 }).then(
+              response => {
+                console.log('Artist tracks', response.tracks[0]);
+                response.tracks.forEach(track => tracks.push(track.uri));
+              },
+              err => {
+                console.error(err);
+              }
+            )
+          );
+          return Promise.all(promises2);
+        }
+      })
+      .then(() => {
+        console.log('tracks', tracks);
         spotifyApi
-          .getArtistTopTracks('43ZHCT0cAZBISjO8DG9PnE', 'SE', { limit: 10 })
+          .createPlaylist(this.state.current_user.spotify_id, {
+            name: 'Jetify'
+          })
           .then(
-            data => {
-              console.log('Artist tracks', data.tracks[0]);
-              data.tracks.forEach(track => tracks.push(track.uri));
-              spotifyApi
-                .createPlaylist(this.state.current_user.spotify_id, {
-                  name: 'Jetify'
-                })
-                .then(response => {
-                  console.log('Playlist created', response);
-                  this.setState({ current_playlist_id: response.id });
-                  spotifyApi.addTracksToPlaylist(response.id, tracks);
-                });
+            response => {
+              console.log('Playlist created', response);
+              this.setState({ current_playlist_id: response.id });
+              spotifyApi.addTracksToPlaylist(response.id, tracks);
             },
             err => {
               console.error(err);
             }
-          )
-      );
+          );
+      });
   }
 
   // elvis: 43ZHCT0cAZBISjO8DG9PnE
@@ -77,7 +115,6 @@ class User extends Component {
 
   componentDidUpdate(_, prevState) {
     if (this.state.artists !== prevState.artists) {
-      console.log('THIS.STATE.ARISTS', this.state.artists);
       let artistIds = [];
       let tracks = [];
       axios
@@ -120,8 +157,10 @@ class User extends Component {
             const promises2 = artistIds.map(id =>
               spotifyApi.getArtistTopTracks(id, 'GB', { max: 3 }).then(
                 response => {
-                  console.log('Artist tracks', response.tracks[0]);
-                  response.tracks.forEach(track => tracks.push(track.uri));
+                  if (response.tracks[0]) {
+                    console.log('Artist tracks', response.tracks[0]);
+                    response.tracks.forEach(track => tracks.push(track.uri));
+                  }
                 },
                 err => {
                   console.error(err);
@@ -141,7 +180,11 @@ class User extends Component {
               response => {
                 console.log('Playlist created', response);
                 this.setState({ current_playlist_id: response.id });
-                spotifyApi.addTracksToPlaylist(response.id, tracks);
+                console.log('length tracks', tracks.length);
+                if (tracks.length) {
+                  console.log('in the if');
+                  spotifyApi.addTracksToPlaylist(response.id, tracks);
+                }
               },
               err => {
                 console.error(err);
@@ -167,7 +210,6 @@ class User extends Component {
   };
 
   setLocation = locationObj => {
-    console.log(locationObj);
     const lat = locationObj.mapPosition.lat;
     const lng = locationObj.mapPosition.lng;
     this.setState({
@@ -183,7 +225,6 @@ class User extends Component {
     this.setState({
       artists: [...new Set(artistObj)]
     });
-    console.log('post artists state', this.state.artists);
   };
 
   handleChangeStart = date => {
