@@ -36,10 +36,23 @@ class User extends Component {
 
   componentDidMount() {
     //fetch user data from backends
-    let tracks = [];
-    let artistIds = [];
     this.setArtists();
+    this.renderPlaylist();
+  }
 
+  // elvis: 43ZHCT0cAZBISjO8DG9PnE
+  // beyonce: 6vWDO969PvNqNYHIOW5v0m
+  // Madonna: 6tbjWDEIzxoDsBA1FuhfPW
+
+  componentDidUpdate(_, prevState) {
+    if (this.state.artists !== prevState.artists) {
+      this.renderPlaylist();
+    }
+  }
+
+  renderPlaylist = () => {
+    let artistIds = [];
+    let tracks = [];
     axios
       .get('/api/users/1')
       .then(response => {
@@ -56,12 +69,7 @@ class User extends Component {
           const promises = this.state.artists.map(artist =>
             spotifyApi.searchArtists(artist, 'artist').then(
               response => {
-                console.log('response', response);
-                if (response.artists.items.items[0].id) {
-                  console.log(
-                    'artist id response',
-                    response.artists.items[0].id
-                  );
+                if (response.artists.items.length) {
                   artistIds.push(response.artists.items[0].id);
                 }
               },
@@ -80,7 +88,9 @@ class User extends Component {
           const promises2 = artistIds.map(id =>
             spotifyApi.getArtistTopTracks(id, 'GB', { max: 3 }).then(
               response => {
-                response.tracks.forEach(track => tracks.push(track.uri));
+                if (response.tracks[0]) {
+                  response.tracks.forEach(track => tracks.push(track.uri));
+                }
               },
               err => {
                 console.error(err);
@@ -100,103 +110,22 @@ class User extends Component {
             response => {
               console.log('Playlist created', response);
               this.setState({ current_playlist_id: response.id });
-              spotifyApi.addTracksToPlaylist(response.id, tracks);
+              console.log('length tracks', tracks.length);
+              if (!tracks.length) {
+                this.setState({
+                  tracksInPlaylist: false
+                });
+              } else {
+                console.log('in the if');
+                spotifyApi.addTracksToPlaylist(response.id, tracks);
+              }
             },
             err => {
               console.error(err);
             }
           );
       });
-  }
-
-  // elvis: 43ZHCT0cAZBISjO8DG9PnE
-  // beyonce: 6vWDO969PvNqNYHIOW5v0m
-  // Madonna: 6tbjWDEIzxoDsBA1FuhfPW
-
-  componentDidUpdate(_, prevState) {
-    if (this.state.artists !== prevState.artists) {
-      let artistIds = [];
-      let tracks = [];
-      axios
-        .get('/api/users/1')
-        .then(response => {
-          let user = response.data.user;
-          this.setState({ current_user: user });
-
-          //connect to spotify web API
-          const { cookies } = this.props;
-          spotifyApi.setAccessToken(cookies.get('jetify_token'));
-        })
-        .then(() =>
-          //fetch artistID for all artist in this.state.artist
-          {
-            const promises = this.state.artists.map(artist =>
-              spotifyApi.searchArtists(artist, 'artist').then(
-                response => {
-                  console.log('response', response);
-                  if (response.artists.items.length) {
-                    console.log(
-                      'artist id response',
-                      response.artists.items[0].id
-                    );
-                    artistIds.push(response.artists.items[0].id);
-                  }
-                },
-                err => {
-                  console.error(err);
-                }
-              )
-            );
-            return Promise.all(promises);
-          }
-        )
-        .then(() => {
-          //fetch top songs for each artist in this.state.artists
-          console.log('artistsids: ', artistIds);
-          {
-            const promises2 = artistIds.map(id =>
-              spotifyApi.getArtistTopTracks(id, 'GB', { max: 3 }).then(
-                response => {
-                  if (response.tracks[0]) {
-                    console.log('Artist tracks', response.tracks[0]);
-                    response.tracks.forEach(track => tracks.push(track.uri));
-                  }
-                },
-                err => {
-                  console.error(err);
-                }
-              )
-            );
-            return Promise.all(promises2);
-          }
-        })
-        .then(() => {
-          console.log('tracks', tracks);
-          spotifyApi
-            .createPlaylist(this.state.current_user.spotify_id, {
-              name: 'Jetify'
-            })
-            .then(
-              response => {
-                console.log('Playlist created', response);
-                this.setState({ current_playlist_id: response.id });
-                console.log('length tracks', tracks.length);
-                if (!tracks.length) {
-                  this.setState({
-                    tracksInPlaylist: false
-                  });
-                } else {
-                  console.log('in the if');
-                  spotifyApi.addTracksToPlaylist(response.id, tracks);
-                }
-              },
-              err => {
-                console.error(err);
-              }
-            );
-        });
-    }
-  }
+  };
 
   handleLogout = () => {
     const { cookies } = this.props;
@@ -252,7 +181,6 @@ class User extends Component {
 
   render() {
     const date = new Date();
-    console.log(date);
     if (this.state.current_user === null) {
       return <Redirect to="/" />;
     }
