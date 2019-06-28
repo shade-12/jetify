@@ -7,13 +7,11 @@
     "bootstrap": "^4.3.1",
     "dotenv": "^8.0.0",
     "google-maps-react": "^2.0.2",
-    "lodash.chunk": "^4.2.0",
-    "lodash.flatten": "^4.4.0",
-    "lodash.uniq": "^4.5.0",
     "moment": "^2.24.0",
     "node-sass": "^4.12.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
+    "react-bootstrap": "^1.0.0-beta.9",
     "react-cookie": "^4.0.0",
     "react-datepicker": "^2.7.0",
     "react-dom": "^16.8.6",
@@ -23,9 +21,11 @@
     "react-places-autocomplete": "^7.2.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "2.1.8",
+    "react-spinners-kit": "^1.9.0",
     "react-spotify-login": "^0.9.1",
     "spotify-web-api-js": "^1.2.0",
-    "spotify-web-api-node": "^4.0.0"
+    "spotify-web-api-node": "^4.0.0",
+    "styled-components": "^4.3.2"
   },
   "scripts": {
     "start": "react-scripts start",

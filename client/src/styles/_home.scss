@@ -3,7 +3,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-  padding-top: 7%;
+  padding-top: 8%;
   padding-bottom: 1%;
   background-color: $second-background-color;
 }
@@ -11,34 +11,51 @@
 .navbar {
   background-color: $navbar-background-color;
 }
+
 .navbar-brand {
   font-weight: bold;
   font-size: 200%;
   font-family: 'Lobster Two', cursive;
-  color:white;
+  color: white;
+
+  img {
+    height: 4vw;
+  }
+
+  span.username {
+    font-size: 80%;
+  }
 }
 
 .nav-item button {
-  border: 1px solid $primary-font-color;
+  border: 0.5px solid $primary-font-color;
 }
-.local {
+h4.local {
   color:$secondary-font-color;
-  display: flex;
+  margin-top: 8px;
+
+  img {
+    height: 3.5vw;
+  }
 }
 
-span.username {
-  color: $primary-font-color;
-  size: 200%;
+button.btn-dark {
+
+  img {
+    height: 2.5vw;
+  }
 }
 
 .events-container {
-
+  justify-content: center;
   overflow: auto;
   height: -webkit-fill-available;
+  text-align: center;
 
-  .loading {
+  h4{
+    font-weight: bold;
+    margin-top: 40vh;
     color: white;
-    font-size: 300%;
   }
 }
 
@@ -88,6 +105,13 @@ div.card-body {
   height: fit-content;
   background-color: $navbar-background-color;
   color: $secondary-font-color;
+  font-style: italic;
+
+  h4.card-title {
+    font-weight: bold;
+    margin-top: 0;
+    color: #1db954;
+  }
 }
 
 div.playlist-container {
@@ -105,6 +129,8 @@ div.playlist-container {
 
   button {
     flex-grow: 1;
+    font-weight: bold;
+    color: white;
   }
 
   button.btn.generate-button {

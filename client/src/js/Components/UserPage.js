@@ -119,11 +119,13 @@ class User extends Component {
       startDate: date
     });
   };
+
   handleChangeEnd = date => {
     this.setState({
       endDate: date
     });
   };
+
   onSubmit = () => {
     console.log(this.state.startDate.toISOString());
     this.setState({
