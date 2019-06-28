@@ -29,7 +29,8 @@ class User extends Component {
       eventBarPosition: '49.2827,-123.1207',
       eventStartDate: start.toISOString(),
       eventEndDate: end.toISOString(),
-      artists: []
+      artists: [],
+      tracksInPlaylist: true
     };
   }
 
@@ -79,7 +80,6 @@ class User extends Component {
           const promises2 = artistIds.map(id =>
             spotifyApi.getArtistTopTracks(id, 'GB', { max: 3 }).then(
               response => {
-                console.log('Artist tracks', response.tracks[0]);
                 response.tracks.forEach(track => tracks.push(track.uri));
               },
               err => {
@@ -181,7 +181,11 @@ class User extends Component {
                 console.log('Playlist created', response);
                 this.setState({ current_playlist_id: response.id });
                 console.log('length tracks', tracks.length);
-                if (tracks.length) {
+                if (!tracks.length) {
+                  this.setState({
+                    tracksInPlaylist: false
+                  });
+                } else {
                   console.log('in the if');
                   spotifyApi.addTracksToPlaylist(response.id, tracks);
                 }
