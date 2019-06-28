@@ -52,6 +52,9 @@ class User extends Component {
     const { cookies } = this.props;
     let artistIds = [];
     let tracks = [];
+    this.setState({
+      tracksInPlaylist: true
+    });
     axios
       .get(`/api/users/${cookies.get('jetify_user')}`)
       .then(response => {
@@ -227,6 +230,7 @@ class User extends Component {
         />
         <div className="Body">
           <EventBar
+            tracksInPlaylist={this.state.tracksInPlaylist}
             latlong={this.state.eventBarPosition}
             startDate={this.state.eventStartDate}
             endDate={this.state.eventEndDate}
@@ -267,6 +271,7 @@ class User extends Component {
             </button>
           </div>
           <Playlist
+            tracksInPlaylist={this.state.tracksInPlaylist}
             playlistID={this.state.current_playlist_id}
             savePlaylist={this.savePlaylist}
           />
