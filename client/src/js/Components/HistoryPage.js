@@ -7,14 +7,14 @@ import PlaylistWindow from './_PlaylistWindow.js'
 const styles = require('./_map.json')
 var headphone = require('./icons8-headphones-24.png')
 
-
-
 class HistoryPage extends Component {
   constructor(props){
     super(props);
+    const {cookies} = this.props;
+    const { city } = cookies.get('jetify_location');
     this.state={
-      city: '',
-      lat: '', 
+      city: city,
+      lat: '',
       lng: '',
       current_user: {},
       current_playlist_id: '',
@@ -22,29 +22,11 @@ class HistoryPage extends Component {
     }
   }
 
-    componentDidMount() {
+    async componentDidMount() {
       const {cookies} = this.props;
-   axios.get(`/api/users/${cookies.get('jetify_user')}`).then(response => {
-    let user = response.data.user;
-    this.setState({current_user: user});
-   }).then(axios.get('/api/locations/2').then(response => {
-    //  const {name, latitude, longitude} = response.data;
-    //  this.setState({city:name, lat:latitude, lng:longitude, allLocations: data})
-    //  
-    console.log(response);
-    //  console.log(latitude)
-    //  console.log(longitude)
-     
-   }))
+      await axios.get(`/api/users/${cookies.get('jetify_user')}/getPlaylists`)
+           .then(response => { console.log('Hello there!!!!!!!', response.data) });
   }
-  // .then(response => {
-  //   let data = response.data;
-  //   this.setState({
-  //     loading: false,
-  //     events: data,
-  //     artists: data.filter(e => e.artist).map(e => e.artist)
-  //   });
-  //   this.props.setArtists(this.state.artists);
 
   onMouseOver = (props, marker, e) =>
   this.setState({
@@ -52,7 +34,7 @@ class HistoryPage extends Component {
     activeMarker: marker,
     showingInfoWindow: true
   });
-  
+
 
 
   onMarkerClick = (props, marker, e) =>
@@ -62,7 +44,7 @@ class HistoryPage extends Component {
     showingInfoWindow: true
   });
 
-  
+
 
 // onClose = props => {
 //   if (this.state.showingInfoWindow) {
@@ -76,10 +58,11 @@ class HistoryPage extends Component {
     console.log(this.props.google)
     return (
       <div className="history">
-      <NavBar 
-      user={this.state.current_user}
-      handleLogout={this.handleLogout}
-      city={this.state.city}/>
+      <NavBar
+        user={this.state.current_user}
+        handleLogout={this.handleLogout}
+        city={this.state.city}
+      />
       <Map className="map-container"
         google={this.props.google}
          zoom={2.3}
@@ -91,13 +74,13 @@ class HistoryPage extends Component {
       >
         {/* <MapMarker lat= {this.state.lat} lng={this.state.lng} onClick={this.onMarkerClick}/> */}
         <PlaylistWindow onClick={this.onMarkerClick}/>
-      <Marker 
+      <Marker
       onMouseover={this.onMouseOver}
       onClick={this.onMarkerClick}
        lat= {this.state.lat} lng={this.state.lng}
       options={{icon:headphone}}
        />
-      </Map> 
+      </Map>
       </div>
     );
   }
@@ -105,6 +88,6 @@ class HistoryPage extends Component {
 
  export default GoogleApiWrapper({
   apiKey: process.env.REACT_APP_GOOGLE_API_KEY
-})(HistoryPage); 
- 
+})(HistoryPage);
+
 

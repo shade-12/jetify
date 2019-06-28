@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   namespace :api do # /api/data
     get '/data', to: 'tests#index'
     get '/events', to: 'events#index'
-    resources :users, only: [:create, :show]
+    resources :users, only: [:create, :show] do
+      get '/getPlaylists', to: 'users#getPlaylists'
+    end
     resources :locations, only: [:create, :show] do
       resources :playlists, only: [:create]
     end

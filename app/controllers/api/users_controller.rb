@@ -21,4 +21,26 @@ class Api::UsersController < ApplicationController
     }
   end
 
+  def getPlaylists
+    @user = User.find params[:user_id]
+    @playlists = @user.playlists
+    @locations = Array.new
+
+    @playlists.each do |playlist|
+      @locations << Location.find(playlist.location_id)
+    end
+
+    render :json => {
+      playlists: @playlists,
+      locations: @locations
+    }
+  end
+
 end
+
+
+
+
+
+
+
