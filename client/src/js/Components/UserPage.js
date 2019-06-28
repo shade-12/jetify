@@ -16,17 +16,19 @@ class User extends Component {
     super(props);
     var start = moment();
     var end = moment().add(2, 'days');
+    const {cookies} = this.props;
+    const { city, latitude, longitude } = cookies.get('jetify_location');
     this.state = {
       current_user: {},
       current_playlist_id: '',
-      display_city: '',
+      display_city: city,
       map_city: '',
-      display_lat: 49.2827,
-      display_long: -123.1207,
-      position: '49.2827,-123.1207',
+      display_lat: latitude,
+      display_long: longitude,
+      position: latitude.toString() + ',' + longitude.toString(),
       startDate: start.toDate(),
       endDate: end.toDate(),
-      eventBarPosition: '49.2827,-123.1207',
+      eventBarPosition: latitude.toString() + ',' + longitude.toString(),
       eventStartDate: start.toISOString(),
       eventEndDate: end.toISOString(),
       redirectToHistory: false,
@@ -62,12 +64,13 @@ class User extends Component {
     const {cookies} = this.props;
     cookies.remove('jetify_token', { path: '/' });
     cookies.remove('jetify_user', { path: '/' });
+    cookies.remove('jetify_location', { path: '/' });
     this.setState({ current_user: null });
   }
 
   goToHistory = () => {
     this.setState({redirectToHistory: true});
-    
+
   }
 
   savePlaylist = () => {
@@ -105,7 +108,7 @@ class User extends Component {
     console.log(locationObj)
     const lat = locationObj.mapPosition.lat;
     const lng = locationObj.mapPosition.lng;
-    const area = locationObj.area 
+    const area = locationObj.area
     this.setState({
       display_lat: lat,
       display_long: lng,

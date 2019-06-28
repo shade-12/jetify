@@ -15,8 +15,18 @@ class LoginPage extends Component {
   }
 
   onSuccess = response => {
-    let token = response.access_token;
     const {cookies} = this.props;
+    //get user current location
+    axios.get('https://ipapi.co/json/')
+         .then(response => {
+            let data = response.data;
+            cookies.set('jetify_location', data, { path: '/', expires: 0 });
+          })
+          .catch(error => {
+            console.log(error);
+          });
+
+    let token = response.access_token;
     cookies.set('jetify_token', token, { path: '/', expires: 0 });
     axios({
       method: 'get',

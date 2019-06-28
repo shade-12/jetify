@@ -13,8 +13,8 @@ const styles = require('./_map.json')
 
 class Map extends Component{
 
-	constructor( props, context ){
-		super( props, context );
+	constructor( props ){
+		super( props );
 		// var start = moment();
   //   var end = moment().add(2, 'days');
 		this.state = {
