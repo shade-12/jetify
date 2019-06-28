@@ -62,6 +62,10 @@ class User extends Component {
     this.setState({ current_user: null });
   }
 
+  goToHistory = () => {
+    
+  }
+
   savePlaylist = () => {
     let location = {
       name: this.state.display_city,
@@ -132,8 +136,6 @@ class User extends Component {
   };
 
   render() {
-    const date = new Date();
-    console.log(date);
     if(this.state.current_user === null) {
       return <Redirect to="/" />
     }
@@ -144,6 +146,7 @@ class User extends Component {
           user={this.state.current_user}
           handleLogout={this.handleLogout}
           city={this.state.display_city}
+          goToHistory={this.goToHistory}
         />
         <div className="Body">
           <EventBar

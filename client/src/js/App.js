@@ -26,7 +26,7 @@ class App extends Component {
           />
           <Route
             path="/history"
-            component={() => <HistoryPage {...this.state}/>}
+            component={() => <HistoryPage cookies={this.props.cookies}/>}
           />
         </div>
       </Router>
