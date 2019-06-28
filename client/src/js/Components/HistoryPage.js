@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Redirect } from "react-router-dom";
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 import NavBar from './_Navbar.js';
-// import MapMarker from './_MapMarker.js'
+import MapMarker from './_MapMarker.js'
 import PlaylistWindow from './_PlaylistWindow.js'
 const styles = require('./_map.json')
 var headphone = require('./icons8-headphones-24.png')
@@ -19,7 +19,7 @@ class HistoryPage extends Component {
       lng: '',
       current_user: {},
       current_playlist_id: '',
-      allLocations: {},
+      allLocations: [],
       redirectToUserPage: false,
       redirectToHistoryPage: false,
       redirectToFuturePage: false
@@ -30,7 +30,17 @@ class HistoryPage extends Component {
     const {cookies} = this.props;
     await axios.get(`/api/users/${cookies.get('jetify_user')}/getPlaylists`)
                 .then(response => {
+                  const { locations } = response.data;
                   console.log('Hello there!!!!!!!', response.data);
+                  const locationArray = [];
+                    locations.map(location => {
+                      if(!this.locationExists(locationArray, location)) {
+                        locationArray.push(location);
+                        console.log("Push");
+                      }
+                    });
+                    console.log("Array length: ", locationArray.length)
+                  this.setState({allLocations: locationArray});
                   axios.get(`/api/users/${cookies.get('jetify_user')}`).then((response) => {
                     this.setState({current_user: response.data.user });
                   });
@@ -74,7 +84,14 @@ class HistoryPage extends Component {
     showingInfoWindow: true
   });
 
-
+  locationExists = (array, location) => {
+    for(let i = 0; i < array.length; i++) {
+      if(array[i].name === location.name) {
+        return true;
+      }
+    }
+    return false;
+  }
 
 // onClose = props => {
 //   if (this.state.showingInfoWindow) {
@@ -85,7 +102,6 @@ class HistoryPage extends Component {
 //   }
 // };
    render() {
-    console.log(this.props.google);
     const {cookies} = this.props;
 
     if(this.state.current_user === null) {
@@ -104,40 +120,43 @@ class HistoryPage extends Component {
       return <Redirect to='/future' />
     }
 
+    const locationMarkers = this.state.allLocations.map(location =>
+      <Marker
+        position={{lat: location.latitude, lng: location.longitude}}
+        options={{icon:headphone}}
+      />
+    );
+
     return (
       <div className="history">
-      <NavBar
-        user={this.state.current_user}
-        city={this.state.city}
-        handleLogout={this.handleLogout}
-        handleJetify={this.handleJetify}
-        handleMyPlaylists={this.handleMyPlaylists}
-        handleMyPlans={this.handleMyPlans}
-      />
-      <Map className="map-container"
-        google={this.props.google}
-         zoom={2.3}
-        styles= {styles}
-        initialCenter={{
-         lat: 39.399872,
-         lng: -8.224454
-        }}
-      >
-        {/* <MapMarker lat= {this.state.lat} lng={this.state.lng} onClick={this.onMarkerClick}/> */}
+        <NavBar
+          user={this.state.current_user}
+          city={this.state.city}
+          handleLogout={this.handleLogout}
+          handleJetify={this.handleJetify}
+          handleMyPlaylists={this.handleMyPlaylists}
+          handleMyPlans={this.handleMyPlans}
+        />
+        <Map
+          className={'map-container'}
+          google={this.props.google}
+          zoom={2.3}
+          styles= {styles}
+          initialCenter={{
+           lat: 39.399872,
+           lng: -8.224454
+          }}
+        >
+        {locationMarkers}
         <PlaylistWindow onClick={this.onMarkerClick}/>
-      <Marker
-      onMouseover={this.onMouseOver}
-      onClick={this.onMarkerClick}
-       lat= {this.state.lat} lng={this.state.lng}
-      options={{icon:headphone}}
-       />
-      </Map>
+
+        </Map>
       </div>
     );
   }
 }
 
- export default GoogleApiWrapper({
+export default GoogleApiWrapper({
   apiKey: process.env.REACT_APP_GOOGLE_API_KEY
 })(HistoryPage);
 
