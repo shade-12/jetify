@@ -29,12 +29,16 @@ class User extends Component {
       eventBarPosition: '49.2827,-123.1207',
       eventStartDate: start.toISOString(),
       eventEndDate: end.toISOString(),
-      artists: []
+      artists: [],
+      testArtistArray: ['Beyonce', 'Elvis', 'Madonna'],
+      artistsID: []
     };
   }
 
   componentDidMount() {
     //fetch user data from backend
+    let artistIds = [];
+    let tracks = [];
     axios
       .get('/api/users/1')
       .then(response => {
@@ -46,13 +50,31 @@ class User extends Component {
         spotifyApi.setAccessToken(cookies.get('jetify_token'));
       })
       .then(() =>
-        //fetch top tracks of local artists
-        spotifyApi
-          .getArtistTopTracks('43ZHCT0cAZBISjO8DG9PnE', 'SE', { limit: 10 })
-          .then(
+        //fetch artistID for all artist in this.state.artist
+        {
+          const promises = this.state.testArtistArray.map(artist =>
+            spotifyApi.searchArtists(artist, 'artist').then(
+              response => {
+                console.log('response', response);
+                console.log('artist id response', response.artists.items[0].id);
+                artistIds.push(response.artists.items[0].id);
+              },
+              err => {
+                console.error(err);
+              }
+            )
+          );
+          return Promise.all(promises);
+        }
+      )
+      .then(() => {
+        //fetch top songs for each artist in this.state.artists
+        console.log('artistsids: ', artistIds);
+
+        artistIds.forEach(id =>
+          spotifyApi.getArtistTopTracks(id, 'GB', { limit: 3 }).then(
             data => {
               console.log('Artist tracks', data.tracks[0]);
-              let tracks = [];
               data.tracks.forEach(track => tracks.push(track.uri));
               spotifyApi
                 .createPlaylist(this.state.current_user.spotify_id, {
@@ -68,8 +90,21 @@ class User extends Component {
               console.error(err);
             }
           )
-      );
+        );
+      });
   }
+
+  // elvis: 43ZHCT0cAZBISjO8DG9PnE
+  // beyonce: 6vWDO969PvNqNYHIOW5v0m
+  // Madonna: 6tbjWDEIzxoDsBA1FuhfPW
+
+  // componentDidUpdate(prevProps) {
+  //   if (
+  //     this.props.latlong !== prevProps.artists ||
+  //   ) {
+  //     // get playlist based on new artist array
+  //   }
+  // }
 
   handleLogout = () => {
     const { cookies } = this.props;
