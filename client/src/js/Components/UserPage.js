@@ -30,8 +30,7 @@ class User extends Component {
       eventStartDate: start.toISOString(),
       eventEndDate: end.toISOString(),
       artists: [],
-      testArtistArray: ['Beyonce', 'Elvis', 'Madonna'],
-      artistsID: []
+      testArtistArray: ['Beyonce', 'Elvis', 'Madonna']
     };
   }
 
@@ -70,27 +69,37 @@ class User extends Component {
       .then(() => {
         //fetch top songs for each artist in this.state.artists
         console.log('artistsids: ', artistIds);
-
-        artistIds.forEach(id =>
-          spotifyApi.getArtistTopTracks(id, 'GB', { limit: 3 }).then(
-            data => {
-              console.log('Artist tracks', data.tracks[0]);
-              data.tracks.forEach(track => tracks.push(track.uri));
-              spotifyApi
-                .createPlaylist(this.state.current_user.spotify_id, {
-                  name: 'Jetify'
-                })
-                .then(response => {
-                  console.log('Playlist created', response);
-                  this.setState({ current_playlist_id: response.id });
-                  spotifyApi.addTracksToPlaylist(response.id, tracks);
-                });
+        {
+          const promises2 = artistIds.map(id =>
+            spotifyApi.getArtistTopTracks(id, 'GB', { limit: 3 }).then(
+              response => {
+                console.log('Artist tracks', response.tracks[0]);
+                response.tracks.forEach(track => tracks.push(track.uri));
+              },
+              err => {
+                console.error(err);
+              }
+            )
+          );
+          return Promise.all(promises2);
+        }
+      })
+      .then(() => {
+        console.log('tracks', tracks);
+        spotifyApi
+          .createPlaylist(this.state.current_user.spotify_id, {
+            name: 'Jetify'
+          })
+          .then(
+            response => {
+              console.log('Playlist created', response);
+              this.setState({ current_playlist_id: response.id });
+              spotifyApi.addTracksToPlaylist(response.id, tracks);
             },
             err => {
               console.error(err);
             }
-          )
-        );
+          );
       });
   }
 
