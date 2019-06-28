@@ -18,6 +18,7 @@ class HistoryPage extends Component {
       lng: '',
       current_user: {},
       current_playlist_id: '',
+      allLocations: {},
     }
   }
 
@@ -26,16 +27,24 @@ class HistoryPage extends Component {
    axios.get(`/api/users/${cookies.get('jetify_user')}`).then(response => {
     let user = response.data.user;
     this.setState({current_user: user});
-   }).then(axios.get('/api/locations/1').then(response => {
-     const {name, latitude, longitude} = response.data.location;
-     this.setState({city:name, lat:latitude, lng:longitude})
-    //  console.log(name)
+   }).then(axios.get('/api/locations/2').then(response => {
+    //  const {name, latitude, longitude} = response.data;
+    //  this.setState({city:name, lat:latitude, lng:longitude, allLocations: data})
+    //  
+    console.log(response);
     //  console.log(latitude)
     //  console.log(longitude)
      
    }))
   }
-
+  // .then(response => {
+  //   let data = response.data;
+  //   this.setState({
+  //     loading: false,
+  //     events: data,
+  //     artists: data.filter(e => e.artist).map(e => e.artist)
+  //   });
+  //   this.props.setArtists(this.state.artists);
 
   onMouseOver = (props, marker, e) =>
   this.setState({
@@ -83,6 +92,7 @@ class HistoryPage extends Component {
         {/* <MapMarker lat= {this.state.lat} lng={this.state.lng} onClick={this.onMarkerClick}/> */}
         <PlaylistWindow onClick={this.onMarkerClick}/>
       <Marker 
+      onMouseover={this.onMouseOver}
       onClick={this.onMarkerClick}
        lat= {this.state.lat} lng={this.state.lng}
       options={{icon:headphone}}

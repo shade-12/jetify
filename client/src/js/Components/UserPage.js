@@ -19,7 +19,7 @@ class User extends Component {
     this.state = {
       current_user: {},
       current_playlist_id: '',
-      display_city: 'Vancouver',
+      display_city: '',
       display_lat: 49.2827,
       display_long: -123.1207,
       position: '49.2827,-123.1207',
