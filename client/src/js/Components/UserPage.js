@@ -31,7 +31,9 @@ class User extends Component {
       eventBarPosition: latitude.toString() + ',' + longitude.toString(),
       eventStartDate: start.toISOString(),
       eventEndDate: end.toISOString(),
-      redirectToHistory: false,
+      redirectToUserPage: false,
+      redirectToHistoryPage: false,
+      redirectToFuturePage: false
     };
   }
 
@@ -60,6 +62,7 @@ class User extends Component {
     });
   }
 
+  //handle navbar buttons click after login
   handleLogout = () => {
     const {cookies} = this.props;
     cookies.remove('jetify_token', { path: '/' });
@@ -68,9 +71,12 @@ class User extends Component {
     this.setState({ current_user: null });
   }
 
-  goToHistory = () => {
-    this.setState({redirectToHistory: true});
+  handleMyPlans = () => {
+    this.setState({redirectToFuturePage: true});
+  }
 
+  handleMyPlaylists = () => {
+    this.setState({redirectToHistoryPage: true});
   }
 
   savePlaylist = () => {
@@ -148,20 +154,33 @@ class User extends Component {
   };
 
   render() {
+    const {cookies} = this.props;
+
     if(this.state.current_user === null) {
       return <Redirect to="/" />
     }
-    if(this.state.redirectToHistory === true){
-      return <Redirect to="/history" />
+
+    if(this.state.redirectToUserPage) {
+      return <Redirect to={`/users/${cookies.get('jetify_user')}`} />
+    }
+
+    if(this.state.redirectToHistoryPage) {
+      return <Redirect to='/history' />
+    }
+
+    if(this.state.redirectToFuturePage) {
+      return <Redirect to='/future' />
     }
 
     return (
       <div className="App">
         <NavBar
           user={this.state.current_user}
-          handleLogout={this.handleLogout}
           city={this.state.display_city}
-          goToHistory={this.goToHistory}
+          handleLogout={this.handleLogout}
+          handleMyPlaylists={this.handleMyPlaylists}
+          handleMyPlans={this.handleMyPlans}
+          cookies={this.props.cookies}
         />
         <div className="Body">
           <EventBar
