@@ -36,15 +36,13 @@ class User extends Component {
 
   componentDidMount() {
     //fetch user data from backends
+    //set artists from Ticketmaster API and render relevant Spotify playlist
     this.setArtists();
     this.renderPlaylist();
   }
 
-  // elvis: 43ZHCT0cAZBISjO8DG9PnE
-  // beyonce: 6vWDO969PvNqNYHIOW5v0m
-  // Madonna: 6tbjWDEIzxoDsBA1FuhfPW
-
   componentDidUpdate(_, prevState) {
+    //If artist state changes (on submit of new location) new playlist renders
     if (this.state.artists !== prevState.artists) {
       this.renderPlaylist();
     }
@@ -64,7 +62,7 @@ class User extends Component {
         spotifyApi.setAccessToken(cookies.get('jetify_token'));
       })
       .then(() =>
-        //fetch artistID for all artist in this.state.artist
+        //fetch artistID for all artists in this.state.artist
         {
           const promises = this.state.artists.map(artist =>
             spotifyApi.searchArtists(artist, 'artist').then(
@@ -88,8 +86,9 @@ class User extends Component {
           const promises2 = artistIds.map(id =>
             spotifyApi.getArtistTopTracks(id, 'GB', { limit: 3 }).then(
               response => {
-                if (response.tracks[0]) {
-                  response.tracks.forEach(track => tracks.push(track.uri));
+                console.log('RESPONSE', response.tracks[0]);
+                for (let i = 0; i <= 2; i++) {
+                  tracks.push(response.tracks[i].uri);
                 }
               },
               err => {
@@ -101,6 +100,7 @@ class User extends Component {
         }
       })
       .then(() => {
+        //create playlist called 'Jetify' with artists top songs as tracks
         console.log('tracks', tracks);
         spotifyApi
           .createPlaylist(this.state.current_user.spotify_id, {
