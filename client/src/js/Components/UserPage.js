@@ -32,34 +32,35 @@ class User extends Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const {cookies} = this.props;
     //fetch user data from backend
-    axios.get('/api/users/1').then((response) => {
-      let user = response.data.user;
-      this.setState({current_user: user});
+    await axios.get(`/api/users/${cookies.get('jetify_user')}`).then(response => {
+      this.setState({ current_user: response.data.user });
+      console.log("User at userpage: ",this.state.current_user );
+    }).then( () => {
+          //connect to spotify web API
+          spotifyApi.setAccessToken(cookies.get('jetify_token'));
 
-      //connect to spotify web API
-      const {cookies} = this.props;
-      spotifyApi.setAccessToken(cookies.get('jetify_token')); })
-                .then(() =>
-                  //fetch top tracks of local artists
-                  spotifyApi.getArtistTopTracks('43ZHCT0cAZBISjO8DG9PnE', 'SE', {limit: 10})
-                            .then( (data) => {
-                              let tracks = [];
-                              data.tracks.forEach( track => tracks.push(track.uri) );
-                              spotifyApi.createPlaylist(this.state.current_user.spotify_id, { name: 'Jetify' }).then((response) => {
-                                this.setState({ current_playlist_id: response.id });
-                                spotifyApi.addTracksToPlaylist(response.id, tracks);
-                              });
-                            }, (err) => {
-                              console.error(err);
-                            })
-                );
+          //fetch top tracks of local artists
+          spotifyApi.getArtistTopTracks('43ZHCT0cAZBISjO8DG9PnE', 'SE', {limit: 10})
+                    .then( data => {
+                      let tracks = [];
+                      data.tracks.forEach( track => tracks.push(track.uri) );
+                      spotifyApi.createPlaylist(this.state.current_user.spotify_id, { name: 'Jetify' }).then((response) => {
+                        this.setState({ current_playlist_id: response.id });
+                        spotifyApi.addTracksToPlaylist(response.id, tracks);
+                      });
+                      }, (err) => {
+                        console.error(err);
+                  });
+    });
   }
 
   handleLogout = () => {
     const {cookies} = this.props;
     cookies.remove('jetify_token', { path: '/' });
+    cookies.remove('jetify_user', { path: '/' });
     this.setState({ current_user: null });
   }
 
@@ -133,8 +134,6 @@ class User extends Component {
   };
 
   render() {
-    const date = new Date();
-    console.log(date);
     if(this.state.current_user === null) {
       return <Redirect to="/" />
     }

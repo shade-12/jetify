@@ -24,14 +24,14 @@ class LoginPage extends Component {
       headers: { 'Authorization': `Bearer ${token}` }
     }).then( response => {
       let data = response.data;
-      console.log("spotify data", data.id);
       let user = {
         name:  data.display_name,
         email: data.email,
         spotify_id: data.id
       };
       axios.post('/api/users', user).then(response => {
-        var user = response.data.user;
+        let user = response.data.user;
+        cookies.set('jetify_user', user.id, { path: '/', expires: 0 });
         this.setState({
           currentUser: user,
           redirectToUserPage: true
