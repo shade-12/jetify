@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import SpotifyLogin from 'react-spotify-login';
 import axios from 'axios';
 
-const buttonText = <div><img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="login-logo"/>&nbsp;&nbsp;<span>Login with Spotify</span></div>;
+const buttonText = <div><img src="https://img.icons8.com/nolan/96/000000/spotify.png" alt="login-logo"/>&nbsp;&nbsp;<span>Login with Spotify</span></div>;
 
 class LoginPage extends Component {
   constructor(props) {

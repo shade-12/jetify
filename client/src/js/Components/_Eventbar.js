@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Event from './_Event.js';
+import { PushSpinner } from "react-spinners-kit";
 // has state - loading true or fault (starts true)
 // componant did mount will make a request to the controller api action - once got events have can control them.
 
@@ -56,8 +57,12 @@ class EventBar extends Component {
     if (loading) {
       return (
         <div className="events-container">
-          <h1>Events</h1>
-          <p className="loading">loading!</p>
+          <h4>Events on the way ...</h4>
+          <PushSpinner
+                size={80}
+                color="#1db954"
+                loading={loading}
+          />
         </div>
       );
     } else {
