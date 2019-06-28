@@ -2,6 +2,10 @@ import React, {Component} from 'react';
 import { withGoogleMap, GoogleMap, withScriptjs, Marker, InfoWindow} from "react-google-maps";
 import Autocomplete from 'react-google-autocomplete';
 import Geocode from 'react-geocode';
+// import { Button, Modal } from 'react-bootstrap';
+// import moment from "moment";
+// import DatePicker from 'react-datepicker';
+// import 'react-datepicker/dist/react-datepicker.css';
 Geocode.setApiKey( process.env.REACT_APP_GOOGLE_API_KEY );
 Geocode.enableDebug();
 const styles = require('./_map.json')
@@ -10,9 +14,11 @@ const styles = require('./_map.json')
 class Map extends Component{
 
 	constructor( props ){
-		
 		super( props );
+		// var start = moment();
+  //   var end = moment().add(2, 'days');
 		this.state = {
+			show: false,
 			address: '',
 			city: '',
 			area: '',
@@ -23,7 +29,9 @@ class Map extends Component{
 			markerPosition: {
 				lat: this.props.center.lat,
 				lng: this.props.center.lng
-			}
+			},
+			// startDate: start.toDate(),
+   //    endDate: end.toDate(),
 		}
 	}
 	/**
@@ -36,7 +44,6 @@ class Map extends Component{
 					addressArray =  response.results[0].address_components,
 					city = this.getCity( addressArray ),
 					area = this.getArea( addressArray );
-				console.log( 'city', city, area);
 				this.setState( {
 					address: ( address ) ? address : '',
 					area: ( area ) ? area : '',
@@ -186,21 +193,69 @@ class Map extends Component{
 		})
 	};
 
+	//close form
+	handleClose = () => {
+    this.setState({ show: false });
+  };
+
+  //show form
+  handleShow = () => {
+    this.setState({ show: true });
+  };
 
 	render(){
 		const AsyncMap = withScriptjs(
 			withGoogleMap(
 				props => (
 					<div className="map-container">
-					<Autocomplete 
-						onPlaceSelected={ this.onPlaceSelected }
-						types={['(regions)']}
-						style={{width: '100%',
-						height: '100%',
-						paddingleft: '16px',
-						marginTop: '2px',
-						}}
-					/>
+					{/*<Button variant="primary" onClick={this.handleShow}>
+          Go To Other Place
+        	</Button>
+					<Modal
+						show="true"
+						onHide={this.handleClose}
+						size="lg"
+        		aria-labelledby="contained-modal-title-vcenter"
+        		centered
+        	>
+	          <Modal.Header closeButton>
+	            <Modal.Title id="contained-modal-title-vcenter">Whoop! Time to plan a trip</Modal.Title>
+	          </Modal.Header>
+	          <Modal.Body>*/}
+	          	<Autocomplete
+								onPlaceSelected={ this.onPlaceSelected }
+								types={['(regions)']}
+								style={{width: '100%',
+								height: '30px',
+								paddingleft: '16px',
+								marginTop: '2px',
+								}}
+							/>
+							{/*<DatePicker
+                selected={this.state.startDate}
+                selectsStart
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                onChange={this.handleChangeStart}
+              />
+              <DatePicker
+                selected={this.state.endDate}
+                selectsEnd
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                onChange={this.handleChangeEnd}
+                minDate={this.state.startDate}
+              />
+	          </Modal.Body>
+	          <Modal.Footer>
+	            <Button variant="secondary" onClick={this.handleClose}>
+	              Close
+	            </Button>
+	            <Button variant="primary" onClick={this.handleClose}>
+	              Submit
+	            </Button>
+	          </Modal.Footer>
+        	</Modal>*/}
 					<GoogleMap google={ this.props.google }
 					           defaultZoom={ this.props.zoom }
 										 defaultCenter={{ lat: this.state.mapPosition.lat, lng: this.state.mapPosition.lng }}
@@ -234,7 +289,7 @@ class Map extends Component{
 			map = <div>
 				<div>
 				</div>
-				  <div className="map-display"> 
+				  <div className="map-display">
 				<AsyncMap
       googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`}
       loadingElement={

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
-
 import NavBar from './_Navbar.js';
 import EventBar from './_Eventbar.js';
 import Playlist from './_Playlist.js';
@@ -17,16 +16,19 @@ class User extends Component {
     super(props);
     var start = moment();
     var end = moment().add(2, 'days');
+    const { cookies } = this.props;
+    const { city, latitude, longitude } = cookies.get('jetify_location');
     this.state = {
-      current_user: '',
+      current_user: {},
       current_playlist_id: '',
-      display_city: 'Vancouver',
-      display_lat: 49.2827,
-      display_long: -123.1207,
-      position: '49.2827,-123.1207',
+      display_city: city,
+      map_city: '',
+      display_lat: latitude,
+      display_long: longitude,
+      position: latitude.toString() + ',' + longitude.toString(),
       startDate: start.toDate(),
       endDate: end.toDate(),
-      eventBarPosition: '49.2827,-123.1207',
+      eventBarPosition: latitude.toString() + ',' + longitude.toString(),
       eventStartDate: start.toISOString(),
       eventEndDate: end.toISOString(),
       artists: [],
@@ -34,11 +36,9 @@ class User extends Component {
     };
   }
 
-  componentDidMount() {
-    //fetch user data from backends
-    //set artists from Ticketmaster API and render relevant Spotify playlist
-    this.setArtists();
-    this.renderPlaylist();
+  async componentDidMount() {
+    //fetch user data from backend
+    await this.renderPlaylist();
   }
 
   componentDidUpdate(_, prevState) {
@@ -49,10 +49,11 @@ class User extends Component {
   }
 
   renderPlaylist = () => {
+    const { cookies } = this.props;
     let artistIds = [];
     let tracks = [];
     axios
-      .get('/api/users/2')
+      .get(`/api/users/${cookies.get('jetify_user')}`)
       .then(response => {
         let user = response.data.user;
         this.setState({ current_user: user });
@@ -126,8 +127,37 @@ class User extends Component {
   handleLogout = () => {
     const { cookies } = this.props;
     cookies.remove('jetify_token', { path: '/' });
+    cookies.remove('jetify_user', { path: '/' });
+    cookies.remove('jetify_location', { path: '/' });
     this.setState({ current_user: null });
-    console.log('Remove cookie');
+  };
+
+  goToHistory = () => {
+    this.setState({ redirectToHistory: true });
+  };
+
+  savePlaylist = () => {
+    let location = {
+      name: this.state.map_city,
+      latitude: this.state.display_lat,
+      longitude: this.state.display_long
+    };
+
+    //save location to db first, then playlist
+    axios.post('/api/locations', location).then(response => {
+      let locationID = response.data.location.id;
+      let playlist = {
+        user_id: this.state.current_user.id,
+        location_id: locationID,
+        name: 'Jetify',
+        spotify_id: this.state.current_playlist_id
+      };
+      axios
+        .post(`/api/locations/${locationID}/playlists`, playlist)
+        .then(response => {
+          console.log('------------------Saved playlist', response);
+        });
+    });
   };
 
   makePositionString = () => {
@@ -141,9 +171,11 @@ class User extends Component {
   setLocation = locationObj => {
     const lat = locationObj.mapPosition.lat;
     const lng = locationObj.mapPosition.lng;
+    const area = locationObj.area;
     this.setState({
       display_lat: lat,
-      display_long: lng
+      display_long: lng,
+      map_city: area
     });
     this.setState({
       position: this.makePositionString()
@@ -161,11 +193,13 @@ class User extends Component {
       startDate: date
     });
   };
+
   handleChangeEnd = date => {
     this.setState({
       endDate: date
     });
   };
+
   onSubmit = () => {
     console.log(this.state.startDate.toISOString());
     this.setState({
@@ -176,9 +210,11 @@ class User extends Component {
   };
 
   render() {
-    const date = new Date();
     if (this.state.current_user === null) {
       return <Redirect to="/" />;
+    }
+    if (this.state.redirectToHistory === true) {
+      return <Redirect to="/history" />;
     }
 
     return (
@@ -187,6 +223,7 @@ class User extends Component {
           user={this.state.current_user}
           handleLogout={this.handleLogout}
           city={this.state.display_city}
+          goToHistory={this.goToHistory}
         />
         <div className="Body">
           <EventBar
@@ -229,7 +266,10 @@ class User extends Component {
               Submit
             </button>
           </div>
-          <Playlist playlistID={this.state.current_playlist_id} />
+          <Playlist
+            playlistID={this.state.current_playlist_id}
+            savePlaylist={this.savePlaylist}
+          />
         </div>
       </div>
     );

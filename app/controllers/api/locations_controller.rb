@@ -14,7 +14,7 @@ class Api::LocationsController < ApplicationController
   end
 
   def show
-    @location = Location.find params[:name]
+    @location = Location.find params[:id]
     render :json => {
       location: @location
     }

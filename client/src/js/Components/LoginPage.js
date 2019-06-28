@@ -3,49 +3,60 @@ import { Redirect } from 'react-router-dom';
 import SpotifyLogin from 'react-spotify-login';
 import axios from 'axios';
 
-const buttonText = <div><img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="login-logo"/>&nbsp;&nbsp;<span>Login with Spotify</span></div>;
+const buttonText = <div><img src="https://img.icons8.com/nolan/96/000000/spotify.png" alt="login-logo"/>&nbsp;&nbsp;<span>Login with Spotify</span></div>;
 
 class LoginPage extends Component {
   constructor(props) {
     super(props);
-    const {cookies} = this.props;
     this.state = {
       redirectToUserPage: false,
-      accessToken: cookies.get('jetify_token') || null
+      currentUser: {}
     };
   }
 
   onSuccess = response => {
-    let token = response.access_token;
     const {cookies} = this.props;
+    //get user current location
+    axios.get('https://ipapi.co/json/')
+         .then(response => {
+            let data = response.data;
+            cookies.set('jetify_location', data, { path: '/', expires: 0 });
+          })
+          .catch(error => {
+            console.log(error);
+          });
+
+    let token = response.access_token;
     cookies.set('jetify_token', token, { path: '/', expires: 0 });
-    this.setState({ accessToken: cookies.get('jetify_token') });
     axios({
       method: 'get',
       url: 'https://api.spotify.com/v1/me',
       headers: { 'Authorization': `Bearer ${token}` }
     }).then( response => {
       let data = response.data;
-      console.log("spotify data", data.id);
       let user = {
         name:  data.display_name,
         email: data.email,
         spotify_id: data.id
       };
       axios.post('/api/users', user).then(response => {
-        console.log(response);
+        let user = response.data.user;
+        cookies.set('jetify_user', user.id, { path: '/', expires: 0 });
+        this.setState({
+          currentUser: user,
+          redirectToUserPage: true
+        });
       }).catch(error => {
         console.log(error);
       });
     });
-    this.setState({ redirectToUserPage: true });
   };
 
   onFailure = response => console.error(response);
 
   render() {
     if(this.state.redirectToUserPage === true) {
-      return <Redirect to="/users" />
+      return <Redirect to={`/users/${this.state.currentUser.id}`} />
     }
 
     return (

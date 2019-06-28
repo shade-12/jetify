@@ -18,9 +18,9 @@ class Event extends Component {
       <section className="card" style={{ width: 18 + 'rem' }}>
         <img className="card-img-top" src={event.image} alt="Card cap" />
         <div className="card-body">
-          <h5 className="card-title">{event.name}</h5>
-          <p className="card-date">{event.date}</p>
-          <p className="card-venue">{event.venue}</p>
+          <h4 className="card-title">{event.name}</h4>
+          <p className="card-date">Date: {event.date}</p>
+          <p className="card-venue">Venue: {event.venue}</p>
           <a
             href={event.url}
             target="_blank"
