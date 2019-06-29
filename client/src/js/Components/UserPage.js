@@ -94,8 +94,10 @@ class User extends Component {
           const promises2 = artistIds.map(id =>
             spotifyApi.getArtistTopTracks(id, 'GB', { limit: 3 }).then(
               response => {
-                for (let i = 0; i <= 2; i++) {
-                  tracks.push(response.tracks[i].uri);
+                if (response.tracks.length >= 3) {
+                  for (let i = 0; i <= 2; i++) {
+                    tracks.push(response.tracks[i].uri);
+                  }
                 }
               },
               err => {
@@ -173,8 +175,10 @@ class User extends Component {
           const promises2 = artistIds.map(id =>
             spotifyApi.getArtistTopTracks(id, 'GB', { limit: 3 }).then(
               response => {
-                for (let i = 3; i <= 5; i++) {
-                  tracks.push(response.tracks[i].uri);
+                if (response.tracks.length >= 6) {
+                  for (let i = 3; i <= 5; i++) {
+                    tracks.push(response.tracks[i].uri);
+                  }
                 }
               },
               err => {
