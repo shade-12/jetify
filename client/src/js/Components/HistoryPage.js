@@ -22,7 +22,6 @@ class HistoryPage extends Component {
       allLocations: [],
       allPlaylists:[],
       redirectToUserPage: false,
-      redirectToHistoryPage: false,
       redirectToFuturePage: false
     }
   }
@@ -40,6 +39,15 @@ class HistoryPage extends Component {
                         locationArray.push(location);
                       }
                     });
+
+                  //sort playlists according to location
+                  // locationArray.forEach(location => {
+                  //   playlists.forEach(playlist => {
+                  //     if(location.id === playlist.location_id){
+                  //       location['playlists'].push(playlist);
+                  //     }
+                  //   })
+                  // })
                   this.setState({
                     allLocations: locationArray,
                     allPlaylists: playlists
@@ -65,10 +73,6 @@ class HistoryPage extends Component {
 
   handleMyPlans = () => {
     this.setState({redirectToFuturePage: true});
-  }
-
-  handleMyPlaylists = () => {
-    this.setState({redirectToHistoryPage: true});
   }
 
   onMouseOver = (props, marker, e) =>
@@ -111,10 +115,6 @@ class HistoryPage extends Component {
 
     if(this.state.redirectToUserPage) {
       return <Redirect to={`/users/${cookies.get('jetify_user')}`} />
-    }
-
-    if(this.state.redirectToHistoryPage) {
-      return <Redirect to={`/users/${cookies.get('jetify_user')}/history`} />
     }
 
     if(this.state.redirectToFuturePage) {
