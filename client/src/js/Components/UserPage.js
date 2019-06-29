@@ -381,13 +381,15 @@ class User extends Component {
                 <Modal.Title id="contained-modal-title-vcenter">Whoop! Time to plan a trip</Modal.Title>
               </Modal.Header>
               <Modal.Body>
+              Start Date&nbsp;&nbsp;
               <DatePicker
                   selected={this.state.startDate}
                   selectsStart
                   startDate={this.state.startDate}
                   endDate={this.state.endDate}
                   onChange={this.handleChangeStart}
-                />
+                />&nbsp;&nbsp;&nbsp;
+                End Date&nbsp;&nbsp;
                 <DatePicker
                   selected={this.state.endDate}
                   selectsEnd

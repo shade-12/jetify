@@ -144,3 +144,19 @@ div.playlist-container {
   font-weight: bold;
   margin-top: -20px;
 }
+
+div.modal-content {
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  background: rgba(0, 159, 255, 0.7);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 159, 255, 0.7),
+    rgba(236, 47, 75, 0.7)
+  );
+}
+
+h4.navbar-brand :hover {
+  color: #E6E6FA;
+}
