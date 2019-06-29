@@ -5,14 +5,13 @@ var headphone = require('./icons8-headphones-24.png')
 export default class MapMarker extends React.Component {
 
   render(){
-    console.log(this.props.position)
+    console.log("I am props: ", this.props.latitude);
     return(
         <Marker
-        lat= {this.props.lat} 
-        lng={this.props.lng} 
-          icon={headphone}
-        >
-        </Marker>
+          position={{lat: this.props.latitude, lng: this.props.longitude}}
+          options={{icon:headphone}}
+        />
+
     );
   }
 }

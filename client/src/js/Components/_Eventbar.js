@@ -48,6 +48,7 @@ class EventBar extends Component {
       this.props.startDate !== prevProps.startDate ||
       this.props.endDate !== prevProps.endDate
     ) {
+      this.setState({loading: true});
       this.getEventInfo();
     }
   }
