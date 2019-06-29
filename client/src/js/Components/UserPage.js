@@ -8,6 +8,7 @@ import Playlist from './_Playlist.js';
 import Map from './_Map.js';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { Button, Modal } from 'react-bootstrap';
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
 
@@ -36,7 +37,8 @@ class User extends Component {
       tracksInPlaylist: true,
       redirectToUserPage: false,
       redirectToHistoryPage: false,
-      redirectToFuturePage: false
+      redirectToFuturePage: false,
+      show: false
     };
   }
 
@@ -299,10 +301,21 @@ class User extends Component {
   onSubmit = () => {
     console.log(this.state.startDate.toISOString());
     this.setState({
+      show: false,
       eventBarPosition: this.state.position,
       eventStartDate: this.state.startDate.toISOString(),
       eventEndDate: this.state.endDate.toISOString()
     });
+  };
+
+  //close form
+  handleClose = () => {
+    this.setState({ show: false });
+  };
+
+  //show form
+  handleShow = () => {
+    this.setState({ show: true });
   };
 
   render() {
@@ -354,27 +367,45 @@ class User extends Component {
               zoom={2}
               setLocation={this.setLocation}
             />
-            <div className="date-form">
-              <h2>Select your dates:</h2>
+            <Button className="popup-form-button" onClick={this.handleShow}>
+              Select Date
+            </Button>
+            <Modal
+              show={this.state.show}
+              onHide={this.handleClose}
+              size="lg"
+              aria-labelledby="contained-modal-title-vcenter"
+              centered
+            >
+              <Modal.Header closeButton>
+                <Modal.Title id="contained-modal-title-vcenter">Whoop! Time to plan a trip</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
               <DatePicker
-                selected={this.state.startDate}
-                selectsStart
-                startDate={this.state.startDate}
-                endDate={this.state.endDate}
-                onChange={this.handleChangeStart}
-              />
-              <DatePicker
-                selected={this.state.endDate}
-                selectsEnd
-                startDate={this.state.startDate}
-                endDate={this.state.endDate}
-                onChange={this.handleChangeEnd}
-                minDate={this.state.startDate}
-              />
-            </div>
-            <button type="onSubmit" onClick={this.onSubmit}>
-              Submit
-            </button>
+                  selected={this.state.startDate}
+                  selectsStart
+                  startDate={this.state.startDate}
+                  endDate={this.state.endDate}
+                  onChange={this.handleChangeStart}
+                />
+                <DatePicker
+                  selected={this.state.endDate}
+                  selectsEnd
+                  startDate={this.state.startDate}
+                  endDate={this.state.endDate}
+                  onChange={this.handleChangeEnd}
+                  minDate={this.state.startDate}
+                />
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={this.handleClose}>
+                  Close
+                </Button>
+                <Button variant="primary" onClick={this.onSubmit}>
+                  Submit
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </div>
           <Playlist
             renderRandomPlaylist={this.renderRandomPlaylist}
