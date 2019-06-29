@@ -20,7 +20,6 @@ class HistoryPage extends Component {
       current_user: {},
       current_playlist_id: '',
       allLocations: [],
-      allPlaylists:[],
       redirectToUserPage: false,
       redirectToFuturePage: false
     }
@@ -41,16 +40,16 @@ class HistoryPage extends Component {
                     });
 
                   //sort playlists according to location
-                  // locationArray.forEach(location => {
-                  //   playlists.forEach(playlist => {
-                  //     if(location.id === playlist.location_id){
-                  //       location['playlists'].push(playlist);
-                  //     }
-                  //   })
-                  // })
+                  locationArray.forEach(location => {
+                    location.playlists = [];
+                    playlists.forEach(playlist => {
+                      if(location.id === playlist.location_id){
+                        location.playlists.push(playlist);
+                      }
+                    });
+                  });
                   this.setState({
-                    allLocations: locationArray,
-                    allPlaylists: playlists
+                    allLocations: locationArray
                   });
                   axios.get(`/api/users/${cookies.get('jetify_user')}`).then((response) => {
                     this.setState({current_user: response.data.user });

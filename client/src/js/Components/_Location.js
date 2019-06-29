@@ -35,7 +35,7 @@ class Location extends Component {
         <img className="card-img" src="https://images.pexels.com/photos/2382868/pexels-photo-2382868.jpeg" alt="Card image"/>
         <div className="card-img-overlay">
           <h3 className="card-title">{this.props.name}</h3>
-          {<p className="card-text">5 playlists</p>}
+          {<p className="card-text">{this.props.playlists.length} playlists</p>}
         </div>
       </div>
     );
