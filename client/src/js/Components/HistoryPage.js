@@ -69,22 +69,22 @@ class HistoryPage extends Component {
     this.setState({redirectToHistoryPage: true});
   }
 
-// onMouseOver = (e) =>
-//   this.setState({
-//     visible: true
-//   });
-  
-// onMouseOut = (e) =>
-// this.setState({
-//   visible: false
-// })
-
-
- 
-  onMarkerClick = (props, marker, e) =>
+onMouseOver = (e) =>
   this.setState({
     visible: true
   });
+  
+onMouseLeave = (e) =>
+this.setState({
+  visible: false
+})
+
+
+ 
+  // onMarkerClick = (props, marker, e) =>
+  // this.setState({
+  //   visible: true
+  // });
   
   locationExists = (array, location) => {
     for(let i = 0; i < array.length; i++) {
@@ -125,13 +125,13 @@ class HistoryPage extends Component {
     const locationMarkers = this.state.allLocations.map(location =>
       <Marker 
         position={{lat: location.latitude, lng: location.longitude}}
-        options={{icon:headphone}}  onClick={this.onMarkerClick} onMouseover={this.onMouseOver} onMouseout={this.onMouseOut}
+        options={{icon:headphone}}  onClick={this.onMarkerClick} onMouseover={this.onMouseOver} onMouseout={this.onMouseLeave}
       />
       );
       
       const locationInfoWindow = this.state.allLocations.map(location =>
     <InfoWindow position={{lat: location.latitude, lng: location.longitude}}
-    height='100px'
+    height='50px'
       visible={this.state.visible}   >
       <div>
       <h4>{location.name}</h4>
