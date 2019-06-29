@@ -36,6 +36,7 @@ class User extends Component {
       eventEndDate: end.toISOString(),
       artists: [],
       tracksInPlaylist: true,
+      playlistLoading: true,
       redirectToUserPage: false,
       redirectToHistoryPage: false,
       redirectToFuturePage: false,
@@ -114,32 +115,24 @@ class User extends Component {
       })
       .then(() => {
         //create playlist called 'Jetify' with artists top songs as tracks
-        if(tracks.length > 0) {
-          spotifyApi
-            .createPlaylist(this.state.current_user.spotify_id, {
-              name: `Jetify: ${this.state.map_city}`
-            })
-            .then(
-              response => {
-                this.setState({ current_playlist_id: response.id });
-                console.log('length tracks', tracks.length);
-                if (!tracks.length) {
-                  this.setState({
-                    tracksInPlaylist: false
-                  });
-                } else {
-                  spotifyApi.addTracksToPlaylist(response.id, tracks);
-                }
-              },
-              err => {
-                console.error(err);
-              }
-            );
-          }else {
-            this.setState({
-              tracksInPlaylist: false
-            });
-          }
+        spotifyApi
+          .createPlaylist(this.state.current_user.spotify_id, {
+            name: `Jetify: ${this.state.map_city}`
+          })
+          .then(response => {
+            console.log('length tracks', tracks.length);
+            if (!tracks.length) {
+              this.setState({
+                tracksInPlaylist: false
+              });
+            } else {
+              spotifyApi.addTracksToPlaylist(response.id, tracks);
+              this.setState({
+                current_playlist_id: response.id,
+                playlistLoading: false
+              });
+            }
+          });
       });
   };
 
@@ -201,33 +194,25 @@ class User extends Component {
       })
       .then(() => {
         //create playlist called 'Jetify' with artists top songs as tracks
-        if(tracks.length > 0) {
-          spotifyApi
-            .createPlaylist(this.state.current_user.spotify_id, {
-              name: `Jetify: ${this.state.map_city}`
-            })
-            .then(
-              response => {
-                this.setState({ current_playlist_id: response.id });
-                console.log('length tracks', tracks.length);
-                if (!tracks.length) {
-                  this.setState({
-                    tracksInPlaylist: false
-                  });
-                } else {
-                  spotifyApi.addTracksToPlaylist(response.id, tracks);
-                }
-              },
-              err => {
-                console.error(err);
-              }
-          );
-        }else {
-          this.setState({
-            tracksInPlaylist: false
+        spotifyApi
+          .createPlaylist(this.state.current_user.spotify_id, {
+            name: `Jetify: ${this.state.map_city}`
+          })
+          .then(response => {
+            this.setState({ current_playlist_id: response.id });
+            console.log('length tracks', tracks.length);
+            if (!tracks.length) {
+              this.setState({
+                tracksInPlaylist: false
+              });
+            } else {
+              spotifyApi.addTracksToPlaylist(response.id, tracks);
+              this.setState({
+                current_playlist_id: response.id,
+                playlistLoading: false
+              });
+            }
           });
-        }
-
       });
   };
 
@@ -345,7 +330,7 @@ class User extends Component {
   //dismiss alert
   handleDismiss = () => {
     this.setState({ showSuccessAlert: false });
-  }
+  };
 
   render() {
     const { cookies } = this.props;
@@ -407,18 +392,20 @@ class User extends Component {
               centered
             >
               <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter">Whoop! Time to plan a trip to {this.state.map_city}</Modal.Title>
+                <Modal.Title id="contained-modal-title-vcenter">
+                  Whoop! Time to plan a trip to {this.state.map_city}
+                </Modal.Title>
               </Modal.Header>
               <Modal.Body>
-              Start Date&nbsp;&nbsp;
-              <DatePicker
+                Start Date&nbsp;&nbsp;
+                <DatePicker
                   selected={this.state.startDate}
                   selectsStart
                   startDate={this.state.startDate}
                   endDate={this.state.endDate}
                   onChange={this.handleChangeStart}
-                />&nbsp;&nbsp;&nbsp;
-                End Date&nbsp;&nbsp;
+                />
+                &nbsp;&nbsp;&nbsp; End Date&nbsp;&nbsp;
                 <DatePicker
                   selected={this.state.endDate}
                   selectsEnd
@@ -439,12 +426,18 @@ class User extends Component {
             </Modal>
           </div>
           <Playlist
+            playlistLoading={this.state.playlistLoading}
             renderRandomPlaylist={this.renderRandomPlaylist}
             tracksInPlaylist={this.state.tracksInPlaylist}
             playlistID={this.state.current_playlist_id}
             savePlaylist={this.savePlaylist}
           />
-          <Alert show={this.state.showSuccessAlert} variant="success" onClose={this.handleDismiss} dismissible>
+          <Alert
+            show={this.state.showSuccessAlert}
+            variant="success"
+            onClose={this.handleDismiss}
+            dismissible
+          >
             Playlist saved ! <span role="img">💚</span>
           </Alert>
         </div>
