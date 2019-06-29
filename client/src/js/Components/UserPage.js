@@ -33,6 +33,7 @@ class User extends Component {
       eventEndDate: end.toISOString(),
       artists: [],
       tracksInPlaylist: true,
+      playlistLoading: true,
       redirectToUserPage: false,
       redirectToHistoryPage: false,
       redirectToFuturePage: false
@@ -115,7 +116,6 @@ class User extends Component {
           })
           .then(
             response => {
-              this.setState({ current_playlist_id: response.id });
               console.log('length tracks', tracks.length);
               if (!tracks.length) {
                 this.setState({
@@ -123,6 +123,10 @@ class User extends Component {
                 });
               } else {
                 spotifyApi.addTracksToPlaylist(response.id, tracks);
+                this.setState({
+                  current_playlist_id: response.id,
+                  playlistLoading: false
+                });
               }
             },
             err => {
@@ -192,7 +196,7 @@ class User extends Component {
         //create playlist called 'Jetify' with artists top songs as tracks
         spotifyApi
           .createPlaylist(this.state.current_user.spotify_id, {
-            name: 'Jetify'
+            name: `Jetify: ${this.state.map_city}`
           })
           .then(
             response => {
@@ -204,6 +208,10 @@ class User extends Component {
                 });
               } else {
                 spotifyApi.addTracksToPlaylist(response.id, tracks);
+                this.setState({
+                  current_playlist_id: response.id,
+                  playlistLoading: false
+                });
               }
             },
             err => {
@@ -375,6 +383,7 @@ class User extends Component {
             </button>
           </div>
           <Playlist
+            playlistLoading={this.state.playlistLoading}
             renderRandomPlaylist={this.renderRandomPlaylist}
             tracksInPlaylist={this.state.tracksInPlaylist}
             playlistID={this.state.current_playlist_id}
