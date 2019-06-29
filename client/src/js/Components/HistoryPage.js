@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from "react-router-dom";
-import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
+import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 import NavBar from './_Navbar.js';
 import PlaylistWindow from './_PlaylistWindow.js';
 import LocationBar from './_Locationbar.js';
