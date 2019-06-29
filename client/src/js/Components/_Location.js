@@ -1,18 +1,41 @@
 import React, { Component } from 'react';
-// import axios from 'axios';
-// has state - loading true or fault (starts true)
-// componant did mount will make a request to the controller api action - once got events have can control them.
+const PexelsAPI = require('pexels-api-wrapper');
+let pexelsClient = new PexelsAPI(process.env.REACT_APP_PEXELS_API_KEY);
 
 class Location extends Component {
-  render() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      image_url: ''
+    };
+  }
 
+   componentDidMount() {
+     // pexelsClient.search(this.props.name, 1)
+     //            .then(result => {
+     //              let imageURL = result.photos;
+     //              // this.setState({image_url: imageURL});
+     //              console.log("Photos: ", imageURL);
+     //            }).
+     //            catch(function(e){
+     //              console.error(e);
+     //            });
+  }
+  render() {
+    // pexelsClient.search(this.props.name, 1)
+    //             .then(function(result){
+    //               let imageURL = result.photos[0].src.original;
+    //               console.log("Photos: ", result.photos[0]);
+    //             }).
+    //             catch(function(e){
+    //               console.error(e);
+    //             });
     return (
       <div className="card bg-dark text-white location-thumbnail">
-        <img className="card-img" src="http://xperttrip.com/assets/img/uploads/package_tours/1393830230-NUIDZargcI9XiYDgxWAB.jpg" alt="Card image" />
+        <img className="card-img" src="https://images.pexels.com/photos/2382868/pexels-photo-2382868.jpeg" alt="Card image"/>
         <div className="card-img-overlay">
-          <h5 className="card-title">Card title</h5>
-          <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-          <p className="card-text">Last updated 3 mins ago</p>
+          <h3 className="card-title">{this.props.name}</h3>
+          {<p className="card-text">5 playlists</p>}
         </div>
       </div>
     );
