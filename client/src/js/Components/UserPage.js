@@ -8,7 +8,7 @@ import Playlist from './_Playlist.js';
 import Map from './_Map.js';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, Alert } from 'react-bootstrap';
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
 
@@ -37,7 +37,8 @@ class User extends Component {
       redirectToUserPage: false,
       redirectToHistoryPage: false,
       redirectToFuturePage: false,
-      show: false
+      showDateForm: false,
+      showSuccessAlert: false
     };
   }
 
@@ -199,26 +200,33 @@ class User extends Component {
       })
       .then(() => {
         //create playlist called 'Jetify' with artists top songs as tracks
-        spotifyApi
-          .createPlaylist(this.state.current_user.spotify_id, {
-            name: `Jetify: ${this.state.map_city}`
-          })
-          .then(
-            response => {
-              this.setState({ current_playlist_id: response.id });
-              console.log('length tracks', tracks.length);
-              if (!tracks.length) {
-                this.setState({
-                  tracksInPlaylist: false
-                });
-              } else {
-                spotifyApi.addTracksToPlaylist(response.id, tracks);
+        if(tracks.length > 0) {
+          spotifyApi
+            .createPlaylist(this.state.current_user.spotify_id, {
+              name: `Jetify: ${this.state.map_city}`
+            })
+            .then(
+              response => {
+                this.setState({ current_playlist_id: response.id });
+                console.log('length tracks', tracks.length);
+                if (!tracks.length) {
+                  this.setState({
+                    tracksInPlaylist: false
+                  });
+                } else {
+                  spotifyApi.addTracksToPlaylist(response.id, tracks);
+                }
+              },
+              err => {
+                console.error(err);
               }
-            },
-            err => {
-              console.error(err);
-            }
           );
+        }else {
+          this.setState({
+            tracksInPlaylist: false
+          });
+        }
+
       });
   };
 
@@ -258,6 +266,7 @@ class User extends Component {
       axios
         .post(`/api/locations/${locationID}/playlists`, playlist)
         .then(response => {
+          this.setState({ showSuccessAlert: true });
           console.log('------------------Saved playlist', response);
         });
     });
@@ -306,7 +315,7 @@ class User extends Component {
   onSubmit = () => {
     console.log(this.state.startDate.toISOString());
     this.setState({
-      show: false,
+      showDateForm: false,
       eventBarPosition: this.state.position,
       eventStartDate: this.state.startDate.toISOString(),
       eventEndDate: this.state.endDate.toISOString()
@@ -315,13 +324,18 @@ class User extends Component {
 
   //close form
   handleClose = () => {
-    this.setState({ show: false });
+    this.setState({ showDateForm: false });
   };
 
   //show form
   handleShow = () => {
-    this.setState({ show: true });
+    this.setState({ showDateForm: true });
   };
+
+  //dismiss alert
+  handleDismiss = () => {
+    this.setState({ showSuccessAlert: false });
+  }
 
   render() {
     const { cookies } = this.props;
@@ -376,7 +390,7 @@ class User extends Component {
               Select Dates To See Events In {this.state.map_city}
             </Button>
             <Modal
-              show={this.state.show}
+              show={this.state.showDateForm}
               onHide={this.handleClose}
               size="lg"
               aria-labelledby="contained-modal-title-vcenter"
@@ -420,6 +434,9 @@ class User extends Component {
             playlistID={this.state.current_playlist_id}
             savePlaylist={this.savePlaylist}
           />
+          <Alert show={this.state.showSuccessAlert} variant="success" onClose={this.handleDismiss} dismissible>
+            Playlist saved ! 💚
+          </Alert>
         </div>
       </div>
     );

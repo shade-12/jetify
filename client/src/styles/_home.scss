@@ -177,3 +177,10 @@ div.modal-content {
 h4.navbar-brand :hover {
   color: #E6E6FA;
 }
+
+div.fade.alert.alert-success {
+    z-index: 9999;
+    margin-top: -660px;
+    margin-bottom: 700px;
+    font-weight: bold;
+}

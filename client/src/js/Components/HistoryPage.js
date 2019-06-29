@@ -112,11 +112,11 @@ class HistoryPage extends Component {
     }
 
     if(this.state.redirectToHistoryPage) {
-      return <Redirect to='/history' />
+      return <Redirect to={`/users/${cookies.get('jetify_user')}/history`} />
     }
 
     if(this.state.redirectToFuturePage) {
-      return <Redirect to='/future' />
+      return <Redirect to={`/users/${cookies.get('jetify_user')}/future`} />
     }
 
     const locationMarkers = this.state.allLocations.map(location =>

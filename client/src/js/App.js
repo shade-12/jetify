@@ -25,7 +25,7 @@ class App extends Component {
             render={() => <UserPage cookies={this.props.cookies} />}
           />
           <Route
-            path="/history"
+            path="/users/:id/history"
             component={() => <HistoryPage cookies={this.props.cookies}/>}
           />
         </div>
