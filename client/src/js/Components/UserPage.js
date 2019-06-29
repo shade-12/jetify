@@ -11,6 +11,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Button, Modal, Alert } from 'react-bootstrap';
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
+const PexelsAPI = require('pexels-api-wrapper');
+let pexelsClient = new PexelsAPI(process.env.REACT_APP_PEXELS_API_KEY);
 
 class User extends Component {
   constructor(props) {
@@ -246,29 +248,38 @@ class User extends Component {
     this.setState({ redirectToHistoryPage: true });
   };
 
-  savePlaylist = () => {
+   savePlaylist = () => {
     let location = {
       name: this.state.map_city,
       latitude: this.state.display_lat,
       longitude: this.state.display_long
     };
 
-    //save location to db first, then playlist
-    axios.post('/api/locations', location).then(response => {
-      let locationID = response.data.location.id;
-      let playlist = {
-        user_id: this.state.current_user.id,
-        location_id: locationID,
-        name: `Jetify: ${this.state.map_city}`,
-        spotify_id: this.state.current_playlist_id
-      };
-      axios
-        .post(`/api/locations/${locationID}/playlists`, playlist)
-        .then(response => {
-          this.setState({ showSuccessAlert: true });
-          console.log('------------------Saved playlist', response);
-        });
-    });
+    //get thumbnail for each location
+    pexelsClient.search(location.name, 1)
+                .then(result => {
+                  let imageURL = result.photos[0].src.original;
+                  location.image = imageURL;
+                  console.log("Photos: ", imageURL);
+                })
+                .then(() => {
+                  //save location to db first, then playlist
+                  axios.post('/api/locations', location).then(response => {
+                    let locationID = response.data.location.id;
+                    let playlist = {
+                      user_id: this.state.current_user.id,
+                      location_id: locationID,
+                      name: `Jetify: ${this.state.map_city}`,
+                      spotify_id: this.state.current_playlist_id
+                    };
+                    axios
+                      .post(`/api/locations/${locationID}/playlists`, playlist)
+                      .then(response => {
+                        this.setState({ showSuccessAlert: true });
+                        console.log('------------------Saved playlist', response);
+                      });
+                  });
+                });
   };
 
   makePositionString = () => {

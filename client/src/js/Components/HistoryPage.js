@@ -5,8 +5,7 @@ import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 import NavBar from './_Navbar.js';
 import PlaylistWindow from './_PlaylistWindow.js';
 import LocationBar from './_Locationbar.js';
-const PexelsAPI = require('pexels-api-wrapper');
-let pexelsClient = new PexelsAPI(process.env.REACT_APP_PEXELS_API_KEY);
+
 const styles = require('./_map.json');
 var headphone = require('./icons8-headphones-24.png');
 
@@ -44,16 +43,6 @@ class HistoryPage extends Component {
                   //sort playlists according to location
                   locationArray.forEach(location => {
                     location.playlists = [];
-                    //get thumbnail for each location
-                    pexelsClient.search(location.name, 1)
-                                .then(result => {
-                                  let imageURL = result.photos[0].src.original;
-                                  location.image = imageURL;
-                                  console.log("Photos: ", imageURL);
-                                }).
-                                catch(function(e){
-                                  console.error(e);
-                                });
                     playlists.forEach(playlist => {
                       if(location.id === playlist.location_id){
                         location.playlists.push(playlist);

@@ -4,7 +4,8 @@ class Api::LocationsController < ApplicationController
     @location = Location.find_or_create_by(
       name: params[:name],
       latitude: params[:latitude],
-      longitude: params[:longitude]
+      longitude: params[:longitude],
+      image: params[:image]
     )
     if @location.save
       render :json => {
