@@ -368,7 +368,7 @@ class User extends Component {
               setLocation={this.setLocation}
             />
             <Button className="popup-form-button" onClick={this.handleShow}>
-              Select Date
+              Select Dates To See Events In {this.state.map_city}
             </Button>
             <Modal
               show={this.state.show}
@@ -378,7 +378,7 @@ class User extends Component {
               centered
             >
               <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter">Whoop! Time to plan a trip</Modal.Title>
+                <Modal.Title id="contained-modal-title-vcenter">Whoop! Time to plan a trip to {this.state.map_city}</Modal.Title>
               </Modal.Header>
               <Modal.Body>
               Start Date&nbsp;&nbsp;
