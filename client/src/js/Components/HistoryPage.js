@@ -32,14 +32,13 @@ class HistoryPage extends Component {
                 .then(response => {
                   const { locations } = response.data;
                   console.log('Hello there!!!!!!!', response.data);
+                  //filter out duplicate locations
                   const locationArray = [];
                     locations.map(location => {
                       if(!this.locationExists(locationArray, location)) {
                         locationArray.push(location);
-                        console.log("Push");
                       }
                     });
-                    console.log("Array length: ", locationArray.length)
                   this.setState({allLocations: locationArray});
                   axios.get(`/api/users/${cookies.get('jetify_user')}`).then((response) => {
                     this.setState({current_user: response.data.user });
@@ -122,6 +121,7 @@ class HistoryPage extends Component {
 
     const locationMarkers = this.state.allLocations.map(location =>
       <Marker
+        key={location.created_at}
         position={{lat: location.latitude, lng: location.longitude}}
         options={{icon:headphone}}
       />

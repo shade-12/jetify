@@ -21,6 +21,7 @@ class User extends Component {
     this.state = {
       current_user: {},
       current_playlist_id: '',
+      generated_playlists_id:[],
       display_city: city,
       map_city: '',
       display_lat: latitude,
@@ -188,7 +189,7 @@ class User extends Component {
         //create playlist called 'Jetify' with artists top songs as tracks
         spotifyApi
           .createPlaylist(this.state.current_user.spotify_id, {
-            name: 'Jetify'
+            name: `Jetify: ${this.state.map_city}`
           })
           .then(
             response => {
