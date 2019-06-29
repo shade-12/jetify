@@ -59,6 +59,23 @@ button.btn-dark {
   }
 }
 
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: -webkit-fill-available;
+  text-align: center;
+  font-weight: bold;
+  max-width: 30vw;
+  background: #111845a6;
+  box-sizing: border-box;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgb(23, 32, 90);
+  border: 2px solid #2a3cad;
+  color: white;
+  padding: 20px;
+}
+
 .map-container {
   position: relative;
   z-index: 80;
