@@ -15,6 +15,7 @@ class Map extends Component{
 			address: '',
 			city: '',
 			area: '',
+			state: '',
 			mapPosition: {
 				lat: this.props.center.lat,
 				lng: this.props.center.lng
@@ -34,11 +35,13 @@ class Map extends Component{
 				const address = response.results[0].formatted_address,
 					addressArray =  response.results[0].address_components,
 					city = this.getCity( addressArray ),
-					area = this.getArea( addressArray );
+					area = this.getArea( addressArray ),
+					state = this.getState( addressArray);
 				this.setState( {
 					address: ( address ) ? address : '',
 					area: ( area ) ? area : '',
 					city: ( city ) ? city : '',
+					state: ( state ) ? state: '',
 				} );
 				this.props.setLocation(this.state);
 			},
@@ -60,7 +63,8 @@ class Map extends Component{
 		if (this.state.markerPosition.lat !== this.props.center.lat ||
 			this.state.address !== nextState.address ||
 			this.state.city !== nextState.city ||
-			this.state.area !== nextState.area
+			this.state.area !== nextState.area ||
+			this.state.state !== nextState.state
 
 		) {
 			this.props.setLocation(nextState);
@@ -111,6 +115,18 @@ class Map extends Component{
 	 * @param addressArray
 	 * @return {string}
 	 */
+	getState = ( addressArray ) => {
+		let state = '';
+		for( let i = 0; i < addressArray.length; i++ ) {
+			for( let i = 0; i < addressArray.length; i++ ) {
+			if ( addressArray[ i ].types[0] && 'administrative_area_level_1' === addressArray[ i ].types[0] ) {
+			  state = addressArray[ i ].long_name;
+			  return state;
+			 }
+			}
+		}
+	};
+	
 	/**
 	 * And function for city and address input
 	 * @param event
@@ -144,11 +160,13 @@ class Map extends Component{
 				const address = response.results[0].formatted_address,
 					addressArray =  response.results[0].address_components,
 					city = this.getCity( addressArray ),
-					area = this.getArea( addressArray );
+					area = this.getArea( addressArray ),
+					state = this.getState( addressArray );
 				this.setState( {
 					address: ( address ) ? address : '',
 					area: ( area ) ? area : '',
 					city: ( city ) ? city : '',
+					state: ( state ) ? state : '',
 				} )
 			},
 			error => {
@@ -166,6 +184,7 @@ class Map extends Component{
 			addressArray =  place.address_components,
 			city = this.getCity( addressArray ),
 			area = this.getArea( addressArray ),
+			state = this.getState( addressArray ),
 			latValue = place.geometry.location.lat(),
 			lngValue = place.geometry.location.lng();
 		// Set these values in the state.
@@ -173,6 +192,7 @@ class Map extends Component{
 			address: ( address ) ? address : '',
 			area: ( area ) ? area : '',
 			city: ( city ) ? city : '',
+			state: ( state ) ? state : '',
 			markerPosition: {
 				lat: latValue,
 				lng: lngValue
@@ -209,7 +229,7 @@ class Map extends Component{
 							position={{ lat: ( this.state.markerPosition.lat + 0.0018 ), lng: this.state.markerPosition.lng }}
 						>
 						 <div>
-								<span style={{ padding: 0, margin: 0 }}>{ this.state.address }</span>
+								<span style={{ padding: 0, margin: 0 }}>{ this.state.area + ", " + this.state.state }</span>
 							</div>
 						</InfoWindow>
 						{/*Marker*/}

@@ -3,7 +3,6 @@ import axios from 'axios';
 import { Redirect } from "react-router-dom";
 import { Map, GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 import NavBar from './_Navbar.js';
-import PlaylistWindow from './_PlaylistWindow.js';
 import LocationBar from './_Locationbar.js';
 const styles = require('./_map.json')
 var headphone = require('./icons8-headphones-24.png')
@@ -22,7 +21,9 @@ class HistoryPage extends Component {
       allLocations: [],
       allPlaylists:[],
       redirectToUserPage: false,
-      redirectToFuturePage: false
+      redirectToFuturePage: false,
+      activeMarker: {},
+      showInfoWindow: false,
     }
   }
 
@@ -38,6 +39,7 @@ class HistoryPage extends Component {
                       if(!this.locationExists(locationArray, location)) {
                         locationArray.push(location);
                       }
+                      return locationArray
                     });
 
                   //sort playlists according to location
@@ -75,21 +77,30 @@ class HistoryPage extends Component {
     this.setState({redirectToFuturePage: true});
   }
 
-  onMouseOver = (props, marker, e) =>
-  this.setState({
-    visible: true
-  });
+  onMouseOver = (props, marker, e) => {
+    console.log(marker)
+    if(!(marker.name === this.state.activeMarker.name)){
+      this.setState({
+        activeMarker: marker,
+        showInfoWindow: true,
+      })
+  }
+  }
+  onMouseOut = () => {
+    if(this.state.showInfoWindow){
+    this.setState({
+      showInfoWindow: false,
+        activeMarker: {},
+    })
+  }
+}
   
-onMouseLeave = (e) =>
-this.setState({
-  visible: false
-})
 
   onMarkerClick = (props, marker, e) =>
   this.setState({
     selectedPlace: props,
     activeMarker: marker,
-    showingInfoWindow: true
+    showInfoWindow: true
   });
 
   locationExists = (array, location) => {
@@ -110,6 +121,7 @@ this.setState({
 //   }
 // };
    render() {
+
     const {cookies} = this.props;
 
     if(this.state.current_user === null) {
@@ -126,35 +138,16 @@ this.setState({
     
     const locationMarkers = this.state.allLocations.map(location =>
       <Marker
+      name={location.name}
+      id={location.created_at}
         key={location.created_at}
         position={{lat: location.latitude, lng: location.longitude}}
-        options={{icon:headphone}}  onClick={this.onMarkerClick} onMouseover={this.onMouseOver} onMouseout={this.onMouseLeave}
-      />
-      );
-      
-      const locationInfoWindow = this.state.allLocations.map(location =>
-    <InfoWindow position={{lat: location.latitude, lng: location.longitude}}
-    height='50px'
-      visible={this.state.visible}   >
-      <div>
-      <h4>{location.name}</h4>
-      <button>p1</button>
-      </div>
-      <iframe
-            src={
-              'https://open.spotify.com/embed/user/spotify/playlist/' +
-              this.props.playlistID
-            }
-            frameBorder="0"
-            height="500px"
-            allowtransparency="true"
-            allow="encrypted-media"
-            title="playlist-widget"
-          />
-     
-      </InfoWindow>
-     );
-     
+        options={{icon:headphone}}  
+        onMouseover={this.onMouseOver}
+        onMouseout={this.onMouseOut}
+     >
+      </Marker>
+    );
 
     return (
       <div className="history">
@@ -175,9 +168,17 @@ this.setState({
            lat: 39.399872,
            lng: -8.224454
           }}
+          // onMousemove={this.onMouseMove}
         >
-        {locationMarkers}
-        <PlaylistWindow onClick={this.onMarkerClick}/>
+        {locationMarkers }
+        <InfoWindow
+        visible={this.state.showInfoWindow}
+        position={this.state.activeMarker.position}
+         >
+        <div>
+          <h4>{this.state.activeMarker.name}</h4>
+        </div>
+        </InfoWindow>
         </Map>
         <LocationBar locations={this.state.allLocations} playlists={this.state.allPlaylists} />
       </div>

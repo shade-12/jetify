@@ -15,7 +15,7 @@ class LocationBar extends Component {
     const locations = this.props.locations.map(location =>
       <Location key={location.id} {...location} />
     );
-    console.log("Props location: ", this.props.locations)
+    // console.log("Props location: ", this.props.locations)
     return (
       <div className="locations-container">
         {locations}
