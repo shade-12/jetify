@@ -8,6 +8,7 @@ import Playlist from './_Playlist.js';
 import Map from './_Map.js';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { Button, Modal, Alert } from 'react-bootstrap';
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
 
@@ -33,9 +34,12 @@ class User extends Component {
       eventEndDate: end.toISOString(),
       artists: [],
       tracksInPlaylist: true,
+      playlistLoading: true,
       redirectToUserPage: false,
       redirectToHistoryPage: false,
-      redirectToFuturePage: false
+      redirectToFuturePage: false,
+      showDateForm: false,
+      showSuccessAlert: false
     };
   }
 
@@ -133,6 +137,10 @@ class User extends Component {
             });
           } else {
             spotifyApi.addTracksToPlaylist(response.id, tracks);
+            this.setState({
+              current_playlist_id: response.id,
+              playlistLoading: false
+            });
           }
         },
         err => {
@@ -185,12 +193,13 @@ class User extends Component {
       let playlist = {
         user_id: this.state.current_user.id,
         location_id: locationID,
-        name: 'Jetify',
+        name: `Jetify: ${this.state.map_city}`,
         spotify_id: this.state.current_playlist_id
       };
       axios
         .post(`/api/locations/${locationID}/playlists`, playlist)
         .then(response => {
+          this.setState({ showSuccessAlert: true });
           console.log('------------------Saved playlist', response);
         });
     });
@@ -239,10 +248,26 @@ class User extends Component {
   onSubmit = () => {
     console.log(this.state.startDate.toISOString());
     this.setState({
+      showDateForm: false,
       eventBarPosition: this.state.position,
       eventStartDate: this.state.startDate.toISOString(),
       eventEndDate: this.state.endDate.toISOString()
     });
+  };
+
+  //close form
+  handleClose = () => {
+    this.setState({ showDateForm: false });
+  };
+
+  //show form
+  handleShow = () => {
+    this.setState({ showDateForm: true });
+  };
+
+  //dismiss alert
+  handleDismiss = () => {
+    this.setState({ showSuccessAlert: false });
   };
 
   render() {
@@ -257,11 +282,11 @@ class User extends Component {
     }
 
     if (this.state.redirectToHistoryPage) {
-      return <Redirect to="/history" />;
+      return <Redirect to={`/users/${cookies.get('jetify_user')}/history`} />;
     }
 
     if (this.state.redirectToFuturePage) {
-      return <Redirect to="/future" />;
+      return <Redirect to={`/users/${cookies.get('jetify_user')}/future`} />;
     }
 
     return (
@@ -294,34 +319,65 @@ class User extends Component {
               zoom={2}
               setLocation={this.setLocation}
             />
-            <div className="date-form">
-              <h2>Select your dates:</h2>
-              <DatePicker
-                selected={this.state.startDate}
-                selectsStart
-                startDate={this.state.startDate}
-                endDate={this.state.endDate}
-                onChange={this.handleChangeStart}
-              />
-              <DatePicker
-                selected={this.state.endDate}
-                selectsEnd
-                startDate={this.state.startDate}
-                endDate={this.state.endDate}
-                onChange={this.handleChangeEnd}
-                minDate={this.state.startDate}
-              />
-            </div>
-            <button type="onSubmit" onClick={this.onSubmit}>
-              Submit
-            </button>
+            <Button className="popup-form-button" onClick={this.handleShow}>
+              Select Dates To See Events In {this.state.map_city}
+            </Button>
+            <Modal
+              show={this.state.showDateForm}
+              onHide={this.handleClose}
+              size="lg"
+              aria-labelledby="contained-modal-title-vcenter"
+              centered
+            >
+              <Modal.Header closeButton>
+                <Modal.Title id="contained-modal-title-vcenter">
+                  Whoop! Time to plan a trip to {this.state.map_city}
+                </Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                Start Date&nbsp;&nbsp;
+                <DatePicker
+                  selected={this.state.startDate}
+                  selectsStart
+                  startDate={this.state.startDate}
+                  endDate={this.state.endDate}
+                  onChange={this.handleChangeStart}
+                />
+                &nbsp;&nbsp;&nbsp; End Date&nbsp;&nbsp;
+                <DatePicker
+                  selected={this.state.endDate}
+                  selectsEnd
+                  startDate={this.state.startDate}
+                  endDate={this.state.endDate}
+                  onChange={this.handleChangeEnd}
+                  minDate={this.state.startDate}
+                />
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={this.handleClose}>
+                  Close
+                </Button>
+                <Button variant="primary" onClick={this.onSubmit}>
+                  Submit
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </div>
           <Playlist
+            playlistLoading={this.state.playlistLoading}
             renderRandomPlaylist={this.renderRandomPlaylist}
             tracksInPlaylist={this.state.tracksInPlaylist}
             playlistID={this.state.current_playlist_id}
             savePlaylist={this.savePlaylist}
           />
+          <Alert
+            show={this.state.showSuccessAlert}
+            variant="success"
+            onClose={this.handleDismiss}
+            dismissible
+          >
+            Playlist saved ! <span role="img">💚</span>
+          </Alert>
         </div>
       </div>
     );

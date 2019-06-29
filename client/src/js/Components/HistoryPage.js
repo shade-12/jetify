@@ -3,8 +3,8 @@ import axios from 'axios';
 import { Redirect } from "react-router-dom";
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 import NavBar from './_Navbar.js';
-import MapMarker from './_MapMarker.js'
-import PlaylistWindow from './_PlaylistWindow.js'
+import PlaylistWindow from './_PlaylistWindow.js';
+import LocationBar from './_Locationbar.js';
 const styles = require('./_map.json')
 var headphone = require('./icons8-headphones-24.png')
 
@@ -20,8 +20,8 @@ class HistoryPage extends Component {
       current_user: {},
       current_playlist_id: '',
       allLocations: [],
+      allPlaylists:[],
       redirectToUserPage: false,
-      redirectToHistoryPage: false,
       redirectToFuturePage: false
     }
   }
@@ -30,17 +30,28 @@ class HistoryPage extends Component {
     const {cookies} = this.props;
     await axios.get(`/api/users/${cookies.get('jetify_user')}/getPlaylists`)
                 .then(response => {
-                  const { locations } = response.data;
+                  const { locations, playlists } = response.data;
                   console.log('Hello there!!!!!!!', response.data);
+                  //filter out duplicate locations
                   const locationArray = [];
                     locations.map(location => {
                       if(!this.locationExists(locationArray, location)) {
                         locationArray.push(location);
-                        console.log("Push");
                       }
                     });
-                    console.log("Array length: ", locationArray.length)
-                  this.setState({allLocations: locationArray});
+
+                  //sort playlists according to location
+                  // locationArray.forEach(location => {
+                  //   playlists.forEach(playlist => {
+                  //     if(location.id === playlist.location_id){
+                  //       location['playlists'].push(playlist);
+                  //     }
+                  //   })
+                  // })
+                  this.setState({
+                    allLocations: locationArray,
+                    allPlaylists: playlists
+                  });
                   axios.get(`/api/users/${cookies.get('jetify_user')}`).then((response) => {
                     this.setState({current_user: response.data.user });
                   });
@@ -64,18 +75,12 @@ class HistoryPage extends Component {
     this.setState({redirectToFuturePage: true});
   }
 
-  handleMyPlaylists = () => {
-    this.setState({redirectToHistoryPage: true});
-  }
-
   onMouseOver = (props, marker, e) =>
   this.setState({
     selectedPlace: props,
     activeMarker: marker,
     showingInfoWindow: true
   });
-
-
 
   onMarkerClick = (props, marker, e) =>
   this.setState({
@@ -112,16 +117,13 @@ class HistoryPage extends Component {
       return <Redirect to={`/users/${cookies.get('jetify_user')}`} />
     }
 
-    if(this.state.redirectToHistoryPage) {
-      return <Redirect to='/history' />
-    }
-
     if(this.state.redirectToFuturePage) {
-      return <Redirect to='/future' />
+      return <Redirect to={`/users/${cookies.get('jetify_user')}/future`} />
     }
 
     const locationMarkers = this.state.allLocations.map(location =>
       <Marker
+        key={location.created_at}
         position={{lat: location.latitude, lng: location.longitude}}
         options={{icon:headphone}}
       />
@@ -149,8 +151,8 @@ class HistoryPage extends Component {
         >
         {locationMarkers}
         <PlaylistWindow onClick={this.onMarkerClick}/>
-
         </Map>
+        <LocationBar locations={this.state.allLocations} playlists={this.state.allPlaylists} />
       </div>
     );
   }
