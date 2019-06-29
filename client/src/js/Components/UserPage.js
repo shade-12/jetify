@@ -78,34 +78,28 @@ class User extends Component {
     }
   };
 
-  replaceSpotifyPlaylist = tracks => {
+  replaceSpotifyPlaylist = async tracks => {
     const { current_user, map_city } = this.state;
+    const playlistId = current_user.reusable_spotify_playlist_id;
+
     this.setState({ playlistLoading: true });
-    // TODO: Rename reusable spotify
-    spotifyApi
-      .replaceTracksInPlaylist(
-        current_user.reusable_spotify_playlist_id,
-        tracks
-      )
-      .then(
-        response => {
-          if (!tracks.length) {
-            this.setState({
-              tracksInPlaylist: false
-            });
-          } else {
-            setTimeout(() => {
-              this.setState({
-                playlistLoading: false,
-                current_playlist_id: current_user.reusable_spotify_playlist_id
-              });
-            }, 1000);
-          }
-        },
-        err => {
-          console.error(err);
-        }
-      );
+    await spotifyApi.changePlaylistDetails(playlistId, {
+      name: `Jetify: ${map_city}`
+    });
+    await spotifyApi.replaceTracksInPlaylist(playlistId, tracks);
+
+    if (!tracks.length) {
+      this.setState({
+        tracksInPlaylist: false
+      });
+    } else {
+      setTimeout(() => {
+        this.setState({
+          playlistLoading: false,
+          current_playlist_id: playlistId
+        });
+      }, 1000);
+    }
   };
 
   fetchCurrentUser = async () => {
