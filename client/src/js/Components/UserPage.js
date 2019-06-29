@@ -41,6 +41,7 @@ class User extends Component {
 
   async componentDidMount() {
     //fetch user data from backend
+    await this.fetchCurrentUser();
     await this.renderPlaylist();
   }
 
@@ -56,26 +57,26 @@ class User extends Component {
     this.setState({
       tracksInPlaylist: true
     });
-    axios
-      .get(`/api/users/${cookies.get('jetify_user')}`)
-      .then(response => {
-        let user = response.data.user;
-        this.setState({ current_user: user });
 
-        //connect to spotify web API
-        const { cookies } = this.props;
-        spotifyApi.setAccessToken(cookies.get('jetify_token'));
-      })
-      .then(async () => {
-        //fetch artistID for all artists in this.state.artist
-        const artistIds = await this.fetchArtistIds();
+    spotifyApi.setAccessToken(cookies.get('jetify_token'));
 
-        //fetch top songs for each artist in this.state.artists
-        const tracks = await this.fetchTopSongs(artistIds, 0, 3);
+    //fetch artistID for all artists in this.state.artist
+    const artistIds = await this.fetchArtistIds();
 
-        //create playlist called 'Jetify' with artists top songs as tracks
-        this.createSpotifyPlaylist(tracks);
-      });
+    //fetch top songs for each artist in this.state.artists
+    const tracks = await this.fetchTopSongs(artistIds, 0, 3);
+
+    //create playlist called 'Jetify' with artists top songs as tracks
+    this.createSpotifyPlaylist(tracks);
+  };
+
+  fetchCurrentUser = async () => {
+    const { cookies } = this.props;
+    const response = await axios.get(
+      `/api/users/${cookies.get('jetify_user')}`
+    );
+    let user = response.data.user;
+    this.setState({ current_user: user });
   };
 
   fetchArtistIds = async () => {
@@ -140,31 +141,18 @@ class User extends Component {
       );
   };
 
-  renderRandomPlaylist = () => {
-    const { cookies } = this.props;
+  renderRandomPlaylist = async () => {
     this.setState({
       tracksInPlaylist: true
     });
-    axios
-      .get(`/api/users/${cookies.get('jetify_user')}`)
-      .then(response => {
-        let user = response.data.user;
-        this.setState({ current_user: user });
+    //fetch artistID for all artists in this.state.artist
+    const artistIds = await this.fetchArtistIds();
 
-        //connect to spotify web API
-        const { cookies } = this.props;
-        spotifyApi.setAccessToken(cookies.get('jetify_token'));
-      })
-      .then(async () => {
-        //fetch artistID for all artists in this.state.artist
-        const artistIds = await this.fetchArtistIds();
+    //fetch top songs for each artist in this.state.artists
+    const tracks = await this.fetchTopSongs(artistIds, 3, 6);
 
-        //fetch top songs for each artist in this.state.artists
-        const tracks = await this.fetchTopSongs(artistIds, 3, 6);
-
-        //create playlist called 'Jetify' with artists top songs as tracks
-        this.createSpotifyPlaylist(tracks);
-      });
+    //create playlist called 'Jetify' with artists top songs as tracks
+    this.createSpotifyPlaylist(tracks);
   };
 
   //handle navbar buttons click after login
