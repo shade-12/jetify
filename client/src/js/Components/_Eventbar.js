@@ -72,7 +72,11 @@ class EventBar extends Component {
           </div>
         );
       } else {
-        return <p>No shows in this location!</p>;
+        return (
+          <div className="empty-container">
+            <h4>No events happening here</h4>
+          </div>
+        );
       }
     }
   }

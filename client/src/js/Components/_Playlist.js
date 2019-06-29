@@ -36,7 +36,11 @@ class Playlist extends Component {
         </div>
       );
     else {
-      return <p>Choose new dates/ new location!</p>;
+      return (
+        <div className="empty-container">
+         <h4>Oh No ! Missing events :|</h4>
+        </div>
+      );
     }
   }
 }

@@ -59,6 +59,23 @@ button.btn-dark {
   }
 }
 
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: -webkit-fill-available;
+  text-align: center;
+  font-weight: bold;
+  max-width: 30vw;
+  background: #111845a6;
+  box-sizing: border-box;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgb(23, 32, 90);
+  border: 2px solid #2a3cad;
+  color: white;
+  padding: 20px;
+}
+
 .map-container {
   position: relative;
   z-index: 80;
@@ -138,3 +155,32 @@ div.playlist-container {
   }
 }
 
+.popup-form-button {
+  background-color: #8A2BE2;
+  border: none;
+  font-weight: bold;
+  margin-top: -20px;
+}
+
+div.modal-content {
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  background: rgba(0, 159, 255, 0.7);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 159, 255, 0.7),
+    rgba(236, 47, 75, 0.7)
+  );
+}
+
+h4.navbar-brand :hover {
+  color: #E6E6FA;
+}
+
+div.fade.alert.alert-success {
+    z-index: 9999;
+    margin-top: -660px;
+    margin-bottom: 700px;
+    font-weight: bold;
+}
