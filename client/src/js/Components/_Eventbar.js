@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Event from './_Event.js';
-import { PushSpinner } from "react-spinners-kit";
+import { PushSpinner } from 'react-spinners-kit';
 // has state - loading true or fault (starts true)
 // componant did mount will make a request to the controller api action - once got events have can control them.
 
@@ -48,6 +48,7 @@ class EventBar extends Component {
       this.props.startDate !== prevProps.startDate ||
       this.props.endDate !== prevProps.endDate
     ) {
+      this.setState({loading: true});
       this.getEventInfo();
     }
   }
@@ -58,21 +59,21 @@ class EventBar extends Component {
       return (
         <div className="events-container">
           <h4>Events on the way ...</h4>
-          <PushSpinner
-                size={80}
-                color="#1db954"
-                loading={loading}
-          />
+          <PushSpinner size={80} color="#1db954" loading={loading} />
         </div>
       );
     } else {
-      return (
-        <div className="events-container">
-          {events.map(event => (
-            <Event event={event} key={event.id} />
-          ))}
-        </div>
-      );
+      if (this.props.tracksInPlaylist === true) {
+        return (
+          <div className="events-container">
+            {events.map(event => (
+              <Event event={event} key={event.id} />
+            ))}
+          </div>
+        );
+      } else {
+        return <p>No shows in this location!</p>;
+      }
     }
   }
 }

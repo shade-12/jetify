@@ -55,6 +55,9 @@ class User extends Component {
     const { cookies } = this.props;
     let artistIds = [];
     let tracks = [];
+    this.setState({
+      tracksInPlaylist: true
+    });
     axios
       .get(`/api/users/${cookies.get('jetify_user')}`)
       .then(response => {
@@ -106,6 +109,85 @@ class User extends Component {
         //create playlist called 'Jetify' with artists top songs as tracks
         spotifyApi
           .createPlaylist(this.state.current_user.spotify_id, {
+            name: `Jetify: ${this.state.map_city}`
+          })
+          .then(
+            response => {
+              this.setState({ current_playlist_id: response.id });
+              console.log('length tracks', tracks.length);
+              if (!tracks.length) {
+                this.setState({
+                  tracksInPlaylist: false
+                });
+              } else {
+                spotifyApi.addTracksToPlaylist(response.id, tracks);
+              }
+            },
+            err => {
+              console.error(err);
+            }
+          );
+      });
+  };
+
+  renderRandomPlaylist = () => {
+    const { cookies } = this.props;
+    let artistIds = [];
+    let tracks = [];
+    this.setState({
+      tracksInPlaylist: true
+    });
+    axios
+      .get(`/api/users/${cookies.get('jetify_user')}`)
+      .then(response => {
+        let user = response.data.user;
+        this.setState({ current_user: user });
+
+        //connect to spotify web API
+        const { cookies } = this.props;
+        spotifyApi.setAccessToken(cookies.get('jetify_token'));
+      })
+      .then(() =>
+        //fetch artistID for all artists in this.state.artist
+        {
+          const promises = this.state.artists.map(artist =>
+            spotifyApi.searchArtists(artist, 'artist').then(
+              response => {
+                if (response.artists.items.length) {
+                  artistIds.push(response.artists.items[0].id);
+                }
+              },
+              err => {
+                console.error(err);
+              }
+            )
+          );
+          return Promise.all(promises);
+        }
+      )
+      .then(() => {
+        //fetch top songs for each artist in this.state.artists
+        console.log('artistsids: ', artistIds);
+        {
+          const promises2 = artistIds.map(id =>
+            spotifyApi.getArtistTopTracks(id, 'GB', { limit: 3 }).then(
+              response => {
+                for (let i = 3; i <= 5; i++) {
+                  tracks.push(response.tracks[i].uri);
+                }
+              },
+              err => {
+                console.error(err);
+              }
+            )
+          );
+          return Promise.all(promises2);
+        }
+      })
+      .then(() => {
+        //create playlist called 'Jetify' with artists top songs as tracks
+        spotifyApi
+          .createPlaylist(this.state.current_user.spotify_id, {
             name: 'Jetify'
           })
           .then(
@@ -137,12 +219,12 @@ class User extends Component {
   };
 
   handleMyPlans = () => {
-    this.setState({redirectToFuturePage: true});
-  }
+    this.setState({ redirectToFuturePage: true });
+  };
 
   handleMyPlaylists = () => {
-    this.setState({redirectToHistoryPage: true});
-  }
+    this.setState({ redirectToHistoryPage: true });
+  };
 
   savePlaylist = () => {
     let location = {
@@ -218,22 +300,22 @@ class User extends Component {
   };
 
   render() {
-    const {cookies} = this.props;
+    const { cookies } = this.props;
 
-    if(this.state.current_user === null) {
-      return <Redirect to="/" />
+    if (this.state.current_user === null) {
+      return <Redirect to="/" />;
     }
 
-    if(this.state.redirectToUserPage) {
-      return <Redirect to={`/users/${cookies.get('jetify_user')}`} />
+    if (this.state.redirectToUserPage) {
+      return <Redirect to={`/users/${cookies.get('jetify_user')}`} />;
     }
 
-    if(this.state.redirectToHistoryPage) {
-      return <Redirect to='/history' />
+    if (this.state.redirectToHistoryPage) {
+      return <Redirect to="/history" />;
     }
 
-    if(this.state.redirectToFuturePage) {
-      return <Redirect to='/future' />
+    if (this.state.redirectToFuturePage) {
+      return <Redirect to="/future" />;
     }
 
     return (
@@ -248,6 +330,7 @@ class User extends Component {
         />
         <div className="Body">
           <EventBar
+            tracksInPlaylist={this.state.tracksInPlaylist}
             latlong={this.state.eventBarPosition}
             startDate={this.state.eventStartDate}
             endDate={this.state.eventEndDate}
@@ -288,6 +371,8 @@ class User extends Component {
             </button>
           </div>
           <Playlist
+            renderRandomPlaylist={this.renderRandomPlaylist}
+            tracksInPlaylist={this.state.tracksInPlaylist}
             playlistID={this.state.current_playlist_id}
             savePlaylist={this.savePlaylist}
           />

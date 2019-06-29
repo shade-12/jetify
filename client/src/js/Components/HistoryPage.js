@@ -23,7 +23,7 @@ class HistoryPage extends Component {
       redirectToUserPage: false,
       redirectToHistoryPage: false,
       redirectToFuturePage: false,
-      showingInfoWindow: false, 
+      visible: false, 
     }
   }
 
@@ -31,8 +31,17 @@ class HistoryPage extends Component {
     const {cookies} = this.props;
     await axios.get(`/api/users/${cookies.get('jetify_user')}/getPlaylists`)
                 .then(response => {
-                  this.setState({allLocations: response.data.locations})
-                  console.log('Hello there!!!!!!!', response.data.locations);
+                  const { locations } = response.data;
+                  console.log('Hello there!!!!!!!', response.data);
+                  const locationArray = [];
+                    locations.map(location => {
+                      if(!this.locationExists(locationArray, location)) {
+                        locationArray.push(location);
+                        console.log("Push");
+                      }
+                    });
+                    console.log("Array length: ", locationArray.length)
+                  this.setState({allLocations: locationArray});
                   axios.get(`/api/users/${cookies.get('jetify_user')}`).then((response) => {
                     this.setState({current_user: response.data.user });
                   });
@@ -60,32 +69,31 @@ class HistoryPage extends Component {
     this.setState({redirectToHistoryPage: true});
   }
 
-  onMouseOver = (props, marker, e) =>
-  this.setState({
-    selectedPlace: props,
-    activeMarker: marker,
-    showingInfoWindow: true
-  });
+// onMouseOver = (e) =>
+//   this.setState({
+//     visible: true
+//   });
+  
+// onMouseOut = (e) =>
+// this.setState({
+//   visible: false
+// })
 
 
-
+ 
   onMarkerClick = (props, marker, e) =>
   this.setState({
-    selectedPlace: props,
-    activeMarker: marker,
-    showingInfoWindow: true
+    visible: true
   });
-
-  locationExists = (array, locationname) =>{
-    // const newArray = [];
-    array.forEach(element => {
-      if (element.name === locationname) {
-       return true
+  
+  locationExists = (array, location) => {
+    for(let i = 0; i < array.length; i++) {
+      if(array[i].name === location.name) {
+        return true;
       }
-    });
-    return false 
+    }
+    return false;
   }
-
 
 // onClose = props => {
 //   if (this.state.showingInfoWindow) {
@@ -96,7 +104,6 @@ class HistoryPage extends Component {
 //   }
 // };
    render() {
-    console.log(this.props.google);
     const {cookies} = this.props;
 
     if(this.state.current_user === null) {
@@ -114,48 +121,67 @@ class HistoryPage extends Component {
     if(this.state.redirectToFuturePage) {
       return <Redirect to='/future' />
     }
-    let newArray = [];
-    this.state.allLocations.forEach(location => 
-      {if(!this.locationExists(newArray, location.name))
-      newArray.push(location)}); 
-      console.log(newArray)
-    const locationMarker = newArray.map(location => (
-      <Marker location={location} />
-    ))
+    
+    const locationMarkers = this.state.allLocations.map(location =>
+      <Marker 
+        position={{lat: location.latitude, lng: location.longitude}}
+        options={{icon:headphone}}  onClick={this.onMarkerClick} onMouseover={this.onMouseOver} onMouseout={this.onMouseOut}
+      />
+      );
+      
+      const locationInfoWindow = this.state.allLocations.map(location =>
+    <InfoWindow position={{lat: location.latitude, lng: location.longitude}}
+    height='100px'
+      visible={this.state.visible}   >
+      <div>
+      <h4>{location.name}</h4>
+      <button>p1</button>
+      </div>
+      <iframe
+            src={
+              'https://open.spotify.com/embed/user/spotify/playlist/' +
+              this.props.playlistID
+            }
+            frameBorder="0"
+            height="500px"
+            allowtransparency="true"
+            allow="encrypted-media"
+            title="playlist-widget"
+          />
+     
+      </InfoWindow>
+     );
+     
 
     return (
       <div className="history">
-      <NavBar
-        user={this.state.current_user}
-        city={this.state.city}
-        handleLogout={this.handleLogout}
-        handleJetify={this.handleJetify}
-        handleMyPlaylists={this.handleMyPlaylists}
-        handleMyPlans={this.handleMyPlans}
-      />
-      
-      <Map className="map-container"
-        google={this.props.google}
-         zoom={2.3}
-        styles= {styles}
-        initialCenter={{
-         lat: 39.399872,
-         lng: -8.224454
-        }}
-        // {locationMarker}
-      >
-      
-   
-    
-      <Marker icon={headphone} {...locationMarker} />
-
-      </Map>
+        <NavBar
+          user={this.state.current_user}
+          city={this.state.city}
+          handleLogout={this.handleLogout}
+          handleJetify={this.handleJetify}
+          handleMyPlaylists={this.handleMyPlaylists}
+          handleMyPlans={this.handleMyPlans}
+        />
+        <Map
+          className={'map-container'}
+          google={this.props.google}
+          zoom={2.3}
+          styles= {styles}
+          initialCenter={{
+           lat: 39.399872,
+           lng: -8.224454
+          }}
+        >
+        {locationMarkers}
+        {locationInfoWindow}
+        </Map>
       </div>
     );
       }
 }
 
- export default GoogleApiWrapper({
+export default GoogleApiWrapper({
   apiKey: process.env.REACT_APP_GOOGLE_API_KEY
 })(HistoryPage);
 

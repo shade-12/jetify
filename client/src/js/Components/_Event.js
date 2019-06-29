@@ -7,13 +7,7 @@ import React, { Component } from 'react';
 class Event extends Component {
   render() {
     const { event } = this.props;
-    // let url = '';
-    // if (event.data._embedded.sales.url === []) {
-    //   url =
-    //     'https://www.ticketmaster.com/?landing=c&c=SEM_TMBRAND_ggl_295481099_21183198059_ticketmaster&GCID=0&&gclid=Cj0KCQjwo7foBRD8ARIsAHTy2wmQR3K6RFM0qxj7j6jPqmd7SyYBoDJycACNl2yUKn3lBhX6hKjmRLoaAjpFEALw_wcB&gclsrc=aw.ds';
-    // } else {
-    //   url = event.data._embedded.sales.url;
-    // }
+
     return (
       <section className="card" style={{ width: 18 + 'rem' }}>
         <img className="card-img-top" src={event.image} alt="Card cap" />
