@@ -3,7 +3,6 @@ import axios from 'axios';
 import { Redirect } from "react-router-dom";
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 import NavBar from './_Navbar.js';
-import MapMarker from './_MapMarker.js'
 import PlaylistWindow from './_PlaylistWindow.js'
 const styles = require('./_map.json')
 var headphone = require('./icons8-headphones-24.png')
@@ -73,8 +72,6 @@ class HistoryPage extends Component {
     activeMarker: marker,
     showingInfoWindow: true
   });
-
-
 
   onMarkerClick = (props, marker, e) =>
   this.setState({
