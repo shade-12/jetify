@@ -226,7 +226,7 @@ class Map extends Component{
 								onPlaceSelected={ this.onPlaceSelected }
 								types={['(regions)']}
 								style={{width: '100%',
-								height: '30px',
+								height: '40px',
 								paddingleft: '16px',
 								marginTop: '2px',
 								}}
@@ -299,7 +299,7 @@ class Map extends Component{
        <div style={{ height: this.props.height }} />
       }
       mapElement={
-       <div style={{ height: `100%` }} />
+       <div style={{ height: `96%` }} />
       }
      />
      </div>

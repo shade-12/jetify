@@ -135,6 +135,7 @@ class User extends Component {
 
   renderRandomPlaylist = () => {
     const { cookies } = this.props;
+    const playlistID = this.state.current_playlist_id;
     let artistIds = [];
     let tracks = [];
     this.setState({
@@ -244,7 +245,7 @@ class User extends Component {
       let playlist = {
         user_id: this.state.current_user.id,
         location_id: locationID,
-        name: 'Jetify',
+        name: `Jetify: ${this.state.map_city}`,
         spotify_id: this.state.current_playlist_id
       };
       axios
