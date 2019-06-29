@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from "react-router-dom";
-import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
+import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 import NavBar from './_Navbar.js';
-import PlaylistWindow from './_PlaylistWindow.js';
 import LocationBar from './_Locationbar.js';
 
 const styles = require('./_map.json');
@@ -22,7 +21,9 @@ class HistoryPage extends Component {
       current_playlist_id: '',
       allLocations: [],
       redirectToUserPage: false,
-      redirectToFuturePage: false
+      redirectToFuturePage: false,
+      showingInfoWindow: false,
+      activeMarker: {},
     }
   }
 
@@ -98,14 +99,24 @@ class HistoryPage extends Component {
     return false;
   }
 
-// onClose = props => {
-//   if (this.state.showingInfoWindow) {
-//     this.setState({
-//       showingInfoWindow: false,
-//       activeMarker: null
-//     });
-//   }
-// };
+    onMarkerOver = (props, marker, e) => {
+      if(this.state.activeMarker.name !== marker.name) {
+        this.setState({
+          activeMarker: marker,
+          showingInfoWindow: true
+        });
+        console.log("Hover marker: ", this.state.activeMarker);
+      }
+    };
+
+    onMarkerOut = (props, marker, e) => {
+      this.setState({
+        activeMarker: {},
+        showingInfoWindow: false
+      });
+      console.log("Out marker: ", this.state.activeMarker);
+    };
+
    render() {
     const {cookies} = this.props;
 
@@ -123,9 +134,13 @@ class HistoryPage extends Component {
 
     const locationMarkers = this.state.allLocations.map(location =>
       <Marker
+        draggable={false}
+        name={location.name}
         key={location.created_at}
         position={{lat: location.latitude, lng: location.longitude}}
         options={{icon:headphone}}
+        onMouseover={this.onMarkerOver}
+        onMouseout={this.onMarkerOut}
       />
     );
 
@@ -150,7 +165,14 @@ class HistoryPage extends Component {
           }}
         >
         {locationMarkers}
-        <PlaylistWindow onClick={this.onMarkerClick}/>
+        <InfoWindow
+          marker={this.state.activeMarker}
+          visible={this.state.showingInfoWindow}
+        >
+          <div>
+            <p>{this.state.activeMarker.name}</p>
+          </div>
+        </InfoWindow>
         </Map>
         <LocationBar locations={this.state.allLocations} playlists={this.state.allPlaylists} />
       </div>

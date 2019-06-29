@@ -27,6 +27,18 @@ div.location-thumbnail {
   font-weight: bold;
 }
 
+div.modal-content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 80vw;
+  // margin
+
+  iframe {
+    margin: 20px;
+  }
+}
+
 div.card-img-overlay {
   background: black;
   background: rgba(0,0,0,0.3);
@@ -37,3 +49,4 @@ div.card-img-overlay:hover {
   background: rgba(0,0,0,0);
   cursor: pointer;
 }
+
