@@ -25,7 +25,7 @@ class Location extends Component {
               playlist.spotify_id
             }
             frameBorder="0"
-            height="800px"
+            height="400px"
             allowtransparency="true"
             allow="encrypted-media"
             title="playlist-widget"
@@ -45,6 +45,7 @@ class Location extends Component {
         </div>
          <Modal
           className="popup-playlists-container"
+          size="lg"
           show={this.state.show}
           onHide={this.handleHide}
           dialogClassName="modal-90w"

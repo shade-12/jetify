@@ -27,12 +27,10 @@ div.location-thumbnail {
   font-weight: bold;
 }
 
-div.modal-content {
+div.popup-playlists-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 80vw;
-  // margin
 
   iframe {
     margin: 20px;
