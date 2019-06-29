@@ -3,7 +3,8 @@ import axios from 'axios';
 import { Redirect } from "react-router-dom";
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 import NavBar from './_Navbar.js';
-import PlaylistWindow from './_PlaylistWindow.js'
+import PlaylistWindow from './_PlaylistWindow.js';
+import LocationBar from './_Locationbar.js';
 const styles = require('./_map.json')
 var headphone = require('./icons8-headphones-24.png')
 
@@ -19,6 +20,7 @@ class HistoryPage extends Component {
       current_user: {},
       current_playlist_id: '',
       allLocations: [],
+      allPlaylists:[],
       redirectToUserPage: false,
       redirectToHistoryPage: false,
       redirectToFuturePage: false
@@ -29,7 +31,7 @@ class HistoryPage extends Component {
     const {cookies} = this.props;
     await axios.get(`/api/users/${cookies.get('jetify_user')}/getPlaylists`)
                 .then(response => {
-                  const { locations } = response.data;
+                  const { locations, playlists } = response.data;
                   console.log('Hello there!!!!!!!', response.data);
                   //filter out duplicate locations
                   const locationArray = [];
@@ -38,7 +40,10 @@ class HistoryPage extends Component {
                         locationArray.push(location);
                       }
                     });
-                  this.setState({allLocations: locationArray});
+                  this.setState({
+                    allLocations: locationArray,
+                    allPlaylists: playlists
+                  });
                   axios.get(`/api/users/${cookies.get('jetify_user')}`).then((response) => {
                     this.setState({current_user: response.data.user });
                   });
@@ -146,8 +151,8 @@ class HistoryPage extends Component {
         >
         {locationMarkers}
         <PlaylistWindow onClick={this.onMarkerClick}/>
-
         </Map>
+        <LocationBar locations={this.state.allLocations} playlists={this.state.allPlaylists} />
       </div>
     );
   }

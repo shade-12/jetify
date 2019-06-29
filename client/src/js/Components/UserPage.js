@@ -143,7 +143,6 @@ class User extends Component {
 
   renderRandomPlaylist = () => {
     const { cookies } = this.props;
-    const playlistID = this.state.current_playlist_id;
     let artistIds = [];
     let tracks = [];
     this.setState({
@@ -435,7 +434,7 @@ class User extends Component {
             savePlaylist={this.savePlaylist}
           />
           <Alert show={this.state.showSuccessAlert} variant="success" onClose={this.handleDismiss} dismissible>
-            Playlist saved ! 💚
+            Playlist saved ! <span role="img">💚</span>
           </Alert>
         </div>
       </div>
