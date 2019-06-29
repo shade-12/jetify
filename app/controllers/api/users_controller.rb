@@ -36,6 +36,13 @@ class Api::UsersController < ApplicationController
     }
   end
 
+  def update
+    @user = User.find params[:id]
+    if params[:reusable_spotify_playlist_id].present?
+      @user.update!(reusable_spotify_playlist_id: params[:reusable_spotify_playlist_id])
+    end
+  end
+
 end
 
 
