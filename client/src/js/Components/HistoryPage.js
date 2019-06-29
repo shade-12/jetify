@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from "react-router-dom";
-import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
+import { Map, GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 import NavBar from './_Navbar.js';
 // import MapMarker from './_MapMarker.js'
 import PlaylistWindow from './_PlaylistWindow.js'
@@ -19,10 +19,11 @@ class HistoryPage extends Component {
       lng: '',
       current_user: {},
       current_playlist_id: '',
-      allLocations: {},
+      allLocations: [],
       redirectToUserPage: false,
       redirectToHistoryPage: false,
-      redirectToFuturePage: false
+      redirectToFuturePage: false,
+      showingInfoWindow: false, 
     }
   }
 
@@ -30,7 +31,8 @@ class HistoryPage extends Component {
     const {cookies} = this.props;
     await axios.get(`/api/users/${cookies.get('jetify_user')}/getPlaylists`)
                 .then(response => {
-                  console.log('Hello there!!!!!!!', response.data);
+                  this.setState({allLocations: response.data.locations})
+                  console.log('Hello there!!!!!!!', response.data.locations);
                   axios.get(`/api/users/${cookies.get('jetify_user')}`).then((response) => {
                     this.setState({current_user: response.data.user });
                   });
@@ -74,6 +76,15 @@ class HistoryPage extends Component {
     showingInfoWindow: true
   });
 
+  locationExists = (array, locationname) =>{
+    // const newArray = [];
+    array.forEach(element => {
+      if (element.name === locationname) {
+       return true
+      }
+    });
+    return false 
+  }
 
 
 // onClose = props => {
@@ -103,6 +114,14 @@ class HistoryPage extends Component {
     if(this.state.redirectToFuturePage) {
       return <Redirect to='/future' />
     }
+    let newArray = [];
+    this.state.allLocations.forEach(location => 
+      {if(!this.locationExists(newArray, location.name))
+      newArray.push(location)}); 
+      console.log(newArray)
+    const locationMarker = newArray.map(location => (
+      <Marker location={location} />
+    ))
 
     return (
       <div className="history">
@@ -114,6 +133,7 @@ class HistoryPage extends Component {
         handleMyPlaylists={this.handleMyPlaylists}
         handleMyPlans={this.handleMyPlans}
       />
+      
       <Map className="map-container"
         google={this.props.google}
          zoom={2.3}
@@ -122,19 +142,17 @@ class HistoryPage extends Component {
          lat: 39.399872,
          lng: -8.224454
         }}
+        // {locationMarker}
       >
-        {/* <MapMarker lat= {this.state.lat} lng={this.state.lng} onClick={this.onMarkerClick}/> */}
-        <PlaylistWindow onClick={this.onMarkerClick}/>
-      <Marker
-      onMouseover={this.onMouseOver}
-      onClick={this.onMarkerClick}
-       lat= {this.state.lat} lng={this.state.lng}
-      options={{icon:headphone}}
-       />
+      
+   
+    
+      <Marker icon={headphone} {...locationMarker} />
+
       </Map>
       </div>
     );
-  }
+      }
 }
 
  export default GoogleApiWrapper({
