@@ -116,24 +116,30 @@ class User extends Component {
       })
       .then(() => {
         //create playlist called 'Jetify' with artists top songs as tracks
-        spotifyApi
-          .createPlaylist(this.state.current_user.spotify_id, {
-            name: `Jetify: ${this.state.map_city}`
-          })
-          .then(response => {
-            console.log('length tracks', tracks.length);
-            if (!tracks.length) {
-              this.setState({
-                tracksInPlaylist: false
-              });
-            } else {
-              spotifyApi.addTracksToPlaylist(response.id, tracks);
-              this.setState({
-                current_playlist_id: response.id,
-                playlistLoading: false
-              });
-            }
+        if(tracks.length > 0) {
+          spotifyApi
+            .createPlaylist(this.state.current_user.spotify_id, {
+              name: `Jetify: ${this.state.map_city}`
+            })
+            .then(response => {
+              console.log('length tracks', tracks.length);
+              if (!tracks.length) {
+                this.setState({
+                  tracksInPlaylist: false
+                });
+              } else {
+                spotifyApi.addTracksToPlaylist(response.id, tracks);
+                this.setState({
+                  current_playlist_id: response.id,
+                  playlistLoading: false
+                });
+              }
+            });
+        } else {
+           this.setState({
+            tracksInPlaylist: false
           });
+        }
       });
   };
 
@@ -195,25 +201,31 @@ class User extends Component {
       })
       .then(() => {
         //create playlist called 'Jetify' with artists top songs as tracks
-        spotifyApi
-          .createPlaylist(this.state.current_user.spotify_id, {
-            name: `Jetify: ${this.state.map_city}`
-          })
-          .then(response => {
-            this.setState({ current_playlist_id: response.id });
-            console.log('length tracks', tracks.length);
-            if (!tracks.length) {
-              this.setState({
-                tracksInPlaylist: false
-              });
-            } else {
-              spotifyApi.addTracksToPlaylist(response.id, tracks);
-              this.setState({
-                current_playlist_id: response.id,
-                playlistLoading: false
-              });
-            }
+        if(tracks.length > 0) {
+          spotifyApi
+            .createPlaylist(this.state.current_user.spotify_id, {
+              name: `Jetify: ${this.state.map_city}`
+            })
+            .then(response => {
+              this.setState({ current_playlist_id: response.id });
+              console.log('length tracks', tracks.length);
+              if (!tracks.length) {
+                this.setState({
+                  tracksInPlaylist: false
+                });
+              } else {
+                spotifyApi.addTracksToPlaylist(response.id, tracks);
+                this.setState({
+                  current_playlist_id: response.id,
+                  playlistLoading: false
+                });
+              }
+            });
+        } else {
+          this.setState({
+            tracksInPlaylist: false
           });
+        }
       });
   };
 

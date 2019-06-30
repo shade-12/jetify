@@ -89,7 +89,7 @@ class HistoryPage extends Component {
     if(this.state.showInfoWindow){
       this.setState({
         showInfoWindow: false,
-          activeMarker: {},
+        activeMarker: {},
       })
     }
   }
