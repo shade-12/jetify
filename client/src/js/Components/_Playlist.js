@@ -1,46 +1,64 @@
 import React, { Component } from 'react';
+import { PushSpinner } from 'react-spinners-kit';
 
 class Playlist extends Component {
   render() {
-    if (this.props.tracksInPlaylist)
+    const {
+      playlistLoading,
+      tracksInPlaylist,
+      playlistID,
+      renderRandomPlaylist,
+      savePlaylist
+    } = this.props;
+
+    if (playlistLoading) {
       return (
-        <div className="playlist-container">
-          <iframe
-            src={
-              'https://open.spotify.com/embed/user/spotify/playlist/' +
-              this.props.playlistID
-            }
-            frameBorder="0"
-            height="800px"
-            allowtransparency="true"
-            allow="encrypted-media"
-            title="playlist-widget"
-          />
-          <section>
-            <button
-              type="button"
-              className="btn generate-button"
-              onClick={this.props.renderRandomPlaylist}
-            >
-              Generate
-            </button>
-            &nbsp;&nbsp;
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={this.props.savePlaylist}
-            >
-              Save
-            </button>
-          </section>
+        <div className="events-container">
+          <h4>Playlist on the way ...</h4>
+          <PushSpinner size={80} color="#1db954" loading={playlistLoading} />
         </div>
       );
-    else {
-      return (
-        <div className="empty-container">
-         <h4>Oh No ! Missing events :|</h4>
-        </div>
-      );
+    } else {
+      if (tracksInPlaylist)
+        return (
+          <div className="playlist-container">
+            <iframe
+              src={
+                'https://open.spotify.com/embed/user/spotify/playlist/' +
+                playlistID
+              }
+              frameBorder="0"
+              height="800px"
+              allowtransparency="true"
+              allow="encrypted-media"
+              title="playlist-widget"
+            />
+            <section>
+              <button
+                type="button"
+                className="btn generate-button"
+                onClick={renderRandomPlaylist}
+              >
+                Generate
+              </button>
+              &nbsp;&nbsp;
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={savePlaylist}
+              >
+                Save
+              </button>
+            </section>
+          </div>
+        );
+      else {
+        return (
+          <div className="empty-container">
+            <h4>Choose new dates/ new location!</h4>
+          </div>
+        );
+      }
     }
   }
 }

@@ -2,7 +2,7 @@
   position: absolute;
   top: 100px;
   right: 3vw;
-  z-index: 10000;
+  z-index: 100;
   background-color: #fff;
   padding: 5px;
   border: 1px solid #999;
@@ -23,4 +23,30 @@
 div.location-thumbnail {
   margin: 10px;
   margin-top: 20px;
+  font-size: 150%;
+  font-weight: bold;
 }
+
+div.modal-content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 80vw;
+  // margin
+
+  iframe {
+    margin: 20px;
+  }
+}
+
+div.card-img-overlay {
+  background: black;
+  background: rgba(0,0,0,0.3);
+}
+
+div.card-img-overlay:hover {
+  background: black;
+  background: rgba(0,0,0,0);
+  cursor: pointer;
+}
+

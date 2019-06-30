@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { PushSpinner } from 'react-spinners-kit';
+// import { PushSpinner } from 'react-spinners-kit';
 import Location from './_Location.js';
 
 class LocationBar extends Component {

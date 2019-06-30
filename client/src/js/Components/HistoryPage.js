@@ -4,22 +4,23 @@ import { Redirect } from "react-router-dom";
 import { Map, GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 import NavBar from './_Navbar.js';
 import LocationBar from './_Locationbar.js';
-const styles = require('./_map.json')
-var headphone = require('./icons8-headphones-24.png')
+
+const styles = require('./_map.json');
+var headphone = require('./icons8-headphones-24.png');
 
 class HistoryPage extends Component {
   constructor(props){
     super(props);
     const {cookies} = this.props;
-    const { city } = cookies.get('jetify_location');
+    const { city, region } = cookies.get('jetify_location');
     this.state={
+      region: region,
       city: city,
       lat: '',
       lng: '',
       current_user: {},
       current_playlist_id: '',
       allLocations: [],
-      allPlaylists:[],
       redirectToUserPage: false,
       redirectToFuturePage: false,
       activeMarker: {},
@@ -43,16 +44,16 @@ class HistoryPage extends Component {
                     });
 
                   //sort playlists according to location
-                  // locationArray.forEach(location => {
-                  //   playlists.forEach(playlist => {
-                  //     if(location.id === playlist.location_id){
-                  //       location['playlists'].push(playlist);
-                  //     }
-                  //   })
-                  // })
+                  locationArray.forEach(location => {
+                    location.playlists = [];
+                    playlists.forEach(playlist => {
+                      if(location.id === playlist.location_id){
+                        location.playlists.push(playlist);
+                      }
+                    });
+                  });
                   this.setState({
-                    allLocations: locationArray,
-                    allPlaylists: playlists
+                    allLocations: locationArray
                   });
                   axios.get(`/api/users/${cookies.get('jetify_user')}`).then((response) => {
                     this.setState({current_user: response.data.user });
@@ -112,14 +113,6 @@ class HistoryPage extends Component {
     return false;
   }
 
-// onClose = props => {
-//   if (this.state.showingInfoWindow) {
-//     this.setState({
-//       showingInfoWindow: false,
-//       activeMarker: null
-//     });
-//   }
-// };
    render() {
 
     const {cookies} = this.props;
@@ -138,15 +131,14 @@ class HistoryPage extends Component {
     
     const locationMarkers = this.state.allLocations.map(location =>
       <Marker
-      name={location.name}
-      id={location.created_at}
+        draggable={false}
+        name={location.name}
         key={location.created_at}
         position={{lat: location.latitude, lng: location.longitude}}
         options={{icon:headphone}}  
         onMouseover={this.onMouseOver}
         onMouseout={this.onMouseOut}
-     >
-      </Marker>
+     />
     );
 
     return (
@@ -154,6 +146,7 @@ class HistoryPage extends Component {
         <NavBar
           user={this.state.current_user}
           city={this.state.city}
+          region={this.state.region}
           handleLogout={this.handleLogout}
           handleJetify={this.handleJetify}
           handleMyPlaylists={this.handleMyPlaylists}
