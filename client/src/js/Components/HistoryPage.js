@@ -7,7 +7,6 @@ import LocationBar from './_Locationbar.js';
 
 const styles = require('./_map.json');
 var headphone = require('./icons8-headphones-24.png');
-const browser = require("webextension-polyfill");
 
 class HistoryPage extends Component {
   constructor(props){
@@ -66,19 +65,7 @@ class HistoryPage extends Component {
     cookies.remove('jetify_token', { path: '/' });
     cookies.remove('jetify_user', { path: '/' });
     cookies.remove('jetify_location', { path: '/' });
-    browser.cookies.remove({ url: 'http://localhost:3000' }).then(cookie => this.removeBrowserCookies() );
-
     this.setState({ current_user: null });
-  }
-
-  removeBrowserCookies = () => {
-    browser.cookies.remove({
-      url: 'https://open.spotify.com'
-    }).then(cookie => {
-      console.log("Removed: ", cookie);
-    }, error => {
-      console.log("Uh oh, cookie not removed", error)
-    })
   }
 
   handleJetify = () => {
