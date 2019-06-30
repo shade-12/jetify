@@ -57,16 +57,17 @@ class User extends Component {
     await this.renderPlaylist();
   }
 
-  componentDidUpdate(_, prevState) {
+  async componentDidUpdate(_, prevState) {
     //If artist state changes (on submit of new location) new playlist renders
     if (this.state.artists !== prevState.artists) {
+      await this.fetchCurrentUser();
       this.renderPlaylist();
     }
   }
 
   renderPlaylist = async () => {
     const { cookies } = this.props;
-    const { current_user, trackList } = this.state;
+    const { current_user } = this.state;
     this.setState({
       tracksInPlaylist: true
     });
@@ -78,12 +79,12 @@ class User extends Component {
 
     //fetch top songs for each artist in this.state.artists
     // Still need to return tracks to be async?? safety
-    await this.fetchTopSongs(artistIds, 0, 3);
+    const tracks = await this.fetchTopSongs(artistIds, 0, 3);
 
     if (current_user.reusable_spotify_playlist_id) {
-      this.replaceSpotifyPlaylist(trackList);
+      this.replaceSpotifyPlaylist(tracks);
     } else {
-      this.createSpotifyPlaylist(trackList);
+      this.createSpotifyPlaylist(tracks);
     }
   };
 
@@ -159,6 +160,7 @@ class User extends Component {
     this.setState({
       trackList: tracks
     });
+    return tracks;
   };
 
   createSpotifyPlaylist = tracks => {
@@ -198,6 +200,7 @@ class User extends Component {
   };
 
   renderRandomPlaylist = async () => {
+    // const { trackList } = this.state;
     this.setState({
       tracksInPlaylist: true
     });
@@ -206,6 +209,8 @@ class User extends Component {
 
     //fetch top songs for each artist in this.state.artists
     const tracks = await this.fetchTopSongs(artistIds, 3, 6);
+
+    //!!!!!add tracks to state here!!!!!!
 
     //create playlist called 'Jetify' with artists top songs as tracks
     this.replaceSpotifyPlaylist(tracks);
