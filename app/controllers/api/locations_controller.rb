@@ -21,4 +21,9 @@ class Api::LocationsController < ApplicationController
     }
   end
 
+  def destroy
+    @location = Location.find params[:id]
+    @location.destroy
+  end
+
 end

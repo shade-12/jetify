@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
 
 class Location extends Component {
@@ -13,9 +14,16 @@ class Location extends Component {
     this.setState({ show: true });
   };
 
-  handleHide = () => {
+  handleHide = (event) => {
+    event.stopPropagation();
     this.setState({ show: false });
     console.log("Hide box!!!", this.state.show);
+  };
+
+  onDelete = () => {
+    axios.delete(`/api/locations/${this.props.id}`).then(response => {
+      console.log("Delete: ", response)
+    })
   };
 
   render() {
@@ -40,7 +48,7 @@ class Location extends Component {
     return (
       <div className="card bg-dark text-white location-thumbnail" onClick={this.handleShow}>
         <Modal
-          onClick={e => e.stopPropagation()}
+          onClick={this.handleHide}
           className="popup-playlists-container"
           size="lg"
           show={this.state.show}
@@ -50,7 +58,7 @@ class Location extends Component {
           centered
           data-backdrop="false"
         >
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title id="example-custom-modal-styling-title">
               {this.props.name} Playlists
             </Modal.Title>
@@ -59,7 +67,7 @@ class Location extends Component {
           {playlists}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="danger" onClick={this.handleHide}>
+            <Button variant="danger" onClick={this.onDelete}>
               Delete All
             </Button>
             <Button variant="secondary" onClick={this.handleHide}>
