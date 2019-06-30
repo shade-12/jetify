@@ -138,7 +138,7 @@ console.log(this.state.allLocations)
           handleJetify={this.handleJetify}
           handleMyPlaylists={this.handleMyPlaylists}
         />
-        <LocationBar locations={this.state.allLocations} />
+        <LocationBar locations={this.state.allLocations} cookies={this.props.cookies}/>
         <Map
           className={'map-container'}
           google={this.props.google}
@@ -156,7 +156,7 @@ console.log(this.state.allLocations)
          >
         <div>
           <h4>{this.state.activeMarker.name}</h4>
-          <p>Playlists:{this.state.activeMarker.playlist}</p> 
+          <p>Playlists:{this.state.activeMarker.playlist}</p>
         </div>
         </InfoWindow>
         </Map>

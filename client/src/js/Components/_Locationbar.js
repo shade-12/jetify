@@ -5,7 +5,7 @@ class LocationBar extends Component {
 
   render() {
     const locations = this.props.locations.map(location =>
-      <Location key={location.id} {...location} />
+      <Location key={location.id} {...location} cookies={this.props.cookies}/>
     );
 
     return (

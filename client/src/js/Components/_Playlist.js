@@ -15,7 +15,7 @@ class Playlist extends Component {
       return (
         <div className="events-container">
           <h4>Playlist on the way ...</h4>
-          <PushSpinner size={80} color="#1db954" loading={playlistLoading} />
+          <PushSpinner size={80} color="#8A2BE2" loading={playlistLoading} />
         </div>
       );
     } else {
