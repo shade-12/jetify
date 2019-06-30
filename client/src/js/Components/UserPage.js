@@ -41,7 +41,6 @@ class User extends Component {
       playlistLoading: true,
       redirectToUserPage: false,
       redirectToHistoryPage: false,
-      redirectToFuturePage: false,
       showDateForm: false,
       showSuccessAlert: false
     };
@@ -117,24 +116,30 @@ class User extends Component {
       })
       .then(() => {
         //create playlist called 'Jetify' with artists top songs as tracks
-        spotifyApi
-          .createPlaylist(this.state.current_user.spotify_id, {
-            name: `Jetify: ${this.state.map_city}`
-          })
-          .then(response => {
-            console.log('length tracks', tracks.length);
-            if (!tracks.length) {
-              this.setState({
-                tracksInPlaylist: false
-              });
-            } else {
-              spotifyApi.addTracksToPlaylist(response.id, tracks);
-              this.setState({
-                current_playlist_id: response.id,
-                playlistLoading: false
-              });
-            }
+        if(tracks.length > 0) {
+          spotifyApi
+            .createPlaylist(this.state.current_user.spotify_id, {
+              name: `Jetify: ${this.state.map_city}`
+            })
+            .then(response => {
+              console.log('length tracks', tracks.length);
+              if (!tracks.length) {
+                this.setState({
+                  tracksInPlaylist: false
+                });
+              } else {
+                spotifyApi.addTracksToPlaylist(response.id, tracks);
+                this.setState({
+                  current_playlist_id: response.id,
+                  playlistLoading: false
+                });
+              }
+            });
+        } else {
+           this.setState({
+            tracksInPlaylist: false
           });
+        }
       });
   };
 
@@ -196,25 +201,31 @@ class User extends Component {
       })
       .then(() => {
         //create playlist called 'Jetify' with artists top songs as tracks
-        spotifyApi
-          .createPlaylist(this.state.current_user.spotify_id, {
-            name: `Jetify: ${this.state.map_city}`
-          })
-          .then(response => {
-            this.setState({ current_playlist_id: response.id });
-            console.log('length tracks', tracks.length);
-            if (!tracks.length) {
-              this.setState({
-                tracksInPlaylist: false
-              });
-            } else {
-              spotifyApi.addTracksToPlaylist(response.id, tracks);
-              this.setState({
-                current_playlist_id: response.id,
-                playlistLoading: false
-              });
-            }
+        if(tracks.length > 0) {
+          spotifyApi
+            .createPlaylist(this.state.current_user.spotify_id, {
+              name: `Jetify: ${this.state.map_city}`
+            })
+            .then(response => {
+              this.setState({ current_playlist_id: response.id });
+              console.log('length tracks', tracks.length);
+              if (!tracks.length) {
+                this.setState({
+                  tracksInPlaylist: false
+                });
+              } else {
+                spotifyApi.addTracksToPlaylist(response.id, tracks);
+                this.setState({
+                  current_playlist_id: response.id,
+                  playlistLoading: false
+                });
+              }
+            });
+        } else {
+          this.setState({
+            tracksInPlaylist: false
           });
+        }
       });
   };
 
@@ -225,10 +236,6 @@ class User extends Component {
     cookies.remove('jetify_user', { path: '/' });
     cookies.remove('jetify_location', { path: '/' });
     this.setState({ current_user: null });
-  };
-
-  handleMyPlans = () => {
-    this.setState({ redirectToFuturePage: true });
   };
 
   handleMyPlaylists = () => {
@@ -351,10 +358,6 @@ class User extends Component {
       return <Redirect to={`/users/${cookies.get('jetify_user')}/history`} />;
     }
 
-    if (this.state.redirectToFuturePage) {
-      return <Redirect to={`/users/${cookies.get('jetify_user')}/future`} />;
-    }
-
     return (
       <div className="App">
         <NavBar
@@ -363,7 +366,6 @@ class User extends Component {
           region={this.state.display_region}
           handleLogout={this.handleLogout}
           handleMyPlaylists={this.handleMyPlaylists}
-          handleMyPlans={this.handleMyPlans}
           cookies={this.props.cookies}
         />
         <div className="Body">

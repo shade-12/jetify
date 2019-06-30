@@ -22,9 +22,8 @@ class HistoryPage extends Component {
       current_playlist_id: '',
       allLocations: [],
       redirectToUserPage: false,
-      redirectToFuturePage: false,
-      activeMarker: {},
-      showInfoWindow: false,
+      showingInfoWindow: false,
+      activeMarker: {}
     }
   }
 
@@ -33,7 +32,6 @@ class HistoryPage extends Component {
     await axios.get(`/api/users/${cookies.get('jetify_user')}/getPlaylists`)
                 .then(response => {
                   const { locations, playlists } = response.data;
-                  console.log('Hello there!!!!!!!', response.data);
                   //filter out duplicate locations
                   const locationArray = [];
                     locations.map(location => {
@@ -85,24 +83,16 @@ class HistoryPage extends Component {
         activeMarker: marker,
         showInfoWindow: true,
       })
-  }
+    }
   }
   onMouseOut = () => {
     if(this.state.showInfoWindow){
-    this.setState({
-      showInfoWindow: false,
+      this.setState({
+        showInfoWindow: false,
         activeMarker: {},
-    })
+      })
+    }
   }
-}
-  
-
-  onMarkerClick = (props, marker, e) =>
-  this.setState({
-    selectedPlace: props,
-    activeMarker: marker,
-    showInfoWindow: true
-  });
 
   locationExists = (array, location) => {
     for(let i = 0; i < array.length; i++) {
@@ -125,10 +115,6 @@ class HistoryPage extends Component {
       return <Redirect to={`/users/${cookies.get('jetify_user')}`} />
     }
 
-    if(this.state.redirectToFuturePage) {
-      return <Redirect to={`/users/${cookies.get('jetify_user')}/future`} />
-    }
-    
     const locationMarkers = this.state.allLocations.map(location =>
       <Marker
         draggable={false}
@@ -136,10 +122,10 @@ class HistoryPage extends Component {
         playlist={location.playlists.length}
         key={location.created_at}
         position={{lat: location.latitude, lng: location.longitude}}
-        options={{icon:headphone}}  
+        options={{icon:headphone}}
         onMouseover={this.onMouseOver}
         onMouseout={this.onMouseOut}
-     />
+      />
     );
 console.log(this.state.allLocations)
     return (
@@ -151,7 +137,6 @@ console.log(this.state.allLocations)
           handleLogout={this.handleLogout}
           handleJetify={this.handleJetify}
           handleMyPlaylists={this.handleMyPlaylists}
-          handleMyPlans={this.handleMyPlans}
         />
         <LocationBar locations={this.state.allLocations} />
         <Map
@@ -163,12 +148,11 @@ console.log(this.state.allLocations)
            lat: 39.399872,
            lng: -8.224454
           }}
-          // onMousemove={this.onMouseMove}
         >
-        {locationMarkers }
+        {locationMarkers}
         <InfoWindow
-        visible={this.state.showInfoWindow}
-        position={this.state.activeMarker.position}
+          visible={this.state.showInfoWindow}
+          position={this.state.activeMarker.position}
          >
         <div>
           <h4>{this.state.activeMarker.name}</h4>
