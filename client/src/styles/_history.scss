@@ -39,7 +39,12 @@ div.popup-playlists-container-body.modal-body {
 
   section.playlist {
     margin: 20px;
-    // float: left;
+    display: flex;
+    flex-direction: column;
+
+    .delete-playlist-button {
+      margin-top: 15px;
+    }
   }
 }
 

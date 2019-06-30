@@ -22,10 +22,17 @@ class Location extends Component {
     console.log("Hide box!!!", this.state.show);
   };
 
-  onDelete = () => {
+  onDeleteAll = () => {
     axios.delete(`/api/locations/${this.props.id}`).then(response => {
       console.log("Delete: ", response);
       this.setState({ delete: true });
+    });
+  };
+
+  onDeleteOne = (event) => {
+    console.log("I am target: ", event.target.id)
+    axios.delete(`/api/locations/${this.props.id}/playlists/${event.target.id}`).then(response => {
+      console.log("Playlist deleted: ", response);
     });
   };
 
@@ -44,6 +51,9 @@ class Location extends Component {
           allow="encrypted-media"
           title="playlist-widget"
         />
+        <Button id={playlist.id} className="delete-playlist-button" variant="danger" onClick={this.onDeleteOne}>
+          Delete
+        </Button>
       </section>
     );
 
@@ -84,7 +94,7 @@ class Location extends Component {
           {playlists}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="danger" onClick={this.onDelete}>
+            <Button variant="danger" onClick={this.onDeleteAll}>
               Delete All
             </Button>
             <Button variant="secondary" onClick={this.handleHide}>
