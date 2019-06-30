@@ -13,7 +13,8 @@ class Location extends Component {
     this.setState({ show: true });
   };
 
-  handleClose = () => {
+  handleHide = (event) => {
+    event.stopPropagation();
     this.setState({ show: false });
     console.log("Hide box!!!", this.state.show);
   };
@@ -49,7 +50,7 @@ class Location extends Component {
           className="popup-playlists-container"
           size="lg"
           show={this.state.show}
-          onhide={this.handleClose}
+          onhide={this.handleHide}
           dialogClassName="modal-90w"
           aria-labelledby="example-custom-modal-styling-title"
           centered

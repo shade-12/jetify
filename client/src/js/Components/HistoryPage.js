@@ -133,6 +133,7 @@ class HistoryPage extends Component {
       <Marker
         draggable={false}
         name={location.name}
+        playlist={location.playlists.length}
         key={location.created_at}
         position={{lat: location.latitude, lng: location.longitude}}
         options={{icon:headphone}}  
@@ -140,7 +141,7 @@ class HistoryPage extends Component {
         onMouseout={this.onMouseOut}
      />
     );
-
+console.log(this.state.allLocations)
     return (
       <div className="history">
         <NavBar
@@ -171,6 +172,7 @@ class HistoryPage extends Component {
          >
         <div>
           <h4>{this.state.activeMarker.name}</h4>
+          <p>Playlists:{this.state.activeMarker.playlist}</p> 
         </div>
         </InfoWindow>
         </Map>

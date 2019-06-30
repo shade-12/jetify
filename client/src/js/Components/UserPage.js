@@ -18,7 +18,7 @@ class User extends Component {
   constructor(props) {
     super(props);
     var start = moment();
-    var end = moment().add(2, 'days');
+    var end = moment().add(7, 'days');
     const { cookies } = this.props;
     const { city, region, latitude, longitude } = cookies.get('jetify_location');
     this.state = {
@@ -387,7 +387,7 @@ class User extends Component {
               setLocation={this.setLocation}
             />
             <Button className="popup-form-button" onClick={this.handleShow}>
-              Select Dates To See Events In {this.state.map_city}, {this.state.map_state}
+              Select Dates To See Events In {this.state.map_city}
             </Button>
             <Modal
               show={this.state.showDateForm}
