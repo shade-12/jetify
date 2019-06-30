@@ -2,6 +2,28 @@ import React, { Component } from 'react';
 import { PushSpinner } from 'react-spinners-kit';
 
 class Playlist extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      randomStringToForceRefresh: '',
+      isRefreshing: false
+    };
+  }
+
+  refreshIframe = () => {
+    const randomString = Math.random()
+      .toString(36)
+      .substring(7);
+    this.setState({ isRefreshing: true });
+    setTimeout(() => {
+      this.setState({
+        randomStringToForceRefresh: randomString,
+        isRefreshing: false
+      });
+    }, 3000);
+  };
+
   render() {
     const {
       playlistLoading,
@@ -11,18 +33,21 @@ class Playlist extends Component {
       savePlaylist
     } = this.props;
 
-    if (playlistLoading) {
+    const { randomStringToForceRefresh, isRefreshing } = this.state;
+
+    if (playlistLoading || isRefreshing) {
       return (
         <div className="events-container">
           <h4>Playlist on the way ...</h4>
-          <PushSpinner size={80} color="#1db954" loading={playlistLoading} />
+          <PushSpinner size={80} color="#1db954" loading />
         </div>
       );
     } else {
-      if (tracksInPlaylist)
+      if (tracksInPlaylist) {
         return (
           <div className="playlist-container">
             <iframe
+              key={randomStringToForceRefresh}
               src={
                 'https://open.spotify.com/embed/user/spotify/playlist/' +
                 playlistID
@@ -41,6 +66,13 @@ class Playlist extends Component {
               >
                 Generate
               </button>
+              <button
+                type="button"
+                className="btn generate-button"
+                onClick={this.refreshIframe}
+              >
+                Refresh
+              </button>
               &nbsp;&nbsp;
               <button
                 type="button"
@@ -52,7 +84,7 @@ class Playlist extends Component {
             </section>
           </div>
         );
-      else {
+      } else {
         return (
           <div className="empty-container">
             <h4>Choose new dates/ new location!</h4>

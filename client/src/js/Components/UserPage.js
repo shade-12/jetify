@@ -12,6 +12,8 @@ import { Button, Modal, Alert } from 'react-bootstrap';
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
 
+// TODO: create a new playlist in Spotify when saving one
+
 class User extends Component {
   constructor(props) {
     super(props);
@@ -83,6 +85,7 @@ class User extends Component {
     const playlistId = current_user.reusable_spotify_playlist_id;
 
     this.setState({ playlistLoading: true });
+
     await spotifyApi.changePlaylistDetails(playlistId, {
       name: `Jetify: ${map_city}`
     });
@@ -90,7 +93,8 @@ class User extends Component {
 
     if (!tracks.length) {
       this.setState({
-        tracksInPlaylist: false
+        tracksInPlaylist: false,
+        playlistLoading: false
       });
     } else {
       setTimeout(() => {
@@ -160,7 +164,8 @@ class User extends Component {
         response => {
           if (!tracks.length) {
             this.setState({
-              tracksInPlaylist: false
+              tracksInPlaylist: false,
+              playlistLoading: false
             });
           } else {
             spotifyApi.addTracksToPlaylist(response.id, tracks).then(() => {
