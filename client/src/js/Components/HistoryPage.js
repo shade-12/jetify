@@ -21,7 +21,6 @@ class HistoryPage extends Component {
       current_playlist_id: '',
       allLocations: [],
       redirectToUserPage: false,
-      redirectToFuturePage: false,
       showingInfoWindow: false,
       activeMarker: {},
     }
@@ -32,7 +31,6 @@ class HistoryPage extends Component {
     await axios.get(`/api/users/${cookies.get('jetify_user')}/getPlaylists`)
                 .then(response => {
                   const { locations, playlists } = response.data;
-                  console.log('Hello there!!!!!!!', response.data);
                   //filter out duplicate locations
                   const locationArray = [];
                     locations.map(location => {
@@ -70,10 +68,6 @@ class HistoryPage extends Component {
 
   handleJetify = () => {
     this.setState({redirectToUserPage: true});
-  }
-
-  handleMyPlans = () => {
-    this.setState({redirectToFuturePage: true});
   }
 
   onMouseOver = (props, marker, e) =>
@@ -128,10 +122,6 @@ class HistoryPage extends Component {
       return <Redirect to={`/users/${cookies.get('jetify_user')}`} />
     }
 
-    if(this.state.redirectToFuturePage) {
-      return <Redirect to={`/users/${cookies.get('jetify_user')}/future`} />
-    }
-
     const locationMarkers = this.state.allLocations.map(location =>
       <Marker
         draggable={false}
@@ -152,7 +142,6 @@ class HistoryPage extends Component {
           handleLogout={this.handleLogout}
           handleJetify={this.handleJetify}
           handleMyPlaylists={this.handleMyPlaylists}
-          handleMyPlans={this.handleMyPlans}
         />
         <LocationBar locations={this.state.allLocations} />
         <Map

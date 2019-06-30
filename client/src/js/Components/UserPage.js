@@ -39,7 +39,6 @@ class User extends Component {
       playlistLoading: true,
       redirectToUserPage: false,
       redirectToHistoryPage: false,
-      redirectToFuturePage: false,
       showDateForm: false,
       showSuccessAlert: false
     };
@@ -225,10 +224,6 @@ class User extends Component {
     this.setState({ current_user: null });
   };
 
-  handleMyPlans = () => {
-    this.setState({ redirectToFuturePage: true });
-  };
-
   handleMyPlaylists = () => {
     this.setState({ redirectToHistoryPage: true });
   };
@@ -347,10 +342,6 @@ class User extends Component {
       return <Redirect to={`/users/${cookies.get('jetify_user')}/history`} />;
     }
 
-    if (this.state.redirectToFuturePage) {
-      return <Redirect to={`/users/${cookies.get('jetify_user')}/future`} />;
-    }
-
     return (
       <div className="App">
         <NavBar
@@ -358,7 +349,6 @@ class User extends Component {
           city={this.state.display_city}
           handleLogout={this.handleLogout}
           handleMyPlaylists={this.handleMyPlaylists}
-          handleMyPlans={this.handleMyPlans}
           cookies={this.props.cookies}
         />
         <div className="Body">
