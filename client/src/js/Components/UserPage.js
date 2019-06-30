@@ -20,12 +20,14 @@ class User extends Component {
     var start = moment();
     var end = moment().add(2, 'days');
     const { cookies } = this.props;
-    const { city, latitude, longitude } = cookies.get('jetify_location');
+    const { city, region, latitude, longitude } = cookies.get('jetify_location');
     this.state = {
       current_user: {},
       current_playlist_id: '',
       display_city: city,
+      display_region: region,
       map_city: '',
+      map_state: '',
       display_lat: latitude,
       display_long: longitude,
       position: latitude.toString() + ',' + longitude.toString(),
@@ -274,10 +276,12 @@ class User extends Component {
     const lat = locationObj.mapPosition.lat;
     const lng = locationObj.mapPosition.lng;
     const area = locationObj.area;
+    const state = locationObj.state;
     this.setState({
       display_lat: lat,
       display_long: lng,
-      map_city: area
+      map_city: area,
+      map_state: state,
     });
     this.setState({
       position: this.makePositionString()
@@ -347,6 +351,7 @@ class User extends Component {
         <NavBar
           user={this.state.current_user}
           city={this.state.display_city}
+          region={this.state.display_region}
           handleLogout={this.handleLogout}
           handleMyPlaylists={this.handleMyPlaylists}
           cookies={this.props.cookies}
@@ -372,7 +377,7 @@ class User extends Component {
               setLocation={this.setLocation}
             />
             <Button className="popup-form-button" onClick={this.handleShow}>
-              Select Dates To See Events In {this.state.map_city}
+              Select Dates To See Events In {this.state.map_city}, {this.state.map_state}
             </Button>
             <Modal
               show={this.state.showDateForm}
@@ -383,7 +388,7 @@ class User extends Component {
             >
               <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                  Whoop! Time to plan a trip to {this.state.map_city}
+                  Whoop! Time to plan a trip to {this.state.map_city} {this.state.map_state}
                 </Modal.Title>
               </Modal.Header>
               <Modal.Body>
@@ -428,7 +433,7 @@ class User extends Component {
             onClose={this.handleDismiss}
             dismissible
           >
-            Playlist saved ! <span role="img">💚</span>
+            Playlist saved ! <span role="img" aria-label="">💚</span>
           </Alert>
         </div>
       </div>

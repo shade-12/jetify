@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from "react-router-dom";
-import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
+import { Map, GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 import NavBar from './_Navbar.js';
 import LocationBar from './_Locationbar.js';
 
@@ -12,8 +12,9 @@ class HistoryPage extends Component {
   constructor(props){
     super(props);
     const {cookies} = this.props;
-    const { city } = cookies.get('jetify_location');
+    const { city, region } = cookies.get('jetify_location');
     this.state={
+      region: region,
       city: city,
       lat: '',
       lng: '',
@@ -22,7 +23,7 @@ class HistoryPage extends Component {
       allLocations: [],
       redirectToUserPage: false,
       showingInfoWindow: false,
-      activeMarker: {},
+      activeMarker: {}
     }
   }
 
@@ -37,6 +38,7 @@ class HistoryPage extends Component {
                       if(!this.locationExists(locationArray, location)) {
                         locationArray.push(location);
                       }
+                      return locationArray
                     });
 
                   //sort playlists according to location
@@ -70,19 +72,27 @@ class HistoryPage extends Component {
     this.setState({redirectToUserPage: true});
   }
 
-  onMouseOver = (props, marker, e) =>
-  this.setState({
-    selectedPlace: props,
-    activeMarker: marker,
-    showingInfoWindow: true
-  });
+  handleMyPlans = () => {
+    this.setState({redirectToFuturePage: true});
+  }
 
-  onMarkerClick = (props, marker, e) =>
-  this.setState({
-    selectedPlace: props,
-    activeMarker: marker,
-    showingInfoWindow: true
-  });
+  onMouseOver = (props, marker, e) => {
+    console.log(marker)
+    if(!(marker.name === this.state.activeMarker.name)){
+      this.setState({
+        activeMarker: marker,
+        showInfoWindow: true,
+      })
+    }
+  }
+  onMouseOut = () => {
+    if(this.state.showInfoWindow){
+      this.setState({
+        showInfoWindow: false,
+          activeMarker: {},
+      })
+    }
+  }
 
   locationExists = (array, location) => {
     for(let i = 0; i < array.length; i++) {
@@ -93,25 +103,8 @@ class HistoryPage extends Component {
     return false;
   }
 
-    onMarkerOver = (props, marker, e) => {
-      if(this.state.activeMarker.name !== marker.name) {
-        this.setState({
-          activeMarker: marker,
-          showingInfoWindow: true
-        });
-        console.log("Hover marker: ", this.state.activeMarker);
-      }
-    };
-
-    onMarkerOut = (props, marker, e) => {
-      this.setState({
-        activeMarker: {},
-        showingInfoWindow: false
-      });
-      console.log("Out marker: ", this.state.activeMarker);
-    };
-
    render() {
+
     const {cookies} = this.props;
 
     if(this.state.current_user === null) {
@@ -129,8 +122,8 @@ class HistoryPage extends Component {
         key={location.created_at}
         position={{lat: location.latitude, lng: location.longitude}}
         options={{icon:headphone}}
-        onMouseover={this.onMarkerOver}
-        onMouseout={this.onMarkerOut}
+        onMouseover={this.onMouseOver}
+        onMouseout={this.onMouseOut}
       />
     );
 
@@ -139,6 +132,7 @@ class HistoryPage extends Component {
         <NavBar
           user={this.state.current_user}
           city={this.state.city}
+          region={this.state.region}
           handleLogout={this.handleLogout}
           handleJetify={this.handleJetify}
           handleMyPlaylists={this.handleMyPlaylists}
@@ -156,17 +150,17 @@ class HistoryPage extends Component {
         >
         {locationMarkers}
         <InfoWindow
-          marker={this.state.activeMarker}
-          visible={this.state.showingInfoWindow}
-        >
-          <div>
-            <p>{this.state.activeMarker.name}</p>
-          </div>
+          visible={this.state.showInfoWindow}
+          position={this.state.activeMarker.position}
+         >
+        <div>
+          <h4>{this.state.activeMarker.name}</h4>
+        </div>
         </InfoWindow>
         </Map>
       </div>
     );
-  }
+      }
 }
 
 export default GoogleApiWrapper({
