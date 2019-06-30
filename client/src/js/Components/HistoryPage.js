@@ -154,6 +154,7 @@ class HistoryPage extends Component {
           handleMyPlaylists={this.handleMyPlaylists}
           handleMyPlans={this.handleMyPlans}
         />
+        <LocationBar locations={this.state.allLocations} />
         <Map
           className={'map-container'}
           google={this.props.google}
@@ -174,7 +175,6 @@ class HistoryPage extends Component {
           </div>
         </InfoWindow>
         </Map>
-        <LocationBar locations={this.state.allLocations} playlists={this.state.allPlaylists} />
       </div>
     );
   }

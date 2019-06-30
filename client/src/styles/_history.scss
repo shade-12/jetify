@@ -2,7 +2,7 @@
   position: absolute;
   top: 100px;
   right: 3vw;
-  z-index: 100;
+  z-index: 81;
   background-color: #fff;
   padding: 5px;
   border: 1px solid #999;
@@ -27,7 +27,7 @@ div.location-thumbnail {
   font-weight: bold;
 }
 
-div.popup-playlists-container {
+div.fade.popup-playlists-container.modal {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -47,4 +47,3 @@ div.card-img-overlay:hover {
   background: rgba(0,0,0,0);
   cursor: pointer;
 }
-
