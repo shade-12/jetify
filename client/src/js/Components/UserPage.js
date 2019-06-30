@@ -251,21 +251,22 @@ class User extends Component {
     });
 
     //save location to db first, then playlist
-    axios.post('/api/locations', location).then(response => {
-      let locationID = response.data.location.id;
-      let playlist = {
-        user_id: this.state.current_user.id,
-        location_id: locationID,
-        name: `Jetify: ${this.state.map_city}`,
-        spotify_id: this.state.current_playlist_id
-      };
-      axios
-        .post(`/api/locations/${locationID}/playlists`, playlist)
-        .then(response => {
-          this.setState({ showSuccessAlert: true });
-          console.log('------------------Saved playlist', response);
-        });
-    });
+    // axios.post('/api/locations', location).then(response => {
+    //   let locationID = response.data.location.id;
+    //   let playlist = {
+    //     user_id: this.state.current_user.id,
+    //     location_id: locationID,
+    //     name: `Jetify: ${this.state.map_city}`,
+    //     spotify_id: this.state.current_playlist_id
+    //   };
+    //   axios
+    //     .post(`/api/locations/${locationID}/playlists`, playlist)
+    //     .then(response => {
+    //       this.setState({ showSuccessAlert: true });
+    //       console.log('------------------Saved playlist', response);
+    //     });
+    // });
+
     //get thumbnail for each location
     pexelsClient
       .search(location.name, 1)
