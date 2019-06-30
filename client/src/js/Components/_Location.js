@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
-import { Modal } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 
 class Location extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // show: false
-    }
+      show: false
+    };
   }
 
   handleShow = () => {
     this.setState({ show: true });
-  }
+  };
 
   handleClose = () => {
     this.setState({ show: false });
-  }
+    console.log("Hide box!!!", this.state.show);
+  };
 
   render() {
     const playlists = this.props.playlists.map(playlist =>
@@ -25,7 +26,7 @@ class Location extends Component {
               playlist.spotify_id
             }
             frameBorder="0"
-            height="500px"
+            height="400px"
             allowtransparency="true"
             allow="encrypted-media"
             title="playlist-widget"
@@ -44,12 +45,15 @@ class Location extends Component {
           <p className="card-text">{length}</p>
         </div>
          <Modal
+          onClick={e => e.stopPropagation()}
           className="popup-playlists-container"
+          size="lg"
           show={this.state.show}
           onhide={this.handleClose}
           dialogClassName="modal-90w"
           aria-labelledby="example-custom-modal-styling-title"
           centered
+          data-backdrop="false"
         >
           <Modal.Header closeButton>
             <Modal.Title id="example-custom-modal-styling-title">
@@ -59,7 +63,20 @@ class Location extends Component {
           <Modal.Body className="popup-playlists-container-body">
           {playlists}
           </Modal.Body>
+          <Modal.Footer>
+            <Button variant="danger" onClick={this.handleHide}>
+              Delete All
+            </Button>
+            <Button variant="secondary" onClick={this.handleHide}>
+              Close
+            </Button>
+          </Modal.Footer>
         </Modal>
+        <img className="card-img" src={this.props.image} alt="Card image"/>
+        <div className="card-img-overlay">
+          <h3 className="card-title">{this.props.name}</h3>
+          <p className="card-text">{length}</p>
+        </div>
       </div>
     );
   }

@@ -55,7 +55,7 @@ class Playlist extends Component {
       else {
         return (
           <div className="empty-container">
-            <h4>Choose new dates/ new location!</h4>
+            <h4>Missing events :| Maybe try other dates</h4>
           </div>
         );
       }
