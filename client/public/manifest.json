@@ -2,12 +2,16 @@
   "short_name": "React App",
   "name": "Create React App Sample",
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["browser-polyfill.js", "background.js"]
   },
+  "content_scripts": [{
+    "js": ["browser-polyfill.js"]
+  }],
   "permissions": [
     "cookies",
     "tabs",
-    "*://*.google.ro/*"
+    "webNavigation",
+    "*://*.localhost:3000/*"
   ],
   "icons": [
     {

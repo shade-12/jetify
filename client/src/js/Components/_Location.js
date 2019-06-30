@@ -33,6 +33,7 @@ class Location extends Component {
     console.log("I am target: ", event.target.id)
     axios.delete(`/api/locations/${this.props.id}/playlists/${event.target.id}`).then(response => {
       console.log("Playlist deleted: ", response);
+      this.setState({ delete: true });
     });
   };
 
