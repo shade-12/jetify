@@ -127,7 +127,7 @@ class HistoryPage extends Component {
         onMouseout={this.onMouseOut}
       />
     );
-console.log(this.state.allLocations)
+
     return (
       <div className="history">
         <NavBar
@@ -151,6 +151,7 @@ console.log(this.state.allLocations)
         >
         {locationMarkers}
         <InfoWindow
+          className="info-window"
           visible={this.state.showInfoWindow}
           position={this.state.activeMarker.position}
          >
