@@ -41,7 +41,8 @@ class User extends Component {
       redirectToHistoryPage: false,
       redirectToFuturePage: false,
       showDateForm: false,
-      showSuccessAlert: false
+      showSuccessAlert: false,
+      trackList: []
     };
   }
 
@@ -60,7 +61,7 @@ class User extends Component {
 
   renderPlaylist = async () => {
     const { cookies } = this.props;
-    const { current_user } = this.state;
+    const { current_user, trackList } = this.state;
     this.setState({
       tracksInPlaylist: true
     });
@@ -71,12 +72,13 @@ class User extends Component {
     const artistIds = await this.fetchArtistIds();
 
     //fetch top songs for each artist in this.state.artists
-    const tracks = await this.fetchTopSongs(artistIds, 0, 3);
+    // Still need to return tracks to be async?? safety
+    await this.fetchTopSongs(artistIds, 0, 3);
 
     if (current_user.reusable_spotify_playlist_id) {
-      this.replaceSpotifyPlaylist(tracks);
+      this.replaceSpotifyPlaylist(trackList);
     } else {
-      this.createSpotifyPlaylist(tracks);
+      this.createSpotifyPlaylist(trackList);
     }
   };
 
@@ -149,7 +151,9 @@ class User extends Component {
     });
 
     await Promise.all(promises);
-    return tracks;
+    this.setState({
+      trackList: tracks
+    });
   };
 
   createSpotifyPlaylist = tracks => {
@@ -219,12 +223,31 @@ class User extends Component {
     this.setState({ redirectToHistoryPage: true });
   };
 
-  savePlaylist = () => {
+  savePlaylist = async () => {
+    // set tracks in the state and call create new playlist with these tracks
+    // const playlistId = current_user.reusable_spotify_playlist_id;
+    const stringStart = this.state.startDate.toString();
+    const stringEnd = this.state.endDate.toString();
+    console.log('enddate', this.state.endDate);
+    console.log('START', stringStart.slice(3, 10));
+    console.log('END', stringEnd.slice(3, 15));
+
+    const { trackList, current_playlist_id, map_city } = this.state;
+
+    await this.createSpotifyPlaylist(trackList);
+
     let location = {
       name: this.state.map_city,
       latitude: this.state.display_lat,
       longitude: this.state.display_long
     };
+
+    await spotifyApi.changePlaylistDetails(current_playlist_id, {
+      name: `Jetify: ${map_city} - ${stringStart.slice(
+        3,
+        10
+      )} to ${stringEnd.slice(3, 15)}`
+    });
 
     //save location to db first, then playlist
     axios.post('/api/locations', location).then(response => {
