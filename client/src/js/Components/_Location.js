@@ -32,7 +32,7 @@ class Location extends Component {
   render() {
     const playlists = this.props.playlists.map(playlist =>
       <section key={playlist.spotify_id} className="playlist">
-        <p>{playlist.created_at}</p>
+        <p>{playlist.created_at.split('').slice(0,10).join('')}</p>
         <iframe
           src={
             'https://open.spotify.com/embed/user/spotify/playlist/' +
@@ -77,7 +77,7 @@ class Location extends Component {
         >
           <Modal.Header>
             <Modal.Title id="example-custom-modal-styling-title">
-              {this.props.name} Playlists
+              {this.props.name} Playlists ({this.props.playlists.length})
             </Modal.Title>
           </Modal.Header>
           <Modal.Body className="popup-playlists-container-body">
