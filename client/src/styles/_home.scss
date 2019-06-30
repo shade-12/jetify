@@ -176,6 +176,7 @@ div.modal-content {
 
 h4.navbar-brand :hover {
   color: #E6E6FA;
+  cursor: pointer;
 }
 
 div.fade.alert.alert-success {
@@ -183,4 +184,8 @@ div.fade.alert.alert-success {
     margin-top: -660px;
     margin-bottom: 700px;
     font-weight: bold;
+}
+
+button.close {
+  outline: none;
 }

@@ -11,6 +11,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Button, Modal, Alert } from 'react-bootstrap';
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
+const PexelsAPI = require('pexels-api-wrapper');
+let pexelsClient = new PexelsAPI(process.env.REACT_APP_PEXELS_API_KEY);
 
 // TODO: create a new playlist in Spotify when saving one
 
@@ -18,14 +20,18 @@ class User extends Component {
   constructor(props) {
     super(props);
     var start = moment();
-    var end = moment().add(2, 'days');
+    var end = moment().add(7, 'days');
     const { cookies } = this.props;
-    const { city, latitude, longitude } = cookies.get('jetify_location');
+    const { city, region, latitude, longitude } = cookies.get(
+      'jetify_location'
+    );
     this.state = {
       current_user: {},
       current_playlist_id: '',
       display_city: city,
+      display_region: region,
       map_city: '',
+      map_state: '',
       display_lat: latitude,
       display_long: longitude,
       position: latitude.toString() + ',' + longitude.toString(),
@@ -39,7 +45,6 @@ class User extends Component {
       playlistLoading: true,
       redirectToUserPage: false,
       redirectToHistoryPage: false,
-      redirectToFuturePage: false,
       showDateForm: false,
       showSuccessAlert: false,
       trackList: []
@@ -215,10 +220,6 @@ class User extends Component {
     this.setState({ current_user: null });
   };
 
-  handleMyPlans = () => {
-    this.setState({ redirectToFuturePage: true });
-  };
-
   handleMyPlaylists = () => {
     this.setState({ redirectToHistoryPage: true });
   };
@@ -265,6 +266,32 @@ class User extends Component {
           console.log('------------------Saved playlist', response);
         });
     });
+    //get thumbnail for each location
+    pexelsClient
+      .search(location.name, 1)
+      .then(result => {
+        let imageURL = result.photos[0].src.original;
+        location.image = imageURL;
+        console.log('Photos: ', imageURL);
+      })
+      .then(() => {
+        //save location to db first, then playlist
+        axios.post('/api/locations', location).then(response => {
+          let locationID = response.data.location.id;
+          let playlist = {
+            user_id: this.state.current_user.id,
+            location_id: locationID,
+            name: `Jetify: ${this.state.map_city}`,
+            spotify_id: this.state.current_playlist_id
+          };
+          axios
+            .post(`/api/locations/${locationID}/playlists`, playlist)
+            .then(response => {
+              this.setState({ showSuccessAlert: true });
+              console.log('------------------Saved playlist', response);
+            });
+        });
+      });
   };
 
   makePositionString = () => {
@@ -279,10 +306,12 @@ class User extends Component {
     const lat = locationObj.mapPosition.lat;
     const lng = locationObj.mapPosition.lng;
     const area = locationObj.area;
+    const state = locationObj.state;
     this.setState({
       display_lat: lat,
       display_long: lng,
-      map_city: area
+      map_city: area,
+      map_state: state
     });
     this.setState({
       position: this.makePositionString()
@@ -347,18 +376,14 @@ class User extends Component {
       return <Redirect to={`/users/${cookies.get('jetify_user')}/history`} />;
     }
 
-    if (this.state.redirectToFuturePage) {
-      return <Redirect to={`/users/${cookies.get('jetify_user')}/future`} />;
-    }
-
     return (
       <div className="App">
         <NavBar
           user={this.state.current_user}
           city={this.state.display_city}
+          region={this.state.display_region}
           handleLogout={this.handleLogout}
           handleMyPlaylists={this.handleMyPlaylists}
-          handleMyPlans={this.handleMyPlans}
           cookies={this.props.cookies}
         />
         <div className="Body">
@@ -393,7 +418,8 @@ class User extends Component {
             >
               <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                  Whoop! Time to plan a trip to {this.state.map_city}
+                  Whoop! Time to plan a trip to {this.state.map_city}{' '}
+                  {this.state.map_state}
                 </Modal.Title>
               </Modal.Header>
               <Modal.Body>
@@ -438,7 +464,10 @@ class User extends Component {
             onClose={this.handleDismiss}
             dismissible
           >
-            Playlist saved ! <span role="img">💚</span>
+            Playlist saved !{' '}
+            <span role="img" aria-label="">
+              💚
+            </span>
           </Alert>
         </div>
       </div>

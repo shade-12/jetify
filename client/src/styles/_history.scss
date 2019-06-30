@@ -2,7 +2,7 @@
   position: absolute;
   top: 100px;
   right: 3vw;
-  z-index: 10000;
+  z-index: 81;
   background-color: #fff;
   padding: 5px;
   border: 1px solid #999;
@@ -23,4 +23,46 @@
 div.location-thumbnail {
   margin: 10px;
   margin-top: 20px;
+  border: 1px white solid;
+  height: fit-content;
+
+  img.playlist-counter {
+    height: 5vw;
+  }
 }
+
+div.popup-playlists-container-body.modal-body {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  section.playlist {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+
+    .delete-playlist-button {
+      margin-top: 15px;
+    }
+  }
+}
+
+div.card-img-overlay {
+  background: black;
+  background: rgba(0,0,0,0.3);
+}
+
+div.card-img-overlay:hover {
+  background: black;
+  background: rgba(0,0,0,0);
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+

@@ -14,7 +14,9 @@
   z-index: 1;
 
   display: block;
-  background-image: url('https://www.muralswallpaper.com/app/uploads/classic-world-map-maps-plain.jpg');
+
+  background-image: url('./Background.png');
+  background-size: cover;
   width: 100vw;
   height: 100vh;
 
@@ -30,14 +32,14 @@
   padding: 2em;
   margin-bottom: 1em;
   max-width: 460px;
-  background: rgba(0, 159, 255, 0.6);
+  background: rgba(0, 159, 255, 0.7);
   background: linear-gradient(
     135deg,
-    rgba(236, 47, 75, 0.6),
-    rgba(0, 159, 255, 0.6)
+    rgba(236, 47, 75, 0.7),
+    rgba(0, 159, 255, 0.7)
   );
   text-align: center;
-
+  color: white;
   img {
     height: 30px;
   }

@@ -39,7 +39,7 @@ class Playlist extends Component {
       return (
         <div className="events-container">
           <h4>Playlist on the way ...</h4>
-          <PushSpinner size={80} color="#1db954" loading />
+          <PushSpinner size={80} color="#8A2BE2" loading={playlistLoading} />
         </div>
       );
     } else {
@@ -87,7 +87,7 @@ class Playlist extends Component {
       } else {
         return (
           <div className="empty-container">
-            <h4>Choose new dates/ new location!</h4>
+            <h4>Missing events :| try other dates</h4>
           </div>
         );
       }
