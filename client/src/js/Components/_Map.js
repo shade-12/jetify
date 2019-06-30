@@ -5,7 +5,7 @@ import Geocode from 'react-geocode';
 Geocode.setApiKey( process.env.REACT_APP_GOOGLE_API_KEY );
 Geocode.enableDebug();
 const styles = require('./_map.json')
-
+var headphone = require('./icons8-headphones-24.png');
 
 class Map extends Component{
 
@@ -234,7 +234,9 @@ class Map extends Component{
 						</InfoWindow>
 						{/*Marker*/}
 						<Marker google={this.props.google}
-						        name={'Dolores park'}
+								name={'Dolores park'}
+								options={{icon:headphone}}
+								animation={"bounce"}
 						        draggable={true}
 						        onDragEnd={ this.onMarkerDragEnd }
 						        position={{ lat: this.state.markerPosition.lat, lng: this.state.markerPosition.lng }}
