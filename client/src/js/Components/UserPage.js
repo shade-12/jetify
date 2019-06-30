@@ -252,9 +252,12 @@ class User extends Component {
     //get thumbnail for each location
     pexelsClient.search(location.name, 1)
                 .then(result => {
-                  let imageURL = result.photos[0].src.original;
-                  location.image = imageURL;
-                  console.log("Photos: ", imageURL);
+                  if(!result.photos[0]){
+                    location.image = 'https://www.homewallmurals.co.uk/ekmps/shops/allwallpapers/images/wallpaper-mural-easy-install-new-york-city-1310vexxl-17375-p.jpg';
+                  } else {
+                    location.image = result.photos[0].src.original;
+                  }
+                  console.log("Photos: ", location.image);
                 })
                 .then(() => {
                   //save location to db first, then playlist
