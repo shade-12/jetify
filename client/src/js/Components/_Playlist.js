@@ -43,7 +43,7 @@ class Playlist extends Component {
         </div>
       );
     } else {
-      if (tracksInPlaylist) {
+      if (this.props.artists.length) {
         return (
           <div className="playlist-container">
             <iframe

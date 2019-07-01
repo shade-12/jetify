@@ -63,7 +63,7 @@ class EventBar extends Component {
         </div>
       );
     } else {
-      if (this.props.tracksInPlaylist === true) {
+      if (this.state.artists.length) {
         return (
           <div className="events-container">
             {events.map(event => (

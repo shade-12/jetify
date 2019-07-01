@@ -56,8 +56,9 @@ class User extends Component {
   }
 
   async componentDidUpdate(_, prevState) {
+    const { artists } = this.state;
     //If artist state changes (on submit of new location) new playlist renders
-    if (this.state.artists !== prevState.artists) {
+    if (artists !== prevState.artists && artists.length) {
       await this.fetchCurrentUser();
       this.renderPlaylist();
     }
@@ -446,7 +447,7 @@ class User extends Component {
           <Playlist
             playlistLoading={this.state.playlistLoading}
             renderRandomPlaylist={this.renderRandomPlaylist}
-            tracksInPlaylist={this.state.tracksInPlaylist}
+            artists={this.state.artists}
             playlistID={this.state.current_playlist_id}
             savePlaylist={this.savePlaylist}
           />
