@@ -36,11 +36,11 @@ class HistoryPage extends Component {
         console.log('RESPONSE', response.data);
         //filter out duplicate locations
         const locationArray = [];
-        locations.map(location => {
+        locations.reverse().map(location => {
           if (!this.locationExists(locationArray, location)) {
             locationArray.push(location);
           }
-          return locationArray.reverse();
+          return locationArray;
         });
 
         //sort playlists according to location
