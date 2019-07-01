@@ -8,7 +8,7 @@
     "cookies",
     "tabs",
     "webNavigation",
-    "*://*.localhost:3000/*"
+    "*://*.jetify.herokuapp.com/*"
   ],
   "icons": [
     {
