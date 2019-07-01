@@ -108,7 +108,7 @@ class Location extends Component {
           centered
           data-backdrop="false"
         >
-          <Modal.Header>
+          <Modal.Header closeButton>
             <Modal.Title id="example-custom-modal-styling-title">
               {this.props.name} Playlists ({this.props.playlists.length})
             </Modal.Title>
