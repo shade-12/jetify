@@ -14,8 +14,6 @@ const spotifyApi = new SpotifyWebApi();
 const PexelsAPI = require('pexels-api-wrapper');
 let pexelsClient = new PexelsAPI(process.env.REACT_APP_PEXELS_API_KEY);
 
-// TODO: create a new playlist in Spotify when saving one
-
 class User extends Component {
   constructor(props) {
     super(props);
@@ -78,7 +76,6 @@ class User extends Component {
     const artistIds = await this.fetchArtistIds();
 
     //fetch top songs for each artist in this.state.artists
-    // Still need to return tracks to be async?? safety
     const tracks = await this.fetchTopSongs(artistIds, 0, 3);
 
     if (current_user.reusable_spotify_playlist_id) {
@@ -88,6 +85,7 @@ class User extends Component {
     }
   };
 
+  //refresh temp_playlist with new tracks (on each new location/date search)
   replaceSpotifyPlaylist = async tracks => {
     const { current_user, map_city } = this.state;
     const playlistId = current_user.reusable_spotify_playlist_id;
@@ -114,55 +112,7 @@ class User extends Component {
     }
   };
 
-  fetchCurrentUser = async () => {
-    const { cookies } = this.props;
-    const response = await axios.get(
-      `/api/users/${cookies.get('jetify_user')}`
-    );
-    let user = response.data.user;
-    this.setState({ current_user: user });
-  };
-
-  fetchArtistIds = async () => {
-    const { artists } = this.state;
-    let artistIds = [];
-
-    const promises = artists.map(async artist => {
-      try {
-        const response = await spotifyApi.searchArtists(artist, 'artist');
-        const responseArtist = response.artists.items[0];
-        if (responseArtist) {
-          artistIds.push(responseArtist.id);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    });
-
-    await Promise.all(promises);
-    return artistIds;
-  };
-
-  fetchTopSongs = async (artistIds, firstSlice, secondSlice) => {
-    let tracks = [];
-
-    const promises = artistIds.map(async id => {
-      try {
-        const response = await spotifyApi.getArtistTopTracks(id, 'GB');
-        const responseTracks = response.tracks.slice(firstSlice, secondSlice);
-        responseTracks.forEach(track => tracks.push(track.uri));
-      } catch (err) {
-        console.error(err);
-      }
-    });
-
-    await Promise.all(promises);
-    this.setState({
-      trackList: tracks
-    });
-    return tracks;
-  };
-
+  //create new playlist with new playlist_id (this used first time user signs in, or when they save a playlist to DB)
   createSpotifyPlaylist = tracks => {
     const { current_user, map_city } = this.state;
     this.setState({ playlistLoading: true });
@@ -199,8 +149,54 @@ class User extends Component {
       );
   };
 
+  fetchCurrentUser = async () => {
+    const { cookies } = this.props;
+    const response = await axios.get(
+      `/api/users/${cookies.get('jetify_user')}`
+    );
+    let user = response.data.user;
+    this.setState({ current_user: user });
+  };
+
+  fetchArtistIds = async () => {
+    const { artists } = this.state;
+    let artistIds = [];
+
+    const promises = artists.map(async artist => {
+      try {
+        const response = await spotifyApi.searchArtists(artist, 'artist');
+        const responseArtist = response.artists.items[0];
+        if (responseArtist) {
+          artistIds.push(responseArtist.id);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    });
+    await Promise.all(promises);
+    return artistIds;
+  };
+
+  fetchTopSongs = async (artistIds, firstSlice, secondSlice) => {
+    let tracks = [];
+
+    const promises = artistIds.map(async id => {
+      try {
+        const response = await spotifyApi.getArtistTopTracks(id, 'GB');
+        const responseTracks = response.tracks.slice(firstSlice, secondSlice);
+        responseTracks.forEach(track => tracks.push(track.uri));
+      } catch (err) {
+        console.error(err);
+      }
+    });
+    await Promise.all(promises);
+    this.setState({
+      trackList: tracks
+    });
+    return tracks;
+  };
+
   renderRandomPlaylist = async () => {
-    // const { trackList } = this.state;
     this.setState({
       tracksInPlaylist: true
     });
@@ -209,8 +205,6 @@ class User extends Component {
 
     //fetch top songs for each artist in this.state.artists
     const tracks = await this.fetchTopSongs(artistIds, 3, 6);
-
-    //!!!!!add tracks to state here!!!!!!
 
     //create playlist called 'Jetify' with artists top songs as tracks
     this.replaceSpotifyPlaylist(tracks);
@@ -229,17 +223,13 @@ class User extends Component {
     this.setState({ redirectToHistoryPage: true });
   };
 
+  // save playlist in DB
   savePlaylist = async () => {
-    // set tracks in the state and call create new playlist with these tracks
-    // const playlistId = current_user.reusable_spotify_playlist_id;
+    const { trackList, current_playlist_id, map_city } = this.state;
     const stringStart = this.state.startDate.toString();
     const stringEnd = this.state.endDate.toString();
-    console.log('enddate', this.state.endDate);
-    console.log('START', stringStart.slice(3, 10));
-    console.log('END', stringEnd.slice(3, 15));
 
-    const { trackList, current_playlist_id, map_city } = this.state;
-
+    // create new playlist to ensure playlist_id in DB is different to temporary_playlist_id
     await this.createSpotifyPlaylist(trackList);
 
     let location = {
@@ -248,29 +238,13 @@ class User extends Component {
       longitude: this.state.display_long
     };
 
+    // rename with location and date (incase there are multiple date ranges for the same location)
     await spotifyApi.changePlaylistDetails(current_playlist_id, {
       name: `Jetify: ${map_city} - ${stringStart.slice(
         3,
         10
       )} to ${stringEnd.slice(3, 15)}`
     });
-
-    //save location to db first, then playlist
-    // axios.post('/api/locations', location).then(response => {
-    //   let locationID = response.data.location.id;
-    //   let playlist = {
-    //     user_id: this.state.current_user.id,
-    //     location_id: locationID,
-    //     name: `Jetify: ${this.state.map_city}`,
-    //     spotify_id: this.state.current_playlist_id
-    //   };
-    //   axios
-    //     .post(`/api/locations/${locationID}/playlists`, playlist)
-    //     .then(response => {
-    //       this.setState({ showSuccessAlert: true });
-    //       console.log('------------------Saved playlist', response);
-    //     });
-    // });
 
     //get thumbnail for each location
     pexelsClient
@@ -324,6 +298,7 @@ class User extends Component {
     });
   };
 
+  //set state of artist function passed to eventBar
   setArtists = artistObj => {
     this.setState({
       artists: [...new Set(artistObj)]
@@ -343,7 +318,6 @@ class User extends Component {
   };
 
   onSubmit = () => {
-    console.log(this.state.startDate.toISOString());
     this.setState({
       showDateForm: false,
       eventBarPosition: this.state.position,
