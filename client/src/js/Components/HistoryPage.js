@@ -40,7 +40,7 @@ class HistoryPage extends Component {
           if (!this.locationExists(locationArray, location)) {
             locationArray.push(location);
           }
-          return locationArray;
+          return locationArray.reverse();
         });
 
         //sort playlists according to location

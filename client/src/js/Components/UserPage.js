@@ -287,6 +287,7 @@ class User extends Component {
                       });
                   });
                 });
+  };
 
   makePositionString = () => {
     const position =

@@ -65,6 +65,7 @@ class Playlist extends Component {
               >
                 Generate
               </button>
+              &nbsp;&nbsp;
               <button
                 type="button"
                 className="btn generate-button"
