@@ -17,15 +17,15 @@ class App extends Component {
       <Router>
         <div className="App">
           <Route
-            path="https://jetify.herokuapp.com/" exact
+            path={${process.env.PUBLIC_URL}/}
             render={() => <LoginPage cookies={this.props.cookies} handleLogin={this.handleLogin} />}
           />
           <Route
-            path="https://jetify.herokuapp.com/users/:id" exact
+            path={${process.env.PUBLIC_URL}/users/:id}
             render={() => <UserPage cookies={this.props.cookies} />}
           />
           <Route
-            path="https://jetify.herokuapp.com/users/:id/history" exact
+            path={${process.env.PUBLIC_URL}/users/:id/history}
             render={() => <HistoryPage cookies={this.props.cookies}/>}
           />
         </div>
