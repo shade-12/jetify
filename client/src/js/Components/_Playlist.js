@@ -2,16 +2,39 @@ import React, { Component } from 'react';
 import { PushSpinner } from 'react-spinners-kit';
 
 class Playlist extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      randomStringToForceRefresh: '',
+      isRefreshing: false
+    };
+  }
+
+  refreshIframe = () => {
+    const randomString = Math.random()
+      .toString(36)
+      .substring(7);
+    this.setState({ isRefreshing: true });
+    setTimeout(() => {
+      this.setState({
+        randomStringToForceRefresh: randomString,
+        isRefreshing: false
+      });
+    }, 3000);
+  };
+
   render() {
     const {
       playlistLoading,
-      tracksInPlaylist,
       playlistID,
       renderRandomPlaylist,
       savePlaylist
     } = this.props;
 
-    if (playlistLoading) {
+    const { randomStringToForceRefresh, isRefreshing } = this.state;
+
+    if (playlistLoading || isRefreshing) {
       return (
         <div className="events-container">
           <h4>Playlist on the way ...</h4>
@@ -19,10 +42,11 @@ class Playlist extends Component {
         </div>
       );
     } else {
-      if (tracksInPlaylist)
+      if (this.props.artists.length) {
         return (
           <div className="playlist-container">
             <iframe
+              key={randomStringToForceRefresh}
               src={
                 'https://open.spotify.com/embed/user/spotify/playlist/' +
                 playlistID
@@ -41,6 +65,13 @@ class Playlist extends Component {
               >
                 Generate
               </button>
+              <button
+                type="button"
+                className="btn generate-button"
+                onClick={this.refreshIframe}
+              >
+                Refresh
+              </button>
               &nbsp;&nbsp;
               <button
                 type="button"
@@ -52,10 +83,10 @@ class Playlist extends Component {
             </section>
           </div>
         );
-      else {
+      } else {
         return (
           <div className="empty-container">
-            <h4>Missing events :| Maybe try other dates</h4>
+            <h4>Missing events :| try other dates</h4>
           </div>
         );
       }

@@ -48,7 +48,7 @@ class EventBar extends Component {
       this.props.startDate !== prevProps.startDate ||
       this.props.endDate !== prevProps.endDate
     ) {
-      this.setState({loading: true});
+      this.setState({ loading: true });
       this.getEventInfo();
     }
   }
@@ -63,7 +63,7 @@ class EventBar extends Component {
         </div>
       );
     } else {
-      if (this.props.tracksInPlaylist === true) {
+      if (this.state.artists.length) {
         return (
           <div className="events-container">
             {events.map(event => (
