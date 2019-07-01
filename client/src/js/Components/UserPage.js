@@ -89,14 +89,17 @@ class User extends Component {
   //refresh temp_playlist with new tracks (on each new location/date search)
   replaceSpotifyPlaylist = async tracks => {
     const { current_user, map_city } = this.state;
-    const playlistId = current_user.reusable_spotify_playlist_id;
-
+    let playlistId = current_user.reusable_spotify_playlist_id;
     this.setState({ playlistLoading: true });
 
-    await spotifyApi.changePlaylistDetails(playlistId, {
+    console.log('REUSABLE PLAYLIST ID OLD:', playlistId);
+
+    const newReusablePlaylistId = await this.createSpotifyPlaylist();
+
+    await spotifyApi.changePlaylistDetails(newReusablePlaylistId, {
       name: `Jetify: ${map_city}`
     });
-    await spotifyApi.replaceTracksInPlaylist(playlistId, tracks);
+    // await spotifyApi.replaceTracksInPlaylist(playlistId, tracks);
 
     if (!tracks.length) {
       this.setState({
