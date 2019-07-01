@@ -14,7 +14,7 @@ class App extends Component {
 
   render() {
     return (
-      <Router>
+      <Router basename="https://jetify.herokuapp.com">
         <div className="App">
           <Route
             path="/" exact
