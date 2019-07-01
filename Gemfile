@@ -15,7 +15,7 @@ gem 'puma', '~> 3.11'
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
- gem 'dotenv-rails', groups: [:development, :test]
+ gem 'dotenv-rails', :require => 'dotenv/rails-now'
 # gem 'pry-rails'
 
 # Use ActiveStorage variant
