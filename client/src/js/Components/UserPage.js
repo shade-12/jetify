@@ -195,7 +195,7 @@ class User extends Component {
 
     const promises = artistIds.map(async id => {
       try {
-        const response = await spotifyApi.getArtistTopTracks(id, 'GB');
+        const response = await spotifyApi.getArtistTopTracks(id, 'US');
         const responseTracks = response.tracks.slice(firstSlice, secondSlice);
         responseTracks.forEach(track => tracks.push(track.uri));
       } catch (err) {

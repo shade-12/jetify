@@ -27,7 +27,6 @@ class Playlist extends Component {
   render() {
     const {
       playlistLoading,
-      tracksInPlaylist,
       playlistID,
       renderRandomPlaylist,
       savePlaylist
