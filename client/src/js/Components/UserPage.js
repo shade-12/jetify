@@ -239,7 +239,7 @@ class User extends Component {
   };
 
   handleMyPlaylists = () => {
-    this.setState({ redirectToHistoryPage: true });
+    spotifyApi.getMyCurrentPlayingTrack('from_token').then(response => console.log("Current playing: ", response)).then(() => this.setState({ redirectToHistoryPage: true }));
   };
 
    savePlaylist = () => {
@@ -273,7 +273,7 @@ class User extends Component {
                       .post(`/api/locations/${locationID}/playlists`, playlist)
                       .then(response => {
                         this.setState({ showSuccessAlert: true });
-                        console.log('------------------Saved playlist', response);
+                        console.log('Saved playlist', response);
                       });
                   });
                 });
@@ -448,7 +448,7 @@ class User extends Component {
             onClose={this.handleDismiss}
             dismissible
           >
-            Playlist saved ! <span role="img" aria-label="">💚</span>
+            Playlist saved ! <span role="img" aria-label=""> 💚 </span>
           </Alert>
         </div>
       </div>

@@ -157,7 +157,7 @@ class HistoryPage extends Component {
          >
         <div>
           <h4>{this.state.activeMarker.name}</h4>
-          <p>Playlists:{this.state.activeMarker.playlist}</p>
+          <p>Playlists: {this.state.activeMarker.playlist}</p>
         </div>
         </InfoWindow>
         </Map>
