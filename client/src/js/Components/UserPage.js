@@ -81,7 +81,7 @@ class User extends Component {
     if (current_user.reusable_spotify_playlist_id) {
       this.replaceSpotifyPlaylist(tracks);
     } else {
-      this.createSpotifyPlaylist(tracks);
+      this.createReusableSpotifyPlaylist(tracks);
     }
   };
 
@@ -113,7 +113,7 @@ class User extends Component {
   };
 
   //create new playlist with new playlist_id (this used first time user signs in, or when they save a playlist to DB)
-  createSpotifyPlaylist = tracks => {
+  createReusableSpotifyPlaylist = tracks => {
     const { current_user, map_city } = this.state;
     this.setState({ playlistLoading: true });
 
@@ -147,6 +147,18 @@ class User extends Component {
           console.error(err);
         }
       );
+  };
+
+  createSpotifyPlaylist = async tracks => {
+    const { current_user, map_city } = this.state;
+
+    const response = await spotifyApi.createPlaylist(current_user.spotify_id, {
+      name: `Jetify: ${map_city}`
+    });
+    const playlistId = response.id;
+    await spotifyApi.addTracksToPlaylist(playlistId, tracks);
+
+    return playlistId;
   };
 
   fetchCurrentUser = async () => {
@@ -225,12 +237,12 @@ class User extends Component {
 
   // save playlist in DB
   savePlaylist = async () => {
-    const { trackList, current_playlist_id, map_city } = this.state;
+    const { trackList, map_city } = this.state;
     const stringStart = this.state.startDate.toString();
     const stringEnd = this.state.endDate.toString();
 
     // create new playlist to ensure playlist_id in DB is different to temporary_playlist_id
-    await this.createSpotifyPlaylist(trackList);
+    const newPlaylistId = await this.createSpotifyPlaylist(trackList);
 
     let location = {
       name: this.state.map_city,
@@ -239,7 +251,7 @@ class User extends Component {
     };
 
     // rename with location and date (incase there are multiple date ranges for the same location)
-    await spotifyApi.changePlaylistDetails(current_playlist_id, {
+    await spotifyApi.changePlaylistDetails(newPlaylistId, {
       name: `Jetify: ${map_city} - ${stringStart.slice(
         3,
         10
@@ -262,7 +274,7 @@ class User extends Component {
             user_id: this.state.current_user.id,
             location_id: locationID,
             name: `Jetify: ${this.state.map_city}`,
-            spotify_id: this.state.current_playlist_id
+            spotify_id: newPlaylistId
           };
           axios
             .post(`/api/locations/${locationID}/playlists`, playlist)
