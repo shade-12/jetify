@@ -44,5 +44,5 @@
     "not op_mini all"
   ],
   "proxy": "http://localhost:3001",
-  "homepage" : "https://jetify.herokuapp.com/"
+  "homepage" : "https://jetify.herokuapp.com"
 }
