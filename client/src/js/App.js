@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { instanceOf } from 'prop-types';
 import { withCookies, Cookies } from 'react-cookie';
 import LoginPage from './Components/LoginPage.js';
@@ -18,15 +18,15 @@ class App extends Component {
         <div className="App">
           <Switch>
             <Route
-              path="/"
+              exact path="/"
               render={() => <LoginPage cookies={this.props.cookies} handleLogin={this.handleLogin} />}
             />
             <Route
-              path="/users/:id"
+              exact path="/users/:id"
               render={() => <UserPage cookies={this.props.cookies} />}
             />
             <Route
-              path="/users/:id/history"
+              exact path="/users/:id/history"
               render={() => <HistoryPage cookies={this.props.cookies}/>}
             />
           </Switch>

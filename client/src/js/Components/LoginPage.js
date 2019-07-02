@@ -27,7 +27,6 @@ class LoginPage extends Component {
           });
 
     let token = response.access_token;
-    console.log("Access token: ", response.access_token)
     cookies.set('jetify_token', token, { path: '/', expires: 0 });
     axios({
       method: 'get',
@@ -39,18 +38,17 @@ class LoginPage extends Component {
         name:  data.display_name,
         email: data.email,
         spotify_id: data.id
-      }.then(() => {
-        axios.post('/api/users', user).then(response => {
-          let user = response.data.user;
-          cookies.set('jetify_user', user.id, { path: '/', expires: 0 });
-          this.setState({
-            currentUser: user,
-            redirectToUserPage: true
-          });
-        }).catch(error => {
-          console.log(error);
+      };
+      axios.post('/api/users', user).then(response => {
+        let user = response.data.user;
+        cookies.set('jetify_user', user.id, { path: '/', expires: 0 });
+        this.setState({
+          currentUser: user,
+          redirectToUserPage: true
         });
-        })
+      }).catch(error => {
+        console.log(error);
+      });
     });
   };
 
@@ -74,7 +72,7 @@ class LoginPage extends Component {
             className="btn btn-dark"
             buttonText={buttonText}
             clientId={process.env.REACT_APP_SPOTIFY_CLIENT_ID}
-            redirectUri={"https://jetify.herokuapp.com/api/logging-in"}
+            redirectUri={"http://localhost:3000/api/logging-in"}
             scope={"user-read-email user-read-private user-read-currently-playing user-library-modify playlist-modify-public playlist-read-collaborative playlist-read-private playlist-modify-private"}
             onSuccess={this.onSuccess}
             onFailure={this.onFailure}
