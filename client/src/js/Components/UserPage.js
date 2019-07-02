@@ -88,18 +88,17 @@ class User extends Component {
 
   //refresh temp_playlist with new tracks (on each new location/date search)
   replaceSpotifyPlaylist = async tracks => {
-    const { current_user, map_city } = this.state;
-    let playlistId = current_user.reusable_spotify_playlist_id;
+    const { current_user, map_city, trackList } = this.state;
+    const playlistId = current_user.reusable_spotify_playlist_id;
     this.setState({ playlistLoading: true });
 
     console.log('REUSABLE PLAYLIST ID OLD:', playlistId);
 
-    const newReusablePlaylistId = await this.createSpotifyPlaylist();
+    const newReusablePlaylistId = await this.createSpotifyPlaylist(trackList);
 
     await spotifyApi.changePlaylistDetails(newReusablePlaylistId, {
       name: `Jetify: ${map_city}`
     });
-    // await spotifyApi.replaceTracksInPlaylist(playlistId, tracks);
 
     if (!tracks.length) {
       this.setState({
@@ -107,14 +106,38 @@ class User extends Component {
         playlistLoading: false
       });
     } else {
-      setTimeout(() => {
-        this.setState({
-          playlistLoading: false,
-          current_playlist_id: playlistId
+      axios
+        .put(`/api/users/${current_user.id}`, {
+          reusable_spotify_playlist_id: newReusablePlaylistId
+        })
+        .then(() => {
+          this.setState({
+            current_playlist_id: newReusablePlaylistId,
+            playlistLoading: false
+          });
         });
-      }, 1000);
     }
+    console.log('STILL THE OLD ONE OR NEW?', playlistId);
+    spotifyApi.unfollowPlaylist(playlistId);
   };
+
+  // await spotifyApi.replaceTracksInPlaylist(playlistId, tracks);
+  //delete the old playlist with old ID!
+
+  // if (!tracks.length) {
+  //   this.setState({
+  //     tracksInPlaylist: false,
+  //     playlistLoading: false
+  //   });
+  // } else {
+  //   setTimeout(() => {
+  //     this.setState({
+  //       playlistLoading: false,
+  //       current_playlist_id: playlistId
+  //     });
+  //   }, 1000);
+  // }
+  // };
 
   //create new playlist with new playlist_id (this used first time user signs in, or when they save a playlist to DB)
   createReusableSpotifyPlaylist = tracks => {

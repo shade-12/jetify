@@ -65,13 +65,6 @@ class Playlist extends Component {
               >
                 Generate
               </button>
-              <button
-                type="button"
-                className="btn generate-button"
-                onClick={this.refreshIframe}
-              >
-                Refresh
-              </button>
               &nbsp;&nbsp;
               <button
                 type="button"
