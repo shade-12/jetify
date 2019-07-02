@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
+import SpotifyWebApi from 'spotify-web-api-js';
+const spotifyApi = new SpotifyWebApi();
 
 class Location extends Component {
   constructor(props) {
@@ -23,19 +25,36 @@ class Location extends Component {
   };
 
   onDeleteAll = () => {
-    axios.delete(`/api/locations/${this.props.id}`).then(response => {
-      console.log('Delete: ', response);
-      this.setState({ delete: true });
-    });
+
+    await axios
+    .get(`/api/locations/${this.props.id}/playlists`)
+    .then(response => {
+      console.log(response.data)
+    })
+
+
+
+    // axios.delete(`/api/locations/${this.props.id}`).then(response => {
+    //   console.log('Delete: ', response);
+    //   this.setState({ delete: true });
+    // });
   };
 
-  onDeleteOne = event => {
-    console.log('I am target: ', event.target.id);
-    axios
-      .delete(`/api/locations/${this.props.id}/playlists/${event.target.id}`)
+  onDeleteOne = async event => {
+    let playlistId = event.target.id;
+
+    await axios
+      .get(`/api/locations/${this.props.id}/playlists/${event.target.id}`)
       .then(response => {
-        console.log('Playlist deleted: ', response);
-        this.setState({ delete: true });
+        spotifyApi.unfollowPlaylist(response.data.playlist.spotify_id);
+      })
+      .then(() => {
+        axios
+          .delete(`/api/locations/${this.props.id}/playlists/${playlistId}`)
+          .then(response => {
+            console.log('Playlist deleted: ', response);
+            this.setState({ delete: true });
+          });
       });
   };
 
