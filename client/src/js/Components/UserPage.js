@@ -108,7 +108,6 @@ class User extends Component {
     const playlistId = current_user.reusable_spotify_playlist_id;
     this.setState({ playlistLoading: true });
 
-    console.log('REUSABLE PLAYLIST ID OLD:', playlistId);
     await spotifyApi.unfollowPlaylist(playlistId);
 
     const newReusablePlaylistId = await this.createSpotifyPlaylist(tracks);
@@ -124,8 +123,6 @@ class User extends Component {
           tracksInPlaylist: true
         });
       });
-
-    console.log('STILL THE OLD ONE OR NEW?', playlistId);
   };
 
   createSpotifyPlaylist = async tracks => {
@@ -210,7 +207,10 @@ class User extends Component {
   };
 
   handleMyPlaylists = () => {
-    this.setState({ redirectToHistoryPage: true });
+    spotifyApi
+      .getMyCurrentPlayingTrack('from_token')
+      .then(response => console.log('Current playing: ', response))
+      .then(() => this.setState({ redirectToHistoryPage: true }));
   };
 
   // save playlist in DB
@@ -240,9 +240,13 @@ class User extends Component {
     pexelsClient
       .search(location.name, 1)
       .then(result => {
-        let imageURL = result.photos[0].src.original;
-        location.image = imageURL;
-        console.log('Photos: ', imageURL);
+        if (!result.photos[0]) {
+          location.image =
+            'https://www.homewallmurals.co.uk/ekmps/shops/allwallpapers/images/wallpaper-mural-easy-install-new-york-city-1310vexxl-17375-p.jpg';
+        } else {
+          location.image = result.photos[0].src.original;
+        }
+        console.log('Photos: ', location.image);
       })
       .then(() => {
         //save location to db first, then playlist
@@ -252,13 +256,13 @@ class User extends Component {
             user_id: this.state.current_user.id,
             location_id: locationID,
             name: `Jetify: ${this.state.map_city}`,
-            spotify_id: newPlaylistId
+            spotify_id: this.state.current_playlist_id
           };
           axios
             .post(`/api/locations/${locationID}/playlists`, playlist)
             .then(response => {
               this.setState({ showSuccessAlert: true });
-              console.log('------------------Saved playlist', response);
+              console.log('Saved playlist', response);
             });
         });
       });
