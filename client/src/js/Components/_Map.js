@@ -214,9 +214,7 @@ class Map extends Component{
 								types={['(regions)']}
 								style={{width: '100%',
 								height: '40px',
-								display: 'flex',
-								flexFlow: 'row nowrap', 
-								justifyContent: 'center',
+								display: 'flex', 
 								paddingleft: '16px',
 								marginTop: '-40px',
 								}}
@@ -230,6 +228,7 @@ class Map extends Component{
 						<InfoWindow
 							onClose={this.onInfoWindowClose}
 							position={{ lat: ( this.state.markerPosition.lat ), lng: this.state.markerPosition.lng }}
+							
 						>
 						 <div>
 								<span style={{ padding: 0, margin: 0 }}>{ this.state.area + ", " + this.state.state }</span>
