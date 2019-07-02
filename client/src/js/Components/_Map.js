@@ -214,6 +214,9 @@ class Map extends Component{
 								types={['(regions)']}
 								style={{width: '100%',
 								height: '40px',
+								display: 'flex',
+								flexFlow: 'row nowrap', 
+								justifyContent: 'center',
 								paddingleft: '16px',
 								marginTop: '-40px',
 								}}
@@ -255,13 +258,18 @@ class Map extends Component{
 				<AsyncMap
       googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`}
       loadingElement={
-       <div style={{ height: `100%` }} />
+			 <div style={{ height: `100%`,
+			 display: 'flex', 
+			 justifyContent: 'center',  }} />
       }
       containerElement={
-       <div style={{ height: this.props.height }} />
+			 <div style={{ height: this.props.height, 
+				}} />
       }
       mapElement={
-       <div style={{ height: `95%` }} />
+			 <div style={{ height: `95%`,
+			 display: 'flex', 
+			 justifyContent: 'center', }} />
       }
      />
      </div>
