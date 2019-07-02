@@ -27,6 +27,7 @@ class LoginPage extends Component {
           });
 
     let token = response.access_token;
+    console.log("Access token: ", response.access_token)
     cookies.set('jetify_token', token, { path: '/', expires: 0 });
     axios({
       method: 'get',
@@ -38,17 +39,18 @@ class LoginPage extends Component {
         name:  data.display_name,
         email: data.email,
         spotify_id: data.id
-      };
-      axios.post('/api/users', user).then(response => {
-        let user = response.data.user;
-        cookies.set('jetify_user', user.id, { path: '/', expires: 0 });
-        this.setState({
-          currentUser: user,
-          redirectToUserPage: true
+      }.then(() => {
+        axios.post('/api/users', user).then(response => {
+          let user = response.data.user;
+          cookies.set('jetify_user', user.id, { path: '/', expires: 0 });
+          this.setState({
+            currentUser: user,
+            redirectToUserPage: true
+          });
+        }).catch(error => {
+          console.log(error);
         });
-      }).catch(error => {
-        console.log(error);
-      });
+        })
     });
   };
 
