@@ -256,7 +256,7 @@ class User extends Component {
             user_id: this.state.current_user.id,
             location_id: locationID,
             name: `Jetify: ${this.state.map_city}`,
-            spotify_id: this.state.current_playlist_id
+            spotify_id: newPlaylistId
           };
           axios
             .post(`/api/locations/${locationID}/playlists`, playlist)
