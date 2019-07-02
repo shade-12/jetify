@@ -189,3 +189,65 @@ div.fade.alert.alert-success {
 button.close {
   outline: none;
 }
+
+#dropdown-item-button{
+  float: left;
+  overflow: hidden;
+  display: none;
+
+}
+
+@media screen and (max-width: 600px) {
+  .nav-item button {
+    display: none;
+  }
+  #dropdown-item-button {
+    float: right;
+    display: block;
+  }
+  
+div {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+
+}
+div.map-container{
+  width: 100%;
+  height: 100%;
+}
+div.events-container{
+  margin-top: 40vw;
+  width: 100%;
+  height: 100%;
+
+  section.card{
+    width: 100%;
+    height: 100%;
+  }
+  img.card-img-top {
+    width: 100%;
+    height: 100%;
+  }
+}
+div.playlist-container{
+  width: 100%;
+  height: 100%;
+}
+}
+
+@keyframes bounce {
+  0%,
+  25%,
+  50%,
+  75%,
+  100% {
+      transform: translateY(0);
+  }
+  40% {
+      transform: translateY(-20px);
+  }
+  60% {
+      transform: translateY(-12px);
+  }
+}

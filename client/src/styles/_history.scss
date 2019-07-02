@@ -60,7 +60,38 @@ div.card-img-overlay:hover {
 }
 
 
+#dropdown-item-button{
+  float: left;
+  overflow: hidden;
+  display: none;
 
+}
+
+@media screen and (max-width: 600px) {
+  .nav-item button {
+    display: none;
+  }
+  #dropdown-item-button {
+    float: right;
+    display: block;
+  }
+    div{
+      width: 100%;
+    height: 100%;
+    }
+    h3.card-title{
+      font-size: 20%;
+    }
+
+    div.card-img-overlay{
+      width: 100%;
+    height: 100%;
+    }
+    div.location-thumbnail{
+      width: 100%;
+    height: 12%;
+    }
+  }
 
 
 
