@@ -14,18 +14,18 @@ class App extends Component {
 
   render() {
     return (
-      <Router basename="/">
+      <Router basename="/jetify.herokuapp.com">
         <div className="App">
           <Route
-            path="/" exact
+            path={`${process.env.PUBLIC_URL}/`} exact
             render={() => <LoginPage cookies={this.props.cookies} handleLogin={this.handleLogin} />}
           />
           <Route
-            path="/users/:id" exact
+            path={`${process.env.PUBLIC_URL}/users/:id`} exact
             render={() => <UserPage cookies={this.props.cookies} />}
           />
           <Route
-            path="/users/:id/history" exact
+            path={`${process.env.PUBLIC_URL}/users/:id/history`} exact
             render={() => <HistoryPage cookies={this.props.cookies}/>}
           />
         </div>
