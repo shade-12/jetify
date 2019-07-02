@@ -14,7 +14,7 @@ class LoginPage extends Component {
     };
   }
 
-  onSuccess = response => {
+  onSuccess = async response => {
     const {cookies} = this.props;
     //get user current location
     axios.get('https://ipapi.co/json/')
@@ -39,7 +39,7 @@ class LoginPage extends Component {
         email: data.email,
         spotify_id: data.id
       };
-      axios.post('/api/users', user).then(response => {
+      await axios.post('/api/users', user).then(response => {
         let user = response.data.user;
         cookies.set('jetify_user', user.id, { path: '/', expires: 0 });
         this.setState({
