@@ -79,7 +79,6 @@ class HistoryPage extends Component {
   };
 
   onMouseOver = (props, marker, e) => {
-    console.log(marker);
     if (!(marker.name === this.state.activeMarker.name)) {
       this.setState({
         activeMarker: marker,

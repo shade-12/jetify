@@ -73,30 +73,9 @@ class User extends Component {
 
     spotifyApi.setAccessToken(cookies.get('jetify_token'));
 
-    //fetch artistID for all artists in this.state.artist
     const artistIds = await this.fetchArtistIds();
 
-    //fetch top songs for each artist in this.state.artists
     const tracks = await this.fetchTopSongs(artistIds, 0, 3);
-
-    if (current_user.reusable_spotify_playlist_id) {
-      this.replaceSpotifyPlaylist(tracks);
-    } else {
-      this.createReusableSpotifyPlaylist(tracks);
-    }
-  };
-
-  //refresh temp_playlist with new tracks (on each new location/date search)
-  replaceSpotifyPlaylist = async tracks => {
-    const { current_user, map_city } = this.state;
-    const playlistId = current_user.reusable_spotify_playlist_id;
-
-    this.setState({ playlistLoading: true });
-
-    await spotifyApi.changePlaylistDetails(playlistId, {
-      name: `Jetify: ${map_city}`
-    });
-    await spotifyApi.replaceTracksInPlaylist(playlistId, tracks);
 
     if (!tracks.length) {
       this.setState({
@@ -104,50 +83,49 @@ class User extends Component {
         playlistLoading: false
       });
     } else {
-      setTimeout(() => {
-        this.setState({
-          playlistLoading: false,
-          current_playlist_id: playlistId
-        });
-      }, 1000);
+      if (current_user.reusable_spotify_playlist_id) {
+        this.replaceSpotifyPlaylist(tracks);
+      } else {
+        const newReusablePlaylistId = await this.createSpotifyPlaylist(tracks);
+        axios
+          .put(`/api/users/${current_user.id}`, {
+            reusable_spotify_playlist_id: newReusablePlaylistId
+          })
+          .then(() => {
+            this.setState({
+              current_playlist_id: newReusablePlaylistId,
+              playlistLoading: false,
+              tracksInPlaylist: true
+            });
+          });
+      }
     }
   };
 
-  //create new playlist with new playlist_id (this used first time user signs in, or when they save a playlist to DB)
-  createReusableSpotifyPlaylist = tracks => {
-    const { current_user, map_city } = this.state;
+  //delete playlist from previous search and replace with new playlist
+  replaceSpotifyPlaylist = async tracks => {
+    const { current_user } = this.state;
+    const playlistId = current_user.reusable_spotify_playlist_id;
     this.setState({ playlistLoading: true });
 
-    spotifyApi
-      .createPlaylist(current_user.spotify_id, {
-        name: `Jetify: ${map_city}`
+    console.log('REUSABLE PLAYLIST ID OLD:', playlistId);
+    await spotifyApi.unfollowPlaylist(playlistId);
+
+    const newReusablePlaylistId = await this.createSpotifyPlaylist(tracks);
+
+    axios
+      .put(`/api/users/${current_user.id}`, {
+        reusable_spotify_playlist_id: newReusablePlaylistId
       })
-      .then(
-        response => {
-          if (!tracks.length) {
-            this.setState({
-              tracksInPlaylist: false,
-              playlistLoading: false
-            });
-          } else {
-            spotifyApi.addTracksToPlaylist(response.id, tracks).then(() => {
-              axios
-                .put(`/api/users/${current_user.id}`, {
-                  reusable_spotify_playlist_id: response.id
-                })
-                .then(() => {
-                  this.setState({
-                    current_playlist_id: response.id,
-                    playlistLoading: false
-                  });
-                });
-            });
-          }
-        },
-        err => {
-          console.error(err);
-        }
-      );
+      .then(() => {
+        this.setState({
+          current_playlist_id: newReusablePlaylistId,
+          playlistLoading: false,
+          tracksInPlaylist: true
+        });
+      });
+
+    console.log('STILL THE OLD ONE OR NEW?', playlistId);
   };
 
   createSpotifyPlaylist = async tracks => {
@@ -209,17 +187,16 @@ class User extends Component {
     return tracks;
   };
 
+  //on 'generate' button
   renderRandomPlaylist = async () => {
     this.setState({
       tracksInPlaylist: true
     });
-    //fetch artistID for all artists in this.state.artist
+
     const artistIds = await this.fetchArtistIds();
 
-    //fetch top songs for each artist in this.state.artists
     const tracks = await this.fetchTopSongs(artistIds, 3, 6);
 
-    //create playlist called 'Jetify' with artists top songs as tracks
     this.replaceSpotifyPlaylist(tracks);
   };
 

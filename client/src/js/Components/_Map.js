@@ -234,12 +234,11 @@ class Map extends Component{
 						</InfoWindow>
 						{/*Marker*/}
 						<Marker google={this.props.google}
-								name={'Dolores park'}
 								options={{icon:headphone}}
-								animation={"bounce"}
 						        draggable={true}
 						        onDragEnd={ this.onMarkerDragEnd }
-						        position={{ lat: this.state.markerPosition.lat, lng: this.state.markerPosition.lng }}
+										position={{ lat: this.state.markerPosition.lat, lng: this.state.markerPosition.lng }}
+										
 						/>
 						<Marker />
 					</GoogleMap>
