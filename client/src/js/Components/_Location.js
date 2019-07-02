@@ -21,23 +21,18 @@ class Location extends Component {
   handleHide = event => {
     event.stopPropagation();
     this.setState({ show: false });
-    console.log('Hide box!!!', this.state.show);
   };
 
-  onDeleteAll = () => {
+  onDeleteAll = async () => {
+    let playlists = this.props.playlists;
 
-    await axios
-    .get(`/api/locations/${this.props.id}/playlists`)
-    .then(response => {
-      console.log(response.data)
-    })
+    await playlists.forEach(playlist => {
+      spotifyApi.unfollowPlaylist(playlist.spotify_id);
+    });
 
-
-
-    // axios.delete(`/api/locations/${this.props.id}`).then(response => {
-    //   console.log('Delete: ', response);
-    //   this.setState({ delete: true });
-    // });
+    await axios.delete(`/api/locations/${this.props.id}`).then(response => {
+      this.setState({ delete: true });
+    });
   };
 
   onDeleteOne = async event => {
@@ -52,7 +47,6 @@ class Location extends Component {
         axios
           .delete(`/api/locations/${this.props.id}/playlists/${playlistId}`)
           .then(response => {
-            console.log('Playlist deleted: ', response);
             this.setState({ delete: true });
           });
       });

@@ -108,7 +108,6 @@ class User extends Component {
     const playlistId = current_user.reusable_spotify_playlist_id;
     this.setState({ playlistLoading: true });
 
-    console.log('REUSABLE PLAYLIST ID OLD:', playlistId);
     await spotifyApi.unfollowPlaylist(playlistId);
 
     const newReusablePlaylistId = await this.createSpotifyPlaylist(tracks);
@@ -124,8 +123,6 @@ class User extends Component {
           tracksInPlaylist: true
         });
       });
-
-    console.log('STILL THE OLD ONE OR NEW?', playlistId);
   };
 
   createSpotifyPlaylist = async tracks => {
@@ -242,7 +239,6 @@ class User extends Component {
       .then(result => {
         let imageURL = result.photos[0].src.original;
         location.image = imageURL;
-        console.log('Photos: ', imageURL);
       })
       .then(() => {
         //save location to db first, then playlist

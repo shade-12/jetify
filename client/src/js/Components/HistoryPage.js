@@ -33,7 +33,6 @@ class HistoryPage extends Component {
       .get(`/api/users/${cookies.get('jetify_user')}/getPlaylists`)
       .then(response => {
         const { locations, playlists } = response.data;
-        console.log('RESPONSE', response.data);
         //filter out duplicate locations
         const locationArray = [];
         locations.map(location => {
