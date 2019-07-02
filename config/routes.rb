@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       get '/getPlaylists', to: 'users#getPlaylists'
     end
     resources :locations, only: [:create, :show, :destroy] do
-      resources :playlists, only: [:create, :destroy]
+      resources :playlists, only: [:create, :destroy, :show]
     end
   end
 
