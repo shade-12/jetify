@@ -14,7 +14,7 @@ class App extends Component {
 
   render() {
     return (
-      <Router history={hashHistory}>
+      <Router>
         <div className="App">
           <Route
             path="/" exact
