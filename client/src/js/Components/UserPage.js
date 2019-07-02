@@ -52,6 +52,7 @@ class User extends Component {
   async componentDidMount() {
     //fetch user data from backend
     await this.fetchCurrentUser();
+
     await this.renderPlaylist();
   }
 
@@ -75,26 +76,37 @@ class User extends Component {
 
     //fetch artistID for all artists in this.state.artist
     const artistIds = await this.fetchArtistIds();
-
+    console.log(artistIds);
     //fetch top songs for each artist in this.state.artists
     const tracks = await this.fetchTopSongs(artistIds, 0, 3);
-
+    console.log(tracks);
     if (current_user.reusable_spotify_playlist_id) {
       this.replaceSpotifyPlaylist(tracks);
     } else {
-      this.createReusableSpotifyPlaylist(tracks);
+      const newReusablePlaylistId = await this.createSpotifyPlaylist(tracks);
+      axios
+        .put(`/api/users/${current_user.id}`, {
+          reusable_spotify_playlist_id: newReusablePlaylistId
+        })
+        .then(() => {
+          this.setState({
+            current_playlist_id: newReusablePlaylistId,
+            playlistLoading: false
+          });
+        });
     }
   };
 
   //refresh temp_playlist with new tracks (on each new location/date search)
   replaceSpotifyPlaylist = async tracks => {
-    const { current_user, map_city, trackList } = this.state;
+    const { current_user, map_city } = this.state;
     const playlistId = current_user.reusable_spotify_playlist_id;
     this.setState({ playlistLoading: true });
 
     console.log('REUSABLE PLAYLIST ID OLD:', playlistId);
+    spotifyApi.unfollowPlaylist(playlistId);
 
-    const newReusablePlaylistId = await this.createSpotifyPlaylist(trackList);
+    const newReusablePlaylistId = await this.createSpotifyPlaylist(tracks);
 
     await spotifyApi.changePlaylistDetails(newReusablePlaylistId, {
       name: `Jetify: ${map_city}`
@@ -118,33 +130,56 @@ class User extends Component {
         });
     }
     console.log('STILL THE OLD ONE OR NEW?', playlistId);
-    spotifyApi.unfollowPlaylist(playlistId);
   };
 
-  // await spotifyApi.replaceTracksInPlaylist(playlistId, tracks);
-  //delete the old playlist with old ID!
+  //create new playlist with new playlist_id (this used first time user signs in, or when they save a playlist to DB)
+  // createReusableSpotifyPlaylist = tracks => {
+  //   const { current_user, map_city } = this.state;
+  //   this.setState({ playlistLoading: true });
 
-  // if (!tracks.length) {
-  //   this.setState({
-  //     tracksInPlaylist: false,
-  //     playlistLoading: false
-  //   });
-  // } else {
-  //   setTimeout(() => {
-  //     this.setState({
-  //       playlistLoading: false,
-  //       current_playlist_id: playlistId
-  //     });
-  //   }, 1000);
-  // }
+  //   spotifyApi
+  //     .createPlaylist(current_user.spotify_id, {
+  //       name: `Jetify: ${map_city}`
+  //     })
+  //     .then(
+  //       response => {
+  //         if (!tracks.length) {
+  //           this.setState({
+  //             tracksInPlaylist: false,
+  //             playlistLoading: false
+  //           });
+  //         } else {
+  //           spotifyApi.addTracksToPlaylist(response.id, tracks).then(() => {
+  //             axios
+  //               .put(`/api/users/${current_user.id}`, {
+  //                 reusable_spotify_playlist_id: response.id
+  //               })
+  //               .then(() => {
+  //                 this.setState({
+  //                   current_playlist_id: response.id,
+  //                   playlistLoading: false
+  //                 });
+  //               });
+  //           });
+  //         }
+  //       },
+  //       err => {
+  //         console.error(err);
+  //       }
+  //     );
   // };
 
-  //create new playlist with new playlist_id (this used first time user signs in, or when they save a playlist to DB)
-  createReusableSpotifyPlaylist = tracks => {
+  createSpotifyPlaylist = async tracks => {
     const { current_user, map_city } = this.state;
-    this.setState({ playlistLoading: true });
 
-    spotifyApi
+    // const response = await spotifyApi.createPlaylist(current_user.spotify_id, {
+    //   name: `Jetify: ${map_city}`
+    // });
+    // debugger;
+    // const playlistId = response.id;
+    // await spotifyApi.addTracksToPlaylist(playlistId, tracks);
+
+    const responseSpot = spotifyApi
       .createPlaylist(current_user.spotify_id, {
         name: `Jetify: ${map_city}`
       })
@@ -174,16 +209,8 @@ class User extends Component {
           console.error(err);
         }
       );
-  };
 
-  createSpotifyPlaylist = async tracks => {
-    const { current_user, map_city } = this.state;
-
-    const response = await spotifyApi.createPlaylist(current_user.spotify_id, {
-      name: `Jetify: ${map_city}`
-    });
-    const playlistId = response.id;
-    await spotifyApi.addTracksToPlaylist(playlistId, tracks);
+    const playlistId = responseSpot.id;
 
     return playlistId;
   };
