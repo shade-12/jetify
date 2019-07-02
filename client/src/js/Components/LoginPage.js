@@ -64,7 +64,7 @@ class LoginPage extends Component {
         <div className="login-page-background"></div>
         <section className="login-form">
           <h1>Welcome to Jetify</h1>
-          <p>This app shows you upcoming concerts in your area and generates you a playlist based on those events.</p> 
+          <p>This app shows you upcoming concerts in your area and generates you a playlist based on those events.</p>
           <p>  With Jetify you can set your location and dates to plan trips centered around music events, or get an idea of what the
             week sounds like in the city of your choice.</p>
           <SpotifyLogin
@@ -72,7 +72,7 @@ class LoginPage extends Component {
             className="btn btn-dark"
             buttonText={buttonText}
             clientId={process.env.REACT_APP_SPOTIFY_CLIENT_ID}
-            redirectUri={"http://localhost:3000/api/logging-in"}
+            redirectUri={"https://jetify.herokuapp.com/api/logging-in"}
             scope={"user-read-email user-read-private user-read-currently-playing user-library-modify playlist-modify-public playlist-read-collaborative playlist-read-private playlist-modify-private"}
             onSuccess={this.onSuccess}
             onFailure={this.onFailure}
