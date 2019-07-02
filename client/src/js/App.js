@@ -14,18 +14,18 @@ class App extends Component {
 
   render() {
     return (
-      <Router>
+      <Router history={ hashHistory }>
         <div className="App">
           <Route
-            path={${process.env.PUBLIC_URL}/}
+            path="/" exact
             render={() => <LoginPage cookies={this.props.cookies} handleLogin={this.handleLogin} />}
           />
           <Route
-            path={${process.env.PUBLIC_URL}/users/:id}
+            path="/users/:id" exact
             render={() => <UserPage cookies={this.props.cookies} />}
           />
           <Route
-            path={${process.env.PUBLIC_URL}/users/:id/history}
+            path="/users/:id/history" exact
             render={() => <HistoryPage cookies={this.props.cookies}/>}
           />
         </div>
