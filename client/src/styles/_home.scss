@@ -208,9 +208,11 @@ h4.navbar-brand :hover {
 }
 
 div.fade.alert.alert-success {
-    z-index: 9999;
-    margin-top: -660px;
-    margin-bottom: 700px;
+  display: inline-block;
+  position: flex;
+    z-index: 1000;
+    margin-top: -360px;
+    margin-bottom: 900px;
     font-weight: bold;
 }
 
