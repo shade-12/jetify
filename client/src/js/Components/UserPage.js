@@ -463,6 +463,88 @@ class User extends Component {
             </span>
           </Alert>
         </div>
+          <EventBar
+            tracksInPlaylist={this.state.tracksInPlaylist}
+            latlong={this.state.eventBarPosition}
+            startDate={this.state.eventStartDate}
+            endDate={this.state.eventEndDate}
+            setArtists={this.setArtists}
+          />
+          <div className="map-container">
+            <Map
+              google={this.props.google}
+              center={{
+                lat: this.state.display_lat,
+                lng: this.state.display_long
+              }}
+              display_city={this.state.display_city}
+              height="80vh"
+              zoom={2}
+              setLocation={this.setLocation}
+            />
+            <Button className="popup-form-button" onClick={this.handleShow}>
+              Select Dates To See Events In {this.state.map_city}
+            </Button>
+            <Modal
+              show={this.state.showDateForm}
+              onHide={this.handleClose}
+              size="lg"
+              aria-labelledby="contained-modal-title-vcenter"
+              centered
+            >
+              <Modal.Header closeButton>
+                <Modal.Title id="contained-modal-title-vcenter">
+                  Whoop! Time to plan a trip to {this.state.map_city}{' '}
+                  {this.state.map_state}
+                </Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                Start Date&nbsp;&nbsp;
+                <DatePicker
+                  selected={this.state.startDate}
+                  selectsStart
+                  startDate={this.state.startDate}
+                  endDate={this.state.endDate}
+                  onChange={this.handleChangeStart}
+                />
+                &nbsp;&nbsp;&nbsp; End Date&nbsp;&nbsp;
+                <DatePicker
+                  selected={this.state.endDate}
+                  selectsEnd
+                  startDate={this.state.startDate}
+                  endDate={this.state.endDate}
+                  onChange={this.handleChangeEnd}
+                  minDate={this.state.startDate}
+                />
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={this.handleClose}>
+                  Close
+                </Button>
+                <Button variant="primary" onClick={this.onSubmit}>
+                  Submit
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </div>
+          <Playlist
+            playlistLoading={this.state.playlistLoading}
+            renderRandomPlaylist={this.renderRandomPlaylist}
+            artists={this.state.artists}
+            playlistID={this.state.current_playlist_id}
+            savePlaylist={this.savePlaylist}
+          />
+          <Alert
+            show={this.state.showSuccessAlert}
+            variant="success"
+            onClose={this.handleDismiss}
+            dismissible
+          >
+            Playlist saved !{' '}
+            <span role="img" aria-label="">
+              💚
+            </span>
+          </Alert>
       </div>
     );
   }

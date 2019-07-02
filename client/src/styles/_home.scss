@@ -33,6 +33,7 @@
 h4.local {
   color:$secondary-font-color;
   margin-top: 8px;
+  size: 10vw;
 
   img {
     height: 3.5vw;
@@ -43,6 +44,61 @@ button.btn-dark {
 
   img {
     height: 2.5vw;
+  }
+}
+
+#dropdown-item-button{
+  float: left;
+  overflow: hidden;
+  display: none;
+
+}
+@media screen and (max-width: 600px) {
+  .nav-item button {
+    display: none;
+  }
+  #dropdown-item-button {
+    float: right;
+    display: block;
+  }
+  .events-container {
+    float: left;
+    display: block;
+    width: 20vw;
+    height: 20vw;
+  }
+  section.card {
+    width: 20vw;
+    height: 20vw;
+  }
+
+  div {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+
+  }
+  div.map-container{
+    width: 100%;
+    height: 100%;
+  }
+  div.events-container{
+    margin-top: 40vw;
+    width: 100%;
+    height: 100%;
+
+    section.card{
+      width: 100%;
+      height: 100%;
+    }
+    img.card-img-top {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  div.playlist-container{
+    width: 100%;
+    height: 100%;
   }
 }
 

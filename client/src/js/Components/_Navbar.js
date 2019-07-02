@@ -1,4 +1,5 @@
 import React from 'react';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 
 function NavBar(props) {
     return (
@@ -13,6 +14,10 @@ function NavBar(props) {
             <button type="button" className="btn btn-dark" onClick={props.handleLogout}>Logout</button>
           </li>
         </ul>
+        <DropdownButton id="dropdown-item-button" variant="dark" title="">
+  <Dropdown.Item as="button" onClick={props.handleMyPlaylists}>My Playlists</Dropdown.Item>
+  <Dropdown.Item as="button" onClick={props.handleLogout}>Logout</Dropdown.Item>
+</DropdownButton>
       </nav>
     );
 }
