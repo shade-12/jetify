@@ -18,15 +18,15 @@ class App extends Component {
       <Switch>
         <div className="App">
           <Route
-            path={`${process.env.PUBLIC_URL}/`} exact
+            path="/" exact
             render={() => <LoginPage cookies={this.props.cookies} handleLogin={this.handleLogin} />}
           />
           <Route
-            path={`${process.env.PUBLIC_URL}/users/:id`} exact
+            path="/users/:id" exact
             render={() => <UserPage cookies={this.props.cookies} />}
           />
           <Route
-            path={`${process.env.PUBLIC_URL}/users/:id/history`} exact
+            path="/users/:id/history" exact
             render={() => <HistoryPage cookies={this.props.cookies}/>}
           />
           <footer>
