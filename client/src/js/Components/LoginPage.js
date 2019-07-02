@@ -14,7 +14,7 @@ class LoginPage extends Component {
     };
   }
 
-  onSuccess = async response => {
+  onSuccess = response => {
     const {cookies} = this.props;
     //get user current location
     axios.get('https://ipapi.co/json/')
@@ -39,7 +39,7 @@ class LoginPage extends Component {
         email: data.email,
         spotify_id: data.id
       };
-      await axios.post('/api/users', user).then(response => {
+      axios.post('/api/users', user).then(response => {
         let user = response.data.user;
         cookies.set('jetify_user', user.id, { path: '/', expires: 0 });
         this.setState({
@@ -72,8 +72,8 @@ class LoginPage extends Component {
             className="btn btn-dark"
             buttonText={buttonText}
             clientId={process.env.REACT_APP_SPOTIFY_CLIENT_ID}
-            redirectUri="https://jetify.herokuapp.com/api/logging-in"
-            scope="user-read-email user-read-private user-read-currently-playing user-library-modify playlist-modify-public playlist-read-collaborative playlist-read-private playlist-modify-private"
+            redirectUri={"https://jetify.herokuapp.com/api/logging-in/"}
+            scope={"user-read-email user-read-private user-read-currently-playing user-library-modify playlist-modify-public playlist-read-collaborative playlist-read-private playlist-modify-private"}
             onSuccess={this.onSuccess}
             onFailure={this.onFailure}
           />

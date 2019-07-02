@@ -14,7 +14,7 @@ class App extends Component {
 
   render() {
     return (
-      <Router basename={`${process.env.PUBLIC_URL}`}>
+      <Router>
         <Switch>
           <div className="App">
             <Route
@@ -22,11 +22,11 @@ class App extends Component {
               render={() => <LoginPage cookies={this.props.cookies} handleLogin={this.handleLogin} />}
             />
             <Route
-              path="/users/:id" exact
+              path="/users/:id"
               render={() => <UserPage cookies={this.props.cookies} />}
             />
             <Route
-              path="/users/:id/history" exact
+              path="/users/:id/history"
               render={() => <HistoryPage cookies={this.props.cookies}/>}
             />
             <footer>
