@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { instanceOf } from 'prop-types';
 import { withCookies, Cookies } from 'react-cookie';
 import LoginPage from './Components/LoginPage.js';
@@ -16,7 +16,6 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <Switch>
             <Route
               exact path="/"
               render={() => <LoginPage cookies={this.props.cookies} handleLogin={this.handleLogin} />}
@@ -29,7 +28,6 @@ class App extends Component {
               exact path="/users/:id/history"
               render={() => <HistoryPage cookies={this.props.cookies}/>}
             />
-          </Switch>
           <footer>
             Made with&nbsp;&nbsp;
             <img src="https://www.pexels.com/assets/pexels2x-55493e5c9ae2025ef763e735064deee0a368f537950481d2d4e04e9f0ab02473.png" alt="pexels-logo" />
