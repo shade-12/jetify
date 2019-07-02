@@ -35,7 +35,7 @@ class HistoryPage extends Component {
         const { locations, playlists } = response.data;
         //filter out duplicate locations
         const locationArray = [];
-        locations.map(location => {
+        locations.reverse().map(location => {
           if (!this.locationExists(locationArray, location)) {
             locationArray.push(location);
           }
@@ -151,6 +151,7 @@ class HistoryPage extends Component {
             lng: -8.224454
           }}
         >
+
           {locationMarkers}
           <InfoWindow
             className="info-window"
@@ -162,6 +163,7 @@ class HistoryPage extends Component {
               <p>Playlists:{this.state.activeMarker.playlist}</p>
             </div>
           </InfoWindow>
+
         </Map>
       </div>
     );

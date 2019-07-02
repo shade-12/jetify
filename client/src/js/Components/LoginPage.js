@@ -65,7 +65,7 @@ class LoginPage extends Component {
         <section className="login-form">
           <h4 className="brand" ><img className="bounce"src="https://img.icons8.com/nolan/96/000000/headphones.png" alt="navbar-logo"/></h4>
           <h1>Welcome to Jetify</h1>
-          <p>This app shows you upcoming concerts in your area and generates you a playlist based on those events.</p> 
+          <p>This app shows you upcoming concerts in your area and generates you a playlist based on those events.</p>
           <p>  With Jetify you can set your location and dates to plan trips centered around music events, or get an idea of what the
             week sounds like in the city of your choice.</p>
           <SpotifyLogin
