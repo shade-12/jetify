@@ -48,12 +48,10 @@
 }
 
 .nav-item{
-  padding-left: 25vw;
+  padding-left: 30vw;
 }
 .nav-item button {
   border: 0.5px solid $primary-font-color;
-  // float: left;
-  // justify-content: flex-end;
 }
 
 
@@ -78,6 +76,8 @@ button.btn-dark {
   overflow: auto;
   height: -webkit-fill-available;
   text-align: center;
+  display: flex;
+  flex-direction: column;
 
   h4{
     font-weight: bold;
