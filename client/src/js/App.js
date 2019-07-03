@@ -15,7 +15,7 @@ class App extends Component {
   render() {
     let login = null;
     if(this.props.cookies.get('jetify_user')){
-      login = <Route render={() => <Redirect to=`/users/${this.props.cookies.get('jetify_user')}` />} />;
+      login = <Route render={() => <Redirect to={`/users/${this.props.cookies.get('jetify_user')}`} />} />;
     }else{
       login = <Route render={() => <Redirect to="/" />} />;
     }
