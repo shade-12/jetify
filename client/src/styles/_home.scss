@@ -237,7 +237,7 @@ button.close {
   .dropdown-menu.show{
     height: 10vh;
   }
-  
+
 
 div.map-container{
   width: 100%;
@@ -271,12 +271,12 @@ div.playlist-container{
   height: 100%;
 }
 div.fade.alert.alert-success {
-    z-index: 1000;
+    z-index: 9999;
     display: inline-block;
     position: relative;
-      margin-top: -1030px;
-      margin-bottom: 1000px;
-      font-weight: bold;
+    margin-top: -670px;
+    margin-bottom: 1300px;
+    font-weight: bold;
 }
 }
 
