@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import SpotifyLogin from 'react-spotify-login';
 import axios from 'axios';
 
@@ -56,7 +56,7 @@ class LoginPage extends Component {
 
   render() {
     if(this.state.redirectToUserPage === true) {
-      return <Redirect to={`${process.env.PUBLIC_URL}/users/${this.state.currentUser.id}`} />
+      return <Link to={`${process.env.PUBLIC_URL}/users/${this.state.currentUser.id}`} />
     }
 
     return (
