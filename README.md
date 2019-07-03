@@ -35,7 +35,7 @@ Jetify is an app that allows you to see events happening in your area or the are
 
 * TicketMaster https://developer.ticketmaster.com/
   - Register for API key
-  - create another .env file in the root folder
+  - Create another .env file in the root folder
   - Add the API key to the .env as `TICKETMASTER_KEY`
 
 * Pexels https://www.pexels.com/api
