@@ -107,11 +107,11 @@ class HistoryPage extends Component {
     const { cookies } = this.props;
 
     if (this.state.current_user === null) {
-      return <Redirect to={`${process.env.PUBLIC_URL}/`} />;
+      return <Redirect to={`/`} />;
     }
 
     if (this.state.redirectToUserPage) {
-      return <Redirect to={`${process.env.PUBLIC_URL}/users/${cookies.get('jetify_user')}`} />;
+      return <Redirect to={`/users/${cookies.get('jetify_user')}`} />;
     }
 
     const locationMarkers = this.state.allLocations.map(location => (

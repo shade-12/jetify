@@ -339,15 +339,15 @@ class User extends Component {
     const { cookies } = this.props;
 
     if (this.state.current_user === null) {
-      return <Redirect to={`${process.env.PUBLIC_URL}/`} />;
+      return <Redirect to={`/`} />;
     }
 
     if (this.state.redirectToUserPage) {
-      return <Redirect to={`${process.env.PUBLIC_URL}/users/${cookies.get('jetify_user')}`} />;
+      return <Redirect to={`/users/${cookies.get('jetify_user')}`} />;
     }
 
     if (this.state.redirectToHistoryPage) {
-      return <Redirect to={`${process.env.PUBLIC_URL}/users/${cookies.get('jetify_user')}/history`} />;
+      return <Redirect to={`/users/${cookies.get('jetify_user')}/history`} />;
     }
 
     return (

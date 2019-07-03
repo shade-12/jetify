@@ -13,13 +13,6 @@ class App extends Component {
   };
 
   render() {
-    let login = null;
-    if(this.props.cookies.get('jetify_token')) {
-      login = <Route render={() => <Redirect to="/users/:id" />} />;
-    } else {
-      login = <Route render={() => <Redirect to="/" />} />;
-    }
-
     return (
       <Router>
         <div className="App">
@@ -35,7 +28,7 @@ class App extends Component {
               exact path="/users/:id/history"
               render={() => <HistoryPage cookies={this.props.cookies}/>}
             />
-            {login}
+            <Route render={() => <Redirect to="/" />} />
           <footer>
             Made with&nbsp;&nbsp;
             <img src="https://www.pexels.com/assets/pexels2x-55493e5c9ae2025ef763e735064deee0a368f537950481d2d4e04e9f0ab02473.png" alt="pexels-logo" />

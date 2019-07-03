@@ -56,7 +56,7 @@ class LoginPage extends Component {
 
   render() {
     if(this.state.redirectToUserPage === true) {
-      return <Redirect to={`${process.env.PUBLIC_URL}/users/${this.state.currentUser.id}`} />
+      return <Redirect to={`/users/${this.state.currentUser.id}`} />
     }
 
     return (
