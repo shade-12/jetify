@@ -22,29 +22,29 @@ Jetify is an app that allows you to see events happening in your area or the are
 ## API Authorization
 * Visit https://developer.spotify.com/
   - Login & Create an app
-  - Enter 'http://localhost:3000/api/logging-in
+  - Enter `http://localhost:3000/api/logging-in`
   - Save your changes
   - Copy down the client ID, and client secret
-  - Create a .env file inside the client folder and save as REACT_APP_SPOTIFY_CLIENT_ID and REACT_APP_SPOTIFY_CLIENT_SECRET
+  - Create a .env file inside the client folder and save as `REACT_APP_SPOTIFY_CLIENT_ID`and `REACT_APP_SPOTIFY_CLIENT_SECRET`
 
 * Visit Google https://console.developers.google.com/
   - Login & Create a new project
-  - Set restrictions to none
+  - Set restrictions to `none`
   - Initialize API services for 'Maps Javascript API', 'Places API', 'Geocoding API' and 'Maps Embed API'
-  - Add the API key to the .env as REACT_APP_GOOGLE_API_KEY
+  - Add the API key to the .env as `REACT_APP_GOOGLE_API_KEY`
 
 * TicketMaster
-  - Visit TIcketMaster https://developer.ticketmaster.com/
+  - Visit TicketMaster https://developer.ticketmaster.com/
   - Register for API key
   - create another .env file in the root folder
-  - Add the API key to the .env as TICKETMASTER_KEY
+  - Add the API key to the .env as `TICKETMASTER_KEY`
 
 
 * Pexels
   - Visit https://www.pexels.com/api
   - Request access and login
   - Get a API key
-  - Add .env file in the client folder as REACT_APP_PEXELS_API_KEY
+  - Add .env file in the client folder as `REACT_APP_PEXELS_API_KEY`
 
 
 
