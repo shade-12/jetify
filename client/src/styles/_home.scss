@@ -21,18 +21,45 @@
   img {
     height: 4vw;
   }
+  .bounce {
+      animation: bounce 2s;
+      animation-iteration-count: infinite;
+      animation-delay: -10;
+  }
+  @keyframes bounce {
+    0%,
+    25%,
+    50%,
+    75%,
+    100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-20px);
+    }
+    60% {
+        transform: translateY(-12px);
+    }
+  }
 
   span.username {
     font-size: 80%;
   }
 }
 
+.nav-item{
+  padding-left: 15vw;
+}
+
 .nav-item button {
   border: 0.5px solid $primary-font-color;
 }
+
+
 h4.local {
   color:$secondary-font-color;
   margin-top: 8px;
+  padding-left: 15vw;
 
   img {
     height: 3.5vw;
@@ -82,13 +109,11 @@ button.btn-dark {
   width: 40vw;
   display: flex;
   flex-direction: column;
-  // justify-content: center;
 
 
 .date-form{
   position: relative;
   z-index: 100;
-  // display:flex;
   margin-top: 5%;
 
 }
@@ -148,6 +173,7 @@ div.playlist-container {
     flex-grow: 1;
     font-weight: bold;
     color: white;
+    float: left;
   }
 
   button.btn.generate-button {
@@ -180,12 +206,87 @@ h4.navbar-brand :hover {
 }
 
 div.fade.alert.alert-success {
-    z-index: 9999;
-    margin-top: -660px;
-    margin-bottom: 700px;
+  display: inline-block;
+  position: relative;
+    z-index: 1000;
+    margin-top: -260px;
+    margin-bottom: 900px;
     font-weight: bold;
 }
 
 button.close {
   outline: none;
 }
+
+#dropdown-item-button{
+  float: left;
+  overflow: hidden;
+  display: none;
+
+}
+
+@media screen and (max-width: 600px) {
+  .nav-item{
+    padding-left: 0;
+  }
+  h4.local {
+    padding-left: 0;
+  }
+  .nav-item button {
+    display: none;
+  }
+  #dropdown-item-button {
+    float: right;
+    display: block;
+  }
+
+  .dropdown-menu.show{
+    height: 10vh;
+  }
+
+
+  div.map-container{
+    width: 100%;
+    height: 100%;
+    margin-bottom: 10vw;
+  }
+  div.events-container{
+    display: inline-block;
+    margin-top: 40vw;
+    width: 100%;
+    height: 100%;
+    margin-left: 15vw;
+    justify-content: center;
+
+    section.card{
+      width: 100%;
+      height: 100%;
+    }
+    img.card-img-top {
+      width: 100%;
+      height: 100%;
+    }
+    .map-display{
+      width: 100%;
+      height: 100%;
+    }
+  }
+  div.playlist-container{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+  }
+  div.fade.alert.alert-success {
+    z-index: 9999;
+    display: inline-block;
+    position: relative;
+    margin-top: -670px;
+    margin-bottom: 1300px;
+    font-weight: bold;
+  }
+  button {
+    margin: 10px;
+  }
+}
+
+

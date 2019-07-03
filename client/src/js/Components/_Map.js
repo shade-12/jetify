@@ -214,6 +214,7 @@ class Map extends Component{
 								types={['(regions)']}
 								style={{width: '100%',
 								height: '40px',
+								display: 'flex', 
 								paddingleft: '16px',
 								marginTop: '-40px',
 								}}
@@ -226,7 +227,8 @@ class Map extends Component{
 					>
 						<InfoWindow
 							onClose={this.onInfoWindowClose}
-							position={{ lat: ( this.state.markerPosition.lat + 0.0018 ), lng: this.state.markerPosition.lng }}
+							position={{ lat: ( this.state.markerPosition.lat ), lng: this.state.markerPosition.lng }}
+							
 						>
 						 <div>
 								<span style={{ padding: 0, margin: 0 }}>{ this.state.area + ", " + this.state.state }</span>
@@ -234,12 +236,11 @@ class Map extends Component{
 						</InfoWindow>
 						{/*Marker*/}
 						<Marker google={this.props.google}
-								name={'Dolores park'}
 								options={{icon:headphone}}
-								animation={"bounce"}
 						        draggable={true}
 						        onDragEnd={ this.onMarkerDragEnd }
-						        position={{ lat: this.state.markerPosition.lat, lng: this.state.markerPosition.lng }}
+										position={{ lat: this.state.markerPosition.lat, lng: this.state.markerPosition.lng }}
+										
 						/>
 						<Marker />
 					</GoogleMap>
@@ -256,13 +257,18 @@ class Map extends Component{
 				<AsyncMap
       googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`}
       loadingElement={
-       <div style={{ height: `100%` }} />
+			 <div style={{ height: `100%`,
+			 display: 'flex', 
+			 justifyContent: 'center',  }} />
       }
       containerElement={
-       <div style={{ height: this.props.height }} />
+			 <div style={{ height: this.props.height, 
+				}} />
       }
       mapElement={
-       <div style={{ height: `95%` }} />
+			 <div style={{ height: `95%`,
+			 display: 'flex', 
+			 justifyContent: 'center', }} />
       }
      />
      </div>

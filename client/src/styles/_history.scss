@@ -60,7 +60,48 @@ div.card-img-overlay:hover {
 }
 
 
+#dropdown-item-button{
+  float: left;
+  overflow: hidden;
+  display: none;
 
+}
+
+@media screen and (max-width: 600px) {
+  .nav-item button {
+    display: none;
+  }
+  #dropdown-item-button {
+    float: right;
+    display: block;
+  }
+  .dropdown-menu.show{
+    height: 10vh;
+  }
+   
+    div.locations-container{
+      padding: 1vw;
+      margin-top: 10vh;
+      padding-right: 2vw;
+      height: 100%;
+
+    }
+    h3.card-title{
+      font-size: 20%;
+    }
+
+    div.card-img-overlay{
+      width: 100%;
+    height: 100%;
+    display: center;
+    }
+    div.location-thumbnail{
+      margin-right: 15vw;
+      width: 90%;
+    height: 12%;
+    display: center;
+    }
+  }
 
 
 
