@@ -208,10 +208,10 @@ h4.navbar-brand :hover {
 div.fade.alert.alert-success {
   display: inline-block;
   position: relative;
-    z-index: 1000;
-    margin-top: -260px;
-    margin-bottom: 900px;
-    font-weight: bold;
+  z-index: 9999;
+  margin-top: -670px;
+  margin-bottom: 1300px;
+  font-weight: bold;
 }
 
 button.close {
@@ -280,9 +280,9 @@ button.close {
     z-index: 9999;
     display: inline-block;
     position: relative;
-    margin-top: -670px;
-    margin-bottom: 1300px;
-    font-weight: bold;
+    margin-top: -550px;
+    margin-bottom: 500px;
+    font-weight: 700;
   }
   button {
     margin: 10px;
