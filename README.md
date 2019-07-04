@@ -3,48 +3,46 @@
 Do you ever wish you knew what events were going on in your location, or what events were going on in a location you were travelling to?
 Jetify is an app that allows you to see events happening in your area or the area of your choice and creates a playlist based on those events. Checkout future events happening in your area or find out what concerts are going on, on your next vacation.
 
-* Here is a demo for Jetify: https://jetify.herokuapp.com/
+Here is a demo for Jetify: https://jetify.herokuapp.com/
 
 ## Stack
 * React 16.8.6
-* React Router DOM 5.0.1
+* React Router Dom 5.0.1
 * Rails 2.6.2
 * Bootstrap 4.3.1
 * SASS 4.12.0
 
 ## Setup
-* cd into client folder and run `npm install`
-* Run `bundle install` in the root folder
-* Run `rake:db setup` then `rake:db migrate` to initialize the database
-* Run `bin/rails s` to start the rails back-end server
-* In a new terminal window, run `npm start` to start the react front-end server
-* Visit `http://localhost:3000` to view the app (Make sure you include all the API keys in order to run the app)
+1. cd into client folder and run `npm install`
+2. Run `bundle install` in the root folder
+3. Run `rake:db setup` then `rake:db migrate` to initialize the database
+4. Run `bin/rails s` to start the rails back-end server
+5. In a new terminal window, run `npm start` to start the react front-end server
+6. Visit `http://localhost:3000` to view the app (Make sure you include all the API keys in order to run the app)
 
 ## API Authorization
-* Spotify: https://developer.spotify.com/
+1. Spotify: https://developer.spotify.com/
   - Login & Create an app
   - Enter `http://localhost:3000/api/logging-in`
   - Save your changes
   - Copy down the client ID, and client secret
   - Create a .env file inside the client folder and save as `REACT_APP_SPOTIFY_CLIENT_ID`and `REACT_APP_SPOTIFY_CLIENT_SECRET`
 
-* Google: https://console.developers.google.com/
+2. Google: https://console.developers.google.com/
   - Login & Create a new project
   - Set restrictions to `none`
   - Initialize API services for `Maps Javascript API`, `Places API`, `Geocoding API` and `Maps Embed API`
   - Add the API key to the .env as `REACT_APP_GOOGLE_API_KEY`
 
-* TicketMaster: https://developer.ticketmaster.com/
+3. TicketMaster: https://developer.ticketmaster.com/
   - Register for API key
   - Create another .env file in the root folder
   - Add the API key to the .env as `TICKETMASTER_KEY`
 
-* Pexels: https://www.pexels.com/api
+4. Pexels: https://www.pexels.com/api
   - Request access and login
   - Get an API key
   - Add to .env file in the client folder as `REACT_APP_PEXELS_API_KEY`
-
-
 
 
 ## Screenshots
@@ -56,5 +54,8 @@ Jetify is an app that allows you to see events happening in your area or the are
 !["History Page"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/HistoryPage.png)
 !["Saved Playlists"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/HistoryPagePlaylists.png)
 
-
+## Contributors
+* [Devan Mckay](https://github.com/Devanm15)
+* [Harriet Thompson](https://github.com/hazthompson)
+* [Shade Wong](https://github.com/shadeying)
 
