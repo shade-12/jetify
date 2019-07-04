@@ -48,12 +48,20 @@ Here is a demo for Jetify: https://jetify.herokuapp.com/
 ## Screenshots
 
 Users can log in through Spotify's third party authorization to the app:
-!["Login Page"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/LoginPage.png)
-!["Main Page1"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/MainPage1.png)
-!["Main Page2"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/MainPage2.png)
-!["Main Page3"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/MainPage3.png)
-!["History Page"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/HistoryPage.png)
-!["Saved Playlists"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/HistoryPagePlaylists.png)
+!["Login Page"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/login-jetify.gif?raw=true)
+
+A list of local events happening in users' location and playlist will get generated upon successful login:
+!["Main Page1"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/buy-ticket-jetify.gif?raw=true)
+
+Users can search for events happening in particular location and timeframe, then save them for future reference as well:
+!["Main Page2"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/save-playlist-jetify.gif?raw=true)
+
+Users can view, play, share or delete the saved playlists:
+!["Main Page3"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/delete-playlist-jetify.gif?raw=true)
+
+Click the logout button to logout from the app:
+!["History Page"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/logout-jetify.gif?raw=true)
+
 
 ## Contributors
 * [Devan Mckay](https://github.com/Devanm15)
