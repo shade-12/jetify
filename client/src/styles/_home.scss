@@ -289,8 +289,9 @@ div.dropdown-menu.show{
   }
 }
 
-@media screen and (min-width: 900px) {
+@media only screen and (min-width: 1000px) and (max-width: 1400px) {
   div.fade.alert.alert-success {
-    margin-right: 12vw;
+    margin-right: 13vw;
   }
 }
+
