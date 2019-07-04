@@ -22,27 +22,27 @@ Here is a demo for Jetify: https://jetify.herokuapp.com/
 
 ## API Authorization
 1. Spotify: https://developer.spotify.com/
-  - Login & Create an app
-  - Enter `http://localhost:3000/api/logging-in`
-  - Save your changes
-  - Copy down the client ID, and client secret
-  - Create a .env file inside the client folder and save as `REACT_APP_SPOTIFY_CLIENT_ID`and `REACT_APP_SPOTIFY_CLIENT_SECRET`
+    - Login & Create an app
+    - Enter `http://localhost:3000/api/logging-in`
+    - Save your changes
+    - Copy down the client ID, and client secret
+    - Create a .env file inside the client folder and save as `REACT_APP_SPOTIFY_CLIENT_ID`and `REACT_APP_SPOTIFY_CLIENT_SECRET`
 
 2. Google: https://console.developers.google.com/
-  - Login & Create a new project
-  - Set restrictions to `none`
-  - Initialize API services for `Maps Javascript API`, `Places API`, `Geocoding API` and `Maps Embed API`
-  - Add the API key to the .env as `REACT_APP_GOOGLE_API_KEY`
+    - Login & Create a new project
+    - Set restrictions to `none`
+    - Initialize API services for `Maps Javascript API`, `Places API`, `Geocoding API` and `Maps Embed API`
+    - Add the API key to the .env as `REACT_APP_GOOGLE_API_KEY`
 
 3. TicketMaster: https://developer.ticketmaster.com/
-  - Register for API key
-  - Create another .env file in the root folder
-  - Add the API key to the .env as `TICKETMASTER_KEY`
+    - Register for API key
+    - Create another .env file in the root folder
+    - Add the API key to the .env as `TICKETMASTER_KEY`
 
 4. Pexels: https://www.pexels.com/api
-  - Request access and login
-  - Get an API key
-  - Add to .env file in the client folder as `REACT_APP_PEXELS_API_KEY`
+    - Request access and login
+    - Get an API key
+    - Add to .env file in the client folder as `REACT_APP_PEXELS_API_KEY`
 
 
 ## Screenshots
