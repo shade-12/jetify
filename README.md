@@ -47,7 +47,7 @@ Here is a demo for Jetify: https://jetify.herokuapp.com/
 
 ## Screenshots
 
-!["Login Page"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/LoginPage.png)
+!["GIF of Jetify"](https://gfycat.com/gloomyposhhawaiianmonkseal)
 !["Main Page1"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/MainPage1.png)
 !["Main Page2"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/MainPage2.png)
 !["Main Page3"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/MainPage3.png)
