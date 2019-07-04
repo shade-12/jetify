@@ -289,4 +289,14 @@ div.dropdown-menu.show{
   }
 }
 
-
+@media screen and (min-width: 900px) {
+  div.fade.alert.alert-success {
+    display: inline-block;
+    position: relative;
+    z-index: 9999;
+    margin-top: -500px;
+    margin-bottom: 450px;
+    font-weight: 700;
+  }
+}
+}
