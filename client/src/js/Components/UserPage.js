@@ -166,16 +166,21 @@ class User extends Component {
   };
 
   fetchTopSongs = async (artistIds, firstSlice, secondSlice) => {
-    let tracks = [];
+   let tracks = [];
 
-    const promises = artistIds.map(async id => {
-      try {
-        const response = await spotifyApi.getArtistTopTracks(id, 'US');
-        const responseTracks = response.tracks.slice(firstSlice, secondSlice);
-        responseTracks.forEach(track => tracks.push(track.uri));
-      } catch (err) {
-        console.error(err);
-      }
+   const promises = artistIds.map(async id => {
+     try {
+       const response = await spotifyApi.getArtistTopTracks(id, 'US');
+
+       const nonExplicit = response.tracks.filter(
+         track => track.explicit === false
+   );
+   console.log('nonExplicit', nonExplicit);
+   const responseTracks = nonExplicit.slice(firstSlice, secondSlice);
+   responseTracks.forEach(track => tracks.push(track.uri));
+       } catch (err) {
+       console.error(err);
+     }
     });
     await Promise.all(promises);
     this.setState({
