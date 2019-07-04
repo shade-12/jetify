@@ -47,7 +47,7 @@ Here is a demo for Jetify: https://jetify.herokuapp.com/
 
 ## Screenshots
 
-!["Screen Recording!"](https://thumbs.gfycat.com/GloomyPoshHawaiianmonkseal-size_restricted.gif)
+Users can log in through Spotify's third party authorization to the app:
 !["Login Page"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/LoginPage.png)
 !["Main Page1"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/MainPage1.png)
 !["Main Page2"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/MainPage2.png)
