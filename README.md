@@ -47,6 +47,10 @@ Here is a demo for Jetify: https://jetify.herokuapp.com/
 
 ## Screenshots
 
+<figure class="video_container">
+  <iframe src="https://gfycat.com/ifr/GloomyPoshHawaiianmonkseal" frameborder="0" allowfullscreen="true"> </iframe>
+</figure>
+
 !["Login Page"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/LoginPage.png)
 !["Main Page1"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/MainPage1.png)
 !["Main Page2"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/MainPage2.png)
