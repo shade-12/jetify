@@ -45,21 +45,30 @@ Here is a demo for Jetify: https://jetify.herokuapp.com/
     - Add to .env file in the client folder as `REACT_APP_PEXELS_API_KEY`
 
 
-## Screenshots
+## Usage examples
 
 Users can log in through Spotify's third party authorization to the app:
+
 !["Login Page"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/login-jetify.gif?raw=true)
 
+
 A list of local events happening in users' location and playlist will get generated upon successful login:
+
 !["Main Page1"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/buy-ticket-jetify.gif?raw=true)
 
+
 Users can search for events happening in particular location and timeframe, then save them for future reference as well:
+
 !["Main Page2"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/save-playlist-jetify.gif?raw=true)
 
+
 Users can view, play, share or delete the saved playlists:
+
 !["Main Page3"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/delete-playlist-jetify.gif?raw=true)
 
+
 Click the logout button to logout from the app:
+
 !["History Page"](https://github.com/shadeying/Jetify/blob/master/client/public/screenshots/logout-jetify.gif?raw=true)
 
 
