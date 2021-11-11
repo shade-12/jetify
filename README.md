@@ -75,5 +75,5 @@ Click the logout button to logout from the app:
 ## Contributors
 * [Devan Mckay](https://github.com/Devanm15)
 * [Harriet Thompson](https://github.com/hazthompson)
-* [Shade Wong](https://github.com/shadeying)
+* [Shade Wong](https://github.com/shade-12)
 
